@@ -18,11 +18,13 @@
     "wagmi": "0.4.0"
   },
   "devDependencies": {
+    "@rainbow-me/rainbowkit": "^0.3.4",
     "@types/node": "18.0.0",
     "@types/react": "18.0.14",
     "@types/react-dom": "18.0.5",
     "eslint": "8.18.0",
     "eslint-config-next": "12.1.6",
+    "firebase-admin": "^11.0.0",
     "typescript": "4.7.4"
   }
 }

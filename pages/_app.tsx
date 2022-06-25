@@ -35,7 +35,7 @@ const { chains, provider } = configureChains(
 );
 
 const { connectors } = getDefaultWallets({
-  appName: 'tsujiki',
+  appName: 'tsukiji',
   chains
 });
 

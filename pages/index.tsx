@@ -4,7 +4,6 @@ import {
   ConsiderationInputItem,
   CreateInputItem,
   CreateOrderInput,
-  CurrencyItem,
 } from "@opensea/seaport-js/lib/types";
 import { Seaport } from "@opensea/seaport-js";
 import { useAccount, useConnect } from "wagmi";
@@ -12,6 +11,7 @@ import { InjectedConnector } from "wagmi/connectors/injected";
 import { providers } from "ethers";
 import TokenInput from "./components/TokenInput";
 import { useState } from "react";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const Home: NextPage = () => {
   const { connect } = useConnect({
@@ -45,21 +45,15 @@ const Home: NextPage = () => {
   return (
     <div className={styles.container}>
       <main className={styles.main}>
-        {/* ideally hook this up with rainbow kit */}
-        <button
+        <div
           style={{
             position: "absolute",
-            height: "50px",
-            width: "100px",
             top: "50px",
             right: "50px",
-            borderRadius: "10%",
-            border: "none",
           }}
-          onClick={() => connect()}
         >
-          Connect Wallet
-        </button>
+          <ConnectButton />
+        </div>
         <div
           style={{
             display: "flex",

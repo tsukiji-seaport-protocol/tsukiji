@@ -1,10 +1,24 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import "@rainbow-me/rainbowkit/styles.css";
-import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
-import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { useEffect, useState } from "react";
+
+// rainbow + wagmi
+import '@rainbow-me/rainbowkit/styles.css';
+import {
+  getDefaultWallets,
+  lightTheme,
+  RainbowKitProvider,
+  Theme,
+} from '@rainbow-me/rainbowkit';
+import {
+  chain,
+  configureChains,
+  createClient,
+  WagmiConfig,
+} from 'wagmi';
+import merge from 'lodash.merge';
+import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 
 const { chains, provider } = configureChains(
   [chain.rinkeby, chain.mainnet, chain.polygon],
@@ -18,10 +32,23 @@ const { chains, provider } = configureChains(
   ]
 );
 
-const wagmiClient = createClient({
-  autoConnect: false,
-  provider,
+const { connectors } = getDefaultWallets({
+  appName: 'tsujiki',
+  chains
 });
+
+const wagmiClient = createClient({
+  autoConnect: true,
+  connectors,
+  provider
+})
+
+// rainbow theme
+const customTheme = merge(lightTheme(), {
+  colors: {
+    accentColor: '#267c8e',
+  },
+} as Theme);
 
 const queryClient = new QueryClient();
 
@@ -36,7 +63,9 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <WagmiConfig client={wagmiClient}>
-        <Component {...pageProps} />
+        <RainbowKitProvider chains={chains} theme={customTheme}>
+          <Component {...pageProps} />
+        </RainbowKitProvider>
       </WagmiConfig>
     </QueryClientProvider>
   );

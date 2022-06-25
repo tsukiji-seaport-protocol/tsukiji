@@ -1,4 +1,4 @@
-import { Stack, Select, Box, Button, SimpleGrid, HStack, NumberInputField, NumberInput, Flex, Spacer } from '@chakra-ui/react'
+import { Stack, Select, Box, Button, SimpleGrid, HStack, NumberInputField, NumberInput, Flex, Spacer, Text } from '@chakra-ui/react'
 import { MouseEventHandler } from 'react';
 import { useAccount } from 'wagmi';
 import { ConsiderationInput, OfferInput } from './TokenInput';
@@ -34,15 +34,21 @@ export const Offer = ({ createSeaportOrder, offerItems, setOfferItems, considera
         </SimpleGrid>
         <Flex gap={4} alignContent="space-between">
           <HStack>
-            <Select placeholder='Duration'>
-              <option value="24">1 day</option>
-              <option value="72">3 days</option>
-              <option value="168">7 days</option>
-              <option value="720">1 month</option>
-            </Select>
-            <NumberInput step={5} defaultValue={15} min={10} max={30}>
-              <NumberInputField />
-            </NumberInput>
+            <Box>
+              <Text mb='6px' color={'gray'}>Duration</Text>
+              <Select placeholder='Duration'>
+                <option value="24">1 day</option>
+                <option value="72">3 days</option>
+                <option value="168">7 days</option>
+                <option value="720">1 month</option>
+              </Select>
+            </Box>
+            <Box>
+              <Text mb='6px' color={'gray'}>Tip</Text>
+              <NumberInput step={5} defaultValue={0.05} min={0}>
+                <NumberInputField />
+              </NumberInput>
+            </Box>
           </HStack>
           <Spacer />
           <Button colorScheme='blue' onClick={createSeaportOrder} disabled={!accountData?.address || offerItems.length === 0 || considerationItems.length === 0}>

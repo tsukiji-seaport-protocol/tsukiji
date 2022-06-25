@@ -10,14 +10,17 @@ import { useAccount } from "wagmi";
 import { providers } from "ethers";
 import { useState } from "react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { Offer } from "./components/Offer";
+import { OrderPage } from "./components/OrderPage";
 import { Stack } from "@chakra-ui/react";
+import { OfferItem, ConsiderationItem } from "types/tokenTypes";
 
 const Home: NextPage = () => {
   const { data: accountData, isError, isLoading } = useAccount();
-  const [offerItems, setOfferItems] = useState<CreateInputItem[]>([]);
+
+  const [offerItems, setOfferItems] = useState<OfferItem[]>([]);
+
   const [considerationItems, setConsiderationItems] = useState<
-    ConsiderationInputItem[]
+    ConsiderationItem[]
   >([]);
 
   const ethersProvider = new providers.Web3Provider(
@@ -25,11 +28,12 @@ const Home: NextPage = () => {
   );
 
   const seaport = new Seaport(ethersProvider);
+
   const createSeaportOrder = async () => {
     if (!accountData) throw Error("No address found");
     const orderParams: CreateOrderInput = {
-      offer: offerItems,
-      consideration: considerationItems,
+      offer: offerItems.map((item) => item.inputItem),
+      consideration: considerationItems.map((item) => item.inputItem),
     };
     const { executeAllActions } = await seaport?.createOrder(
       orderParams,
@@ -41,18 +45,25 @@ const Home: NextPage = () => {
   return (
     <div className={styles.container}>
       <main className={styles.main}>
-        <div
-          className={styles.connectButton}
-        >
+        <div className={styles.connectButton}>
           <ConnectButton />
         </div>
-        <Stack gap={4} alignContent='center'>
-          <h1 style={{ textAlign: 'center' }} className={styles.title}>Tsujiki</h1>
-          <Offer {...{ createSeaportOrder, offerItems, setOfferItems, considerationItems, setConsiderationItems }} />
+        <Stack gap={4} alignContent="center">
+          <h1 style={{ textAlign: "center" }} className={styles.title}>
+            Tsukiji
+          </h1>
+          <OrderPage
+            {...{
+              createSeaportOrder,
+              offerItems,
+              setOfferItems,
+              considerationItems,
+              setConsiderationItems,
+            }}
+          />
         </Stack>
-
       </main>
-    </div >
+    </div>
   );
 };
 

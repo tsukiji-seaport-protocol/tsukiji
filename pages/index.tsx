@@ -4,21 +4,17 @@ import {
   ConsiderationInputItem,
   CreateInputItem,
   CreateOrderInput,
-  CurrencyItem,
 } from "@opensea/seaport-js/lib/types";
 import { Seaport } from "@opensea/seaport-js";
-import { useAccount, useConnect } from "wagmi";
-import { InjectedConnector } from "wagmi/connectors/injected";
+import { useAccount } from "wagmi";
 import { providers } from "ethers";
-import TokenInput from "./components/TokenInput";
 import { useState } from "react";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { Offer } from "./components/Offer";
+import { Stack } from "@chakra-ui/react";
 
 const Home: NextPage = () => {
-  const { connect } = useConnect({
-    connector: new InjectedConnector(),
-  });
   const { data: accountData, isError, isLoading } = useAccount();
-
   const [offerItems, setOfferItems] = useState<CreateInputItem[]>([]);
   const [considerationItems, setConsiderationItems] = useState<
     ConsiderationInputItem[]
@@ -45,77 +41,18 @@ const Home: NextPage = () => {
   return (
     <div className={styles.container}>
       <main className={styles.main}>
-        {/* ideally hook this up with rainbow kit */}
-        <button
-          style={{
-            position: "absolute",
-            height: "50px",
-            width: "100px",
-            top: "50px",
-            right: "50px",
-            borderRadius: "10%",
-            border: "none",
-          }}
-          onClick={() => connect()}
-        >
-          Connect Wallet
-        </button>
         <div
-          style={{
-            display: "flex",
-            width: "500px",
-            justifyContent: "space-between",
-          }}
+          className={styles.connectButton}
         >
-          <div
-            style={{
-              display: "flex",
-              width: "500px",
-              justifyContent: "space-between",
-            }}
-          >
-            <TokenInput
-              title={"OFFER"}
-              setItems={setOfferItems}
-              items={offerItems}
-              isOffer
-            ></TokenInput>
-            <TokenInput
-              title={"CONSIDERATION"}
-              setItems={setConsiderationItems}
-              items={considerationItems}
-            ></TokenInput>
-          </div>
+          <ConnectButton />
         </div>
-        <div
-          style={{
-            display: "flex",
-            paddingTop: "1rem",
-            width: "500px",
-            justifyContent: "space-between",
-          }}
-        >
-          <DurationSelection />
-          {/* <CreateListingButton></CreateListingButton> */}
-          <div className={styles.grid}>
-            <button onClick={createSeaportOrder}>click me</button>
-          </div>
-        </div>
-      </main>
-    </div>
-  );
-};
+        <Stack gap={4} alignContent='center'>
+          <h1 style={{ textAlign: 'center' }} className={styles.title}>Tsujiki</h1>
+          <Offer {...{ createSeaportOrder, offerItems, setOfferItems, considerationItems, setConsiderationItems }} />
+        </Stack>
 
-const DurationSelection = () => {
-  return (
-    <div>
-      <select name="cars" id="cars">
-        <option value="24">1 day</option>
-        <option value="72">3 days</option>
-        <option value="168">7 days</option>
-        <option value="720">1 month</option>
-      </select>
-    </div>
+      </main>
+    </div >
   );
 };
 

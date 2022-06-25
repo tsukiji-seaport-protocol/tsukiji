@@ -1,4 +1,4 @@
-import { Stack, Select, Box, Button, SimpleGrid, HStack, NumberInputField, NumberInput, Flex, Spacer, Text } from '@chakra-ui/react'
+import { Stack, Select, Box, Button, SimpleGrid, HStack, NumberInputField, NumberInput, Flex, Spacer, Text, InputGroup } from '@chakra-ui/react'
 import { MouseEventHandler } from 'react';
 import { useAccount } from 'wagmi';
 import { ConsiderationInput, OfferInput } from './TokenInput';
@@ -45,9 +45,11 @@ export const Offer = ({ createSeaportOrder, offerItems, setOfferItems, considera
             </Box>
             <Box>
               <Text mb='6px' color={'gray'}>Tip</Text>
-              <NumberInput step={5} defaultValue={0.05} min={0}>
-                <NumberInputField />
-              </NumberInput>
+              <InputGroup>
+                <NumberInput step={5} defaultValue={0.05} min={0}>
+                  <NumberInputField />
+                </NumberInput>
+              </InputGroup>
             </Box>
           </HStack>
           <Spacer />

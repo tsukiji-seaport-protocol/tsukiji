@@ -1,12 +1,17 @@
 import type { NextPage } from "next";
 import styles from "../styles/Home.module.css";
-
-import { CreateOrderInput, CurrencyItem } from "@opensea/seaport-js/lib/types";
+import {
+  ConsiderationInputItem,
+  CreateInputItem,
+  CreateOrderInput,
+  CurrencyItem,
+} from "@opensea/seaport-js/lib/types";
 import { Seaport } from "@opensea/seaport-js";
 import { useAccount, useConnect } from "wagmi";
 import { InjectedConnector } from "wagmi/connectors/injected";
-
 import { providers } from "ethers";
+import TokenInput from "./components/TokenInput";
+import { useState } from "react";
 
 const Home: NextPage = () => {
   const { connect } = useConnect({
@@ -14,21 +19,21 @@ const Home: NextPage = () => {
   });
   const { data: accountData, isError, isLoading } = useAccount();
 
+  const [offerItems, setOfferItems] = useState<CreateInputItem[]>([]);
+  const [considerationItems, setConsiderationItems] = useState<
+    ConsiderationInputItem[]
+  >([]);
+
   const ethersProvider = new providers.Web3Provider(
     window.ethereum as providers.ExternalProvider
   );
 
   const seaport = new Seaport(ethersProvider);
-
-  const sampleOrder: CurrencyItem = {
-    amount: "0",
-  };
-
   const createSeaportOrder = async () => {
     if (!accountData) throw Error("No address found");
     const orderParams: CreateOrderInput = {
-      offer: [sampleOrder],
-      consideration: [sampleOrder],
+      offer: offerItems,
+      consideration: considerationItems,
     };
     const { executeAllActions } = await seaport?.createOrder(
       orderParams,
@@ -40,15 +45,76 @@ const Home: NextPage = () => {
   return (
     <div className={styles.container}>
       <main className={styles.main}>
-        <button onClick={() => connect()}>Connect Wallet</button>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <div className={styles.grid}>
-          <button onClick={createSeaportOrder}>click me</button>
+        {/* ideally hook this up with rainbow kit */}
+        <button
+          style={{
+            position: "absolute",
+            height: "50px",
+            width: "100px",
+            top: "50px",
+            right: "50px",
+            borderRadius: "10%",
+            border: "none",
+          }}
+          onClick={() => connect()}
+        >
+          Connect Wallet
+        </button>
+        <div
+          style={{
+            display: "flex",
+            width: "500px",
+            justifyContent: "space-between",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              width: "500px",
+              justifyContent: "space-between",
+            }}
+          >
+            <TokenInput
+              title={"OFFER"}
+              setItems={setOfferItems}
+              items={offerItems}
+              isOffer
+            ></TokenInput>
+            <TokenInput
+              title={"CONSIDERATION"}
+              setItems={setConsiderationItems}
+              items={considerationItems}
+            ></TokenInput>
+          </div>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            paddingTop: "1rem",
+            width: "500px",
+            justifyContent: "space-between",
+          }}
+        >
+          <DurationSelection />
+          {/* <CreateListingButton></CreateListingButton> */}
+          <div className={styles.grid}>
+            <button onClick={createSeaportOrder}>click me</button>
+          </div>
         </div>
       </main>
+    </div>
+  );
+};
+
+const DurationSelection = () => {
+  return (
+    <div>
+      <select name="cars" id="cars">
+        <option value="24">1 day</option>
+        <option value="72">3 days</option>
+        <option value="168">7 days</option>
+        <option value="720">1 month</option>
+      </select>
     </div>
   );
 };

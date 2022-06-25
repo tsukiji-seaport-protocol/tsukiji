@@ -6,18 +6,12 @@ import { NFTViewer } from "./web3/NFTViewer";
 import { useState } from "react";
 import { ERC20Viewer } from "./web3/ERC20Viewer";
 import { ERC20Amount } from "types/tokenTypes";
+import { SummarizedList } from "./summarizedList";
 
 type InputItem = CreateInputItem | ConsiderationInputItem;
 
 type ItemsListProps = {
   items: InputItem[];
-};
-
-const ItemsList = ({ items }: ItemsListProps) => {
-  //  add filtering and categorizing tokens
-  return (
-    <></>
-  );
 };
 
 interface TokenSelectionProps {
@@ -43,13 +37,16 @@ const TokenSelection = ({ setItems, items }: TokenSelectionProps) => {
 
   return (
     <>
-      <HStack>
+      {items.length < 1 && <HStack>
         <IconButton aria-label='add token' icon={<AddIcon />} onClick={openAddTokenModal} />
         <Button variant='' onClick={openAddTokenModal}>
           Add Assets
         </Button>
-      </HStack>
-      <ItemsList items={items} />
+      </HStack>}
+      <SummarizedList {...{ items }} />
+      {items.length > 0 && <Button variant='' onClick={openAddTokenModal}>
+        Add Assets
+      </Button>}
       {/* Popup Modal */}
       <Modal isOpen={isOpen} size="5xl" onClose={closeAddTokenModal} >
         <ModalOverlay />

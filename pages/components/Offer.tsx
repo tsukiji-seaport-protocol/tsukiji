@@ -1,4 +1,4 @@
-import { Stack, Select, Box, Button, SimpleGrid } from '@chakra-ui/react'
+import { Stack, Select, Box, Button, SimpleGrid, HStack, NumberInputField, NumberInput, Flex, Spacer } from '@chakra-ui/react'
 import { MouseEventHandler } from 'react';
 import { useAccount } from 'wagmi';
 import { ConsiderationInput, OfferInput } from './TokenInput';
@@ -16,33 +16,39 @@ export const Offer = ({ createSeaportOrder, offerItems, setOfferItems, considera
 
   return (
     <>
-      <Stack width={'80vw'}>
+      <Stack width={'80vw'} maxWidth='1000px' border={1} gap={4}>
         <SimpleGrid columns={[1, 2, 2]} spacing="40px">
-          <Box px={3}>
+          <Box>
             <OfferInput
-              title={"OFFER"}
               setItems={setOfferItems}
               items={offerItems}
               isOffer
             ></OfferInput>
-            <Select placeholder='1 day'>
-              <option value="24">1 day</option>
-              <option value="72">3 days</option>
-              <option value="168">7 days</option>
-              <option value="720">1 month</option>
-            </Select>
           </Box>
-          <Box px={3}>
+          <Box>
             <ConsiderationInput
-              title={"CONSIDERATION"}
               setItems={setConsiderationItems}
               items={considerationItems}
             ></ConsiderationInput>
           </Box>
         </SimpleGrid>
-        <Button colorScheme='blue' onClick={createSeaportOrder} disabled={!accountData?.address}>
-          Create Order
-        </Button>
+        <Flex gap={4} alignContent="space-between">
+          <HStack>
+            <Select placeholder='Duration'>
+              <option value="24">1 day</option>
+              <option value="72">3 days</option>
+              <option value="168">7 days</option>
+              <option value="720">1 month</option>
+            </Select>
+            <NumberInput step={5} defaultValue={15} min={10} max={30}>
+              <NumberInputField />
+            </NumberInput>
+          </HStack>
+          <Spacer />
+          <Button colorScheme='blue' onClick={createSeaportOrder} disabled={!accountData?.address}>
+            Create Listing
+          </Button>
+        </Flex>
       </Stack>
     </>
   )

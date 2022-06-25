@@ -11,6 +11,7 @@ import { providers } from "ethers";
 import { useState } from "react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { Offer } from "./components/Offer";
+import { Stack } from "@chakra-ui/react";
 
 const Home: NextPage = () => {
   const { data: accountData, isError, isLoading } = useAccount();
@@ -45,17 +46,13 @@ const Home: NextPage = () => {
         >
           <ConnectButton />
         </div>
-        <div
-          style={{
-            display: "flex",
-            width: "500px",
-            justifyContent: "space-between",
-          }}
-        >
+        <Stack gap={4} alignContent='center'>
+          <h1 style={{ textAlign: 'center' }} className={styles.title}>Tsujiki</h1>
           <Offer {...{ createSeaportOrder, offerItems, setOfferItems, considerationItems, setConsiderationItems }} />
-        </div>
+        </Stack>
+
       </main>
-    </div>
+    </div >
   );
 };
 

@@ -46,11 +46,7 @@ const Home: NextPage = () => {
     <div className={styles.container}>
       <main className={styles.main}>
         <div
-          style={{
-            position: "absolute",
-            top: "50px",
-            right: "50px",
-          }}
+          className={styles.connectButton}
         >
           <ConnectButton />
         </div>

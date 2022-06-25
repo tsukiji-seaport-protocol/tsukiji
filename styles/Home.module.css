@@ -79,10 +79,9 @@
 }
 
 .connectButton {
-  position: "absolute";
-  top: "50px";
-  right: "50px";
-  border: "none";
+  position: absolute;
+  top: 50px;
+  right: 50px;
 }
 
 @media (max-width: 600px) {

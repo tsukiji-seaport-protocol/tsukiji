@@ -1,12 +1,7 @@
 import { Stack } from "@chakra-ui/react";
-import {
-  ConsiderationInputItem,
-  CreateInputItem,
-} from "@opensea/seaport-js/lib/types";
 import styles from '@styles/TokenInput.module.css';
+import { InputItem } from "types/tokenTypes";
 import { TokenSelection } from "./TokenSelection";
-
-type InputItem = CreateInputItem | ConsiderationInputItem;
 
 type TokenInputProps = {
   setItems: (

@@ -4,85 +4,14 @@ import { AddIcon } from '@chakra-ui/icons';
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
 import { NFTViewer } from "./web3/NFTViewer";
 import { useState } from "react";
+import { ERC20Viewer } from "./web3/ERC20Viewer";
+import { ERC20Amount } from "types/tokenTypes";
+import { SummarizedList } from "./summarizedList";
 
 type InputItem = CreateInputItem | ConsiderationInputItem;
 
 type ItemsListProps = {
-  items: CreateInputItem[];
-  isOffer: boolean;
-};
-
-const ItemsList = ({ items, isOffer }: ItemsListProps) => {
-  //  add filtering and categorizing tokens
-  return (
-    <VStack>
-      {items.map((item, idx) => (
-        <ItemRow key={idx} item={item} isOffer={isOffer} />
-      ))}
-    </VStack>
-  );
-};
-
-type ItemRowProps = {
-  item: CreateInputItem;
-  isOffer: boolean;
-};
-
-const ItemRow = ({ isOffer }: ItemRowProps) => {
-  return (
-    <div style={{ display: "flex" }}>
-      {!isOffer ? <TokenAddressInput /> : <DropdownSelect />}
-      <QuantityInput />
-      {!isOffer && <RecipientInput />}
-    </div>
-  );
-};
-
-const DropdownSelect = () => {
-  return (
-    <Select placeholder='Token'>
-      <option value="24">1 day</option>
-      <option value="72">3 days</option>
-      <option value="168">7 days</option>
-      <option value="720">1 month</option>
-    </Select>
-  );
-};
-
-const TokenAddressInput = () => {
-  return (
-    <div>
-      <label>
-        Token Address:
-        <input type="text" name="name" />
-      </label>
-      <input type="submit" value="Submit" />
-    </div>
-  );
-};
-
-const QuantityInput = () => {
-  return (
-    <div>
-      <label>
-        Quantity:
-        <input type="text" name="name" />
-      </label>
-      <input type="submit" value="Submit" />
-    </div>
-  );
-};
-
-const RecipientInput = () => {
-  return (
-    <div>
-      <label>
-        Recipient:
-        <input type="text" name="name" />
-      </label>
-      <input type="submit" value="Submit" />
-    </div>
-  );
+  items: InputItem[];
 };
 
 interface TokenSelectionProps {
@@ -93,12 +22,14 @@ interface TokenSelectionProps {
   items: InputItem[];
 }
 
-const TokenSelection = ({ isOffer, setItems, items }: TokenSelectionProps) => {
+const TokenSelection = ({ setItems, items }: TokenSelectionProps) => {
   const { isOpen, onOpen: openAddTokenModal, onClose: closeAddTokenModal } = useDisclosure();
   const [selectedTokens, setSelectedTokens] = useState<string[]>([]);
+  const [eth, setETH] = useState<ERC20Amount>({ address: '', name: ' eth', amount: '0' });
 
   const addNewToken = () => {
     closeAddTokenModal();
+    console.log(selectedTokens, eth);
     setItems((prevState: InputItem[]) => {
       return [...prevState];
     });
@@ -106,13 +37,17 @@ const TokenSelection = ({ isOffer, setItems, items }: TokenSelectionProps) => {
 
   return (
     <>
-      <HStack>
+      {items.length < 1 && <HStack>
         <IconButton aria-label='add token' icon={<AddIcon />} onClick={openAddTokenModal} />
         <Button variant='' onClick={openAddTokenModal}>
-          Add Token
+          Add Assets
         </Button>
-      </HStack>
-      <ItemsList items={items} isOffer={isOffer} />
+      </HStack>}
+      <SummarizedList {...{ items }} />
+      {items.length > 0 && <Button variant='' onClick={openAddTokenModal}>
+        Add Assets
+      </Button>}
+      {/* Popup Modal */}
       <Modal isOpen={isOpen} size="5xl" onClose={closeAddTokenModal} >
         <ModalOverlay />
         <ModalContent>
@@ -129,7 +64,7 @@ const TokenSelection = ({ isOffer, setItems, items }: TokenSelectionProps) => {
                   <NFTViewer {...{ selectedTokens, setSelectedTokens }} />
                 </TabPanel>
                 <TabPanel>
-                  <p>wow whale</p>
+                  <ERC20Viewer {...{ eth, setETH }} />
                 </TabPanel>
               </TabPanels>
             </Tabs>

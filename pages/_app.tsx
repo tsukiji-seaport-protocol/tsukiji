@@ -20,6 +20,7 @@ import {
 import merge from 'lodash.merge';
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 import { ChakraProvider } from "@chakra-ui/react";
+import Footer from "./components/Footer";
 
 const { chains, provider } = configureChains(
   [chain.rinkeby, chain.mainnet, chain.polygon],
@@ -67,6 +68,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <WagmiConfig client={wagmiClient}>
           <RainbowKitProvider chains={chains} theme={customTheme}>
             <Component {...pageProps} />
+            <Footer />
           </RainbowKitProvider>
         </WagmiConfig>
       </QueryClientProvider>

@@ -45,7 +45,7 @@ export const Offer = ({ createSeaportOrder, offerItems, setOfferItems, considera
             </NumberInput>
           </HStack>
           <Spacer />
-          <Button colorScheme='blue' onClick={createSeaportOrder} disabled={!accountData?.address}>
+          <Button colorScheme='blue' onClick={createSeaportOrder} disabled={!accountData?.address || offerItems.length === 0 || considerationItems.length === 0}>
             Create Listing
           </Button>
         </Flex>

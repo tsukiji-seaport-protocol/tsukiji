@@ -93,7 +93,7 @@ const ItemRow = ({ isOffer }: ItemRowProps) => {
 
 const TokenSelection = () => {
   return (
-    <Select placeholder='1 day'>
+    <Select placeholder='Token'>
       <option value="24">1 day</option>
       <option value="72">3 days</option>
       <option value="168">7 days</option>

@@ -1,4 +1,5 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Button, HStack, IconButton, Select, Stack, VStack } from "@chakra-ui/react";
+import { AddIcon } from '@chakra-ui/icons';
 import {
   ConsiderationInputItem,
   CreateInputItem,
@@ -15,13 +16,24 @@ type TokenInputProps = {
   isOffer?: boolean;
 };
 
-const TokenInput = ({ title, items, setItems, isOffer }: TokenInputProps) => {
+// exported offer input
+const OfferInput = ({ items, setItems }: TokenInputProps) => {
   return (
-    <div style={{ display: "flex", flexDirection: "column" }}>
-      <h1>{title}</h1>
+    <Stack>
+      <h1>Offer</h1>
       <AddTokenButton setItems={setItems}></AddTokenButton>
       <ItemsList items={items} isOffer />
-    </div>
+    </Stack>
+  );
+};
+
+const ConsiderationInput = ({ items, setItems }: TokenInputProps) => {
+  return (
+    <Stack>
+      <h1>In Exchange For</h1>
+      <AddTokenButton setItems={setItems}></AddTokenButton>
+      <ItemsList items={items} isOffer={false} />
+    </Stack>
   );
 };
 
@@ -39,26 +51,12 @@ const AddTokenButton = ({ setItems }: AddTokenButtonProps) => {
   };
 
   return (
-    <div style={{ display: "flex", alignItems: "center" }}>
-      <button
-        style={{
-          height: "30px",
-          width: "30px",
-          borderRadius: "50%",
-          border: "none",
-        }}
-        onClick={addNewToken}
-      >
-        <div>+</div>
-      </button>
-      <div
-        style={{
-          marginLeft: ".5rem",
-        }}
-      >
+    <HStack>
+      <IconButton aria-label='Search database' icon={<AddIcon />} onClick={addNewToken} />
+      <Button variant='' onClick={addNewToken}>
         Add Token
-      </div>
-    </div>
+      </Button>
+    </HStack>
   );
 };
 
@@ -70,11 +68,11 @@ type ItemsListProps = {
 const ItemsList = ({ items, isOffer }: ItemsListProps) => {
   //  add filtering and categorizing tokens
   return (
-    <div style={{ display: "flex", flexDirection: "column" }}>
+    <VStack>
       {items.map((item, idx) => (
-        <ItemRow key={idx} item={item} isOffer />
+        <ItemRow key={idx} item={item} isOffer={isOffer} />
       ))}
-    </div>
+    </VStack>
   );
 };
 
@@ -83,7 +81,7 @@ type ItemRowProps = {
   isOffer: boolean;
 };
 
-const ItemRow = ({ item, isOffer }: ItemRowProps) => {
+const ItemRow = ({ isOffer }: ItemRowProps) => {
   return (
     <div style={{ display: "flex" }}>
       {!isOffer ? <TokenAddressInput /> : <TokenSelection />}
@@ -95,14 +93,12 @@ const ItemRow = ({ item, isOffer }: ItemRowProps) => {
 
 const TokenSelection = () => {
   return (
-    <div>
-      <select name="cars" id="cars">
-        <option value="volvo">Volvo</option>
-        <option value="saab">Saab</option>
-        <option value="opel">Opel</option>
-        <option value="audi">Audi</option>
-      </select>
-    </div>
+    <Select placeholder='1 day'>
+      <option value="24">1 day</option>
+      <option value="72">3 days</option>
+      <option value="168">7 days</option>
+      <option value="720">1 month</option>
+    </Select>
   );
 };
 
@@ -142,4 +138,7 @@ const RecipientInput = () => {
   );
 };
 
-export default TokenInput;
+export {
+  ConsiderationInput,
+  OfferInput
+}

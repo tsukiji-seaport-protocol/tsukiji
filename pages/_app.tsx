@@ -19,6 +19,7 @@ import {
 } from 'wagmi';
 import merge from 'lodash.merge';
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
+import { ChakraProvider } from "@chakra-ui/react";
 
 const { chains, provider } = configureChains(
   [chain.rinkeby, chain.mainnet, chain.polygon],
@@ -61,13 +62,15 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   console.log("heree");
   return (
-    <QueryClientProvider client={queryClient}>
-      <WagmiConfig client={wagmiClient}>
-        <RainbowKitProvider chains={chains} theme={customTheme}>
-          <Component {...pageProps} />
-        </RainbowKitProvider>
-      </WagmiConfig>
-    </QueryClientProvider>
+    <ChakraProvider>
+      <QueryClientProvider client={queryClient}>
+        <WagmiConfig client={wagmiClient}>
+          <RainbowKitProvider chains={chains} theme={customTheme}>
+            <Component {...pageProps} />
+          </RainbowKitProvider>
+        </WagmiConfig>
+      </QueryClientProvider>
+    </ChakraProvider>
   );
 }
 

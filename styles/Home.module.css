@@ -80,8 +80,8 @@
 
 .connectButton {
   position: absolute;
-  top: 50px;
-  right: 50px;
+  top: 20px;
+  right: 20px;
 }
 
 @media (max-width: 600px) {

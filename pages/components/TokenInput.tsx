@@ -4,9 +4,9 @@ import {
   CreateInputItem,
 } from "@opensea/seaport-js/lib/types";
 import styles from '@styles/TokenInput.module.css';
+import { InputItem } from "types/tokenTypes";
+import { SummarizedList } from "./summarizedList";
 import { TokenSelection } from "./TokenSelection";
-
-type InputItem = CreateInputItem | ConsiderationInputItem;
 
 type TokenInputProps = {
   setItems: (
@@ -22,6 +22,7 @@ const OfferInput = ({ items, setItems }: TokenInputProps) => {
     <Stack gap={2} borderWidth='1px' borderRadius='lg' padding={5}>
       <h1 className={styles.title}>Offer</h1>
       <TokenSelection {...{ setItems, items, isOffer: true }} />
+      <SummarizedList {...{ items }} />
     </Stack>
   );
 };
@@ -31,6 +32,7 @@ const ConsiderationInput = ({ items, setItems }: TokenInputProps) => {
     <Stack gap={2} borderWidth='1px' borderRadius='lg' padding={5}>
       <h1 className={styles.title}>In Exchange For</h1>
       <TokenSelection {...{ setItems, items, isOffer: false }} />
+      <SummarizedList {...{ items }} />
     </Stack>
   );
 };

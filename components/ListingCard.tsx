@@ -1,5 +1,5 @@
-import { Box, Flex, HStack, VStack } from "@chakra-ui/react";
-import styles from "../styles/ListingCard.module.css";
+import { Box, HStack, SimpleGrid, VStack } from "@chakra-ui/react";
+import styles from "@styles/ListingCard.module.css";
 import { Image } from "@chakra-ui/react";
 import { OrderWithCounter } from "@opensea/seaport-js/lib/types";
 import { abridgeAddress } from "@utils/abridgeAddress";
@@ -22,7 +22,7 @@ export const ListingCard = ({ listing }: ListingCardProps) => {
           <button className={styles.offerHeaderButton}>VIEW LISTING</button>
         </HStack>
         <HStack className={styles.offerContainer}>
-          <HStack className={styles.offerImageContainer}>
+          <SimpleGrid columns={[1, 2, 3]} gap={2} className={styles.offerImageContainer}>
             <Image
               alt="shaddap"
               className={styles.offerImageCard}
@@ -38,7 +38,7 @@ export const ListingCard = ({ listing }: ListingCardProps) => {
               className={styles.offerImageCard}
               src={"/assets/bobu3.jpg"}
             />
-          </HStack>
+          </SimpleGrid>
           <VStack className={styles.offerTextContainer}>
             <HStack className={styles.offerCollectionLabel}>
               <Image
@@ -50,9 +50,9 @@ export const ListingCard = ({ listing }: ListingCardProps) => {
             </HStack>
           </VStack>
         </HStack>
-        <HStack className={styles.considerationHeader}>
+        <Box className={styles.considerationHeader}>
           <div>IN EXCHANGE FOR</div>
-        </HStack>
+        </Box>
         <HStack className={styles.considerationContainer}>
           <div className={styles.considerationItem}>
             <Image
@@ -62,7 +62,6 @@ export const ListingCard = ({ listing }: ListingCardProps) => {
             />
             <div className={styles.considerationItemText}>20 ETH</div>
           </div>
-
           <div className={styles.considerationItem}>
             <Image
               alt="shaddap"

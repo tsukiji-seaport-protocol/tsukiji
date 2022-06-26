@@ -61,3 +61,11 @@ type CreateOrderInput = {
   salt?: string;
 };
 ```
+
+
+## Test API Calls
+Get orders
+- [tsukiji.vercel.app/api/orders](https://tsukiji.vercel.app/api/orders)
+- [https://tsukiji.vercel.app/api/sky-orders](https://tsukiji.vercel.app/api/sky-orders)
+- [tsukiji.vercel.app/api/filecoin-orders](https://tsukiji.vercel.app/api/filecoin-orders)
+

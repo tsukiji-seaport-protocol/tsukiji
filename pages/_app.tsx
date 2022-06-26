@@ -16,7 +16,7 @@ import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
 import merge from "lodash.merge";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 import { ChakraProvider } from "@chakra-ui/react";
-import Footer from "./components/Footer";
+import Footer from "@components/Footer";
 
 const { chains, provider } = configureChains(
   [chain.rinkeby, chain.mainnet, chain.polygon],

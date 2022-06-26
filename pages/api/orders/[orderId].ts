@@ -1,13 +1,17 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-const { initializeApp, applicationDefault, cert } = require('firebase-admin/app');
-const { getFirestore, Timestamp, FieldValue } = require('firebase-admin/firestore');
-const serviceAccount = require('../../../creds.json');
+const { initializeApp, cert } = require('firebase-admin/app');
+const { getFirestore } = require('firebase-admin/firestore');
 
-initializeApp({
-  credential: cert(serviceAccount)
-});
-
+if (process.env.FIREBASE_PRIVATE_KEY) {
+  initializeApp({
+    credential: cert({
+      projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+      privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n')
+    })
+  });
+}
 const db = getFirestore();
 
 // This handler supports both GET and PUT requests.
@@ -32,13 +36,8 @@ export default async function handler(
 
   } else if (req.method === 'PUT') {
     // update specific order
-    // do some validation
-    const object = {
-      type: req.body.type,
-      items: req.body.items
-    };
-
-    const doc = await db.collection('orders').doc(req.query.orderId).set(object);
+    // TODO: do some validation
+    const doc = await db.collection('orders').doc(req.query.orderId).set(req.body);
 
     res.status(200).json(doc.id);
 

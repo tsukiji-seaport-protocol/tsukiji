@@ -1,9 +1,7 @@
-import { Box, HStack, SimpleGrid, Spinner, VStack } from "@chakra-ui/react";
-import { abridgeAddress } from "pages/utils/abridgeAddress";
+import { HStack, Image, VStack } from "@chakra-ui/react";
 import { NumberInput, NumberInputField } from "@chakra-ui/react";
 import { ERC20Amount } from "types/tokenTypes";
 import { useAccount, useBalance } from "wagmi";
-import Image from "next/image";
 
 interface ERC20ViewerProps {
   eth: ERC20Amount;

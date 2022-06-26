@@ -1,5 +1,5 @@
 import { Box, Image, SimpleGrid, Spinner, VStack } from "@chakra-ui/react";
-import { abridgeAddress } from "pages/utils/abridgeAddress";
+import { abridgeAddress } from "@utils/abridgeAddress";
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import { ItemType } from "@opensea/seaport-js/lib/constants";

@@ -9,7 +9,7 @@ import { useAccount } from "wagmi";
 import { providers } from "ethers";
 import { useCallback, useState } from "react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { OrderPage } from "./components/OrderPage";
+import { OrderPage } from "@components/OrderPage";
 import { Stack } from "@chakra-ui/react";
 import { OfferItem, ConsiderationItem } from "types/tokenTypes";
 import { NavBar } from "./components/NavBar";

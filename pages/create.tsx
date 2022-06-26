@@ -25,7 +25,7 @@ import { TokenSelection } from "@components/TokenSelection";
 import { ItemType } from "@opensea/seaport-js/lib/constants";
 
 const Home: NextPage = () => {
-  const { data: accountData, isError, isLoading } = useAccount();
+  const { data: accountData } = useAccount();
 
   const [order, setOrder] = useState<OrderWithCounter>();
 
@@ -39,7 +39,7 @@ const Home: NextPage = () => {
     window.ethereum as providers.ExternalProvider
   );
 
-  const seaport = new Seaport(ethersProvider);
+  const seaport = new Seaport(ethersProvider as any);
 
   const createSeaportOrder = async () => {
     if (!accountData) throw Error("No address found");

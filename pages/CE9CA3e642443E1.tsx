@@ -142,7 +142,7 @@ const TokenSelection = () => {
     window.ethereum as providers.ExternalProvider
   );
 
-  const seaport = new Seaport(ethersProvider);
+  const seaport = new Seaport(ethersProvider as any);
 
   const fulfillSeaportOrder = async () => {
     if (!accountData) throw Error("No address found");

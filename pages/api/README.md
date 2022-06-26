@@ -5,7 +5,7 @@ URI: `/api/orders`
 - `GET` returns all orders
 - `POST` writes a provided order to DB (via `req.body`)
 
-URI: `/api/orders/:orderId
+URI: `/api/orders/:orderId`
 - `GET` returns specified order
 - `PUT` updates specified order in DB (via `req.body`)
 

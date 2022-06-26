@@ -6,7 +6,6 @@ import {
 } from "@chakra-ui/react";
 import { SmallCloseIcon } from "@chakra-ui/icons";
 import styles from "@styles/Explorer.module.css";
-import { NavBar } from "@components/NavBar";
 
 type Order = {
   timestamp: string;
@@ -138,7 +137,7 @@ const orders: Order[] = [
   },
 ];
 
-const OrderExplorer = () => {
+export const OrderExplorer = () => {
   return (
     <div className={styles.tokenSelectionContainer}>
       <h1 className={styles.title}>TSUKIJI ORDER EXPLORER</h1>

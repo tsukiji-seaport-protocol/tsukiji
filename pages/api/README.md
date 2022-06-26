@@ -22,7 +22,8 @@ URI: `/api/orders/relatedOrders/:addressParam`
       "quantity": type string (using numbers could lead to overflow),
       "contractAddress": type string: contract address for respective token, null for native eth",
       "symbol": type string (e.g. 'MAYC'),
-      "type": type string (e.g. 'erc721')
+      "type": type string (e.g. 'erc721'),
+      "status": type string (e.g. 'open', 'filled', 'partially filled')
     }
   ]
 }

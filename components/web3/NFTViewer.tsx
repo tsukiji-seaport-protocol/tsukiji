@@ -139,21 +139,21 @@ const NFTViewerCard = ({
         ...prev,
         isOffer
           ? createOfferItem(
-              name,
-              imageUrl,
-              contractAddress,
-              tokenId,
-              collectionName,
-              symbol
-            )
+            name,
+            imageUrl,
+            contractAddress,
+            tokenId,
+            collectionName,
+            symbol
+          )
           : createConsiderationItem(
-              name,
-              imageUrl,
-              contractAddress,
-              tokenId,
-              collectionName,
-              symbol
-            ),
+            name,
+            imageUrl,
+            contractAddress,
+            tokenId,
+            collectionName,
+            symbol
+          ),
       ]);
     }
   };
@@ -416,53 +416,53 @@ export const NFTViewer = ({ items, setItems, isOffer }: NFTViewerProps) => {
         <SimpleGrid
           columns={[2, 3, 4]}
           spacing={5}
-          maxHeight={"60vh"}
+          maxHeight={"50vh"}
           overflow="scroll"
         >
           {isOffer
             ? fetchedTokens.map(
-                ({ name, image_url, token_id, asset_contract }) => (
-                  <NFTViewerCard
-                    key={`${asset_contract.address}-${token_id}`}
-                    {...{
-                      name,
-                      imageUrl: image_url,
-                      tokenId: token_id,
-                      contractAddress: asset_contract.address,
-                      collectionName: asset_contract.name,
-                      items,
-                      setItems,
-                      isOffer,
-                      symbol: asset_contract.symbol,
-                    }}
-                  />
-                )
+              ({ name, image_url, token_id, asset_contract }) => (
+                <NFTViewerCard
+                  key={`${asset_contract.address}-${token_id}`}
+                  {...{
+                    name,
+                    imageUrl: image_url,
+                    tokenId: token_id,
+                    contractAddress: asset_contract.address,
+                    collectionName: asset_contract.name,
+                    items,
+                    setItems,
+                    isOffer,
+                    symbol: asset_contract.symbol,
+                  }}
+                />
               )
+            )
             : fetchedTokens.map(
-                ({
-                  name,
-                  image_url,
-                  token_id,
-                  address,
-                  collectionName,
-                  symbol,
-                }) => (
-                  <NFTViewerCard
-                    key={`${address}-${token_id}`}
-                    {...{
-                      name,
-                      imageUrl: image_url,
-                      tokenId: token_id,
-                      contractAddress: address,
-                      collectionName: collectionName,
-                      items,
-                      setItems,
-                      isOffer,
-                      symbol: symbol,
-                    }}
-                  />
-                )
-              )}
+              ({
+                name,
+                image_url,
+                token_id,
+                address,
+                collectionName,
+                symbol,
+              }) => (
+                <NFTViewerCard
+                  key={`${address}-${token_id}`}
+                  {...{
+                    name,
+                    imageUrl: image_url,
+                    tokenId: token_id,
+                    contractAddress: address,
+                    collectionName: collectionName,
+                    items,
+                    setItems,
+                    isOffer,
+                    symbol: symbol,
+                  }}
+                />
+              )
+            )}
         </SimpleGrid>
       )}
     </>

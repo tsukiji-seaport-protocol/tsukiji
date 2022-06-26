@@ -1,19 +1,7 @@
 import {
-  Box,
   Button,
-  Flex,
   HStack,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  Text,
-  useDisclosure,
   VStack,
-  Image,
   IconButton,
 } from "@chakra-ui/react";
 import { SmallCloseIcon } from "@chakra-ui/icons";
@@ -37,7 +25,7 @@ type Order = {
 
 const orders: Order[] = [
   {
-    timestamp: "123",
+    timestamp: "12435899776",
     offerer: "0x0000",
     numberOfConsiderationItems: 9,
     numberOfOfferItems: 3,
@@ -46,7 +34,7 @@ const orders: Order[] = [
     signature: "verified",
   },
   {
-    timestamp: "123",
+    timestamp: "08745767",
     offerer: "0x0000",
     numberOfConsiderationItems: 9,
     numberOfOfferItems: 3,
@@ -170,7 +158,7 @@ const OrderExplorer = () => {
         ))}
       </VStack>
 
-      <Button className={styles.addAssetButton} variant="" onClick={() => {}}>
+      <Button className={styles.addAssetButton} variant="" onClick={() => { }}>
         DOWNLOAD CSV
       </Button>
     </div>
@@ -196,7 +184,7 @@ const ListItem = ({ item, isLight }: ListItemProps) => {
       <div className={styles.listItemTitle}>{item.numberOfOfferItems}</div>
       <div className={styles.listItemTitle}>{item.estimatedValue}</div>
       <div className={styles.listItemTitle}>{item.orderTip}</div>
-      {/* 
+      {/*
         <div
           className={styles.listItemSubtitle}
         >{`Token ID: ${item.token_id}`}</div> */}

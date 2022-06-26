@@ -7,7 +7,7 @@ import { useAccount } from "wagmi";
 import { useEffect, useState } from "react";
 import { NavBar } from "../components/NavBar";
 import { ListingCard } from "../components/ListingCard";
-import { Button, SimpleGrid } from "@chakra-ui/react";
+import { Button, HStack, SimpleGrid } from "@chakra-ui/react";
 import Link from "next/link";
 
 const Home: NextPage = () => {
@@ -49,11 +49,18 @@ const Home: NextPage = () => {
       <NavBar />
       <main className={styles.main}>
         <div className={styles.header}>WELCOME TO TSUKIJI</div>
-        <Link href="/create">
-          <Button>
-            Create Listing
-          </Button>
-        </Link>
+        <HStack gap={4}>
+          <Link href="/create">
+            <Button>
+              Create Listing
+            </Button>
+          </Link>
+          <Link href="/explorer">
+            <Button>
+              Explorer
+            </Button>
+          </Link>
+        </HStack>
         <div>
           <SimpleGrid columns={2} spacing={10} pt={4}>
             {aliceOrder && (

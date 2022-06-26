@@ -55,7 +55,7 @@ const Home: NextPage = () => {
           </Button>
         </Link>
         <div>
-          <SimpleGrid columns={2} spacing={10}>
+          <SimpleGrid columns={2} spacing={10} pt={4}>
             {aliceOrder && (
               <ListingCard listing={aliceOrder} key="alice" isAlice={true} />
             )}

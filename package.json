@@ -20,7 +20,8 @@
     "react-dom": "18.2.0",
     "react-query": "^3.39.1",
     "skynet-js": "^4.3.0",
-    "wagmi": "^0.4.12"
+    "wagmi": "^0.4.12",
+    "web3.storage": "^4.3.0"
   },
   "devDependencies": {
     "@rainbow-me/rainbowkit": "^0.3.4",

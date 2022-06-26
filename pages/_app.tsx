@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import "@rainbow-me/rainbowkit/styles.css";
 import {
   getDefaultWallets,
-  lightTheme,
   darkTheme,
   RainbowKitProvider,
   Theme,

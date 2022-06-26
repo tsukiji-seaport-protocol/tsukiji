@@ -7,7 +7,8 @@ import { useAccount } from "wagmi";
 import { useEffect, useState } from "react";
 import { NavBar } from "../components/NavBar";
 import { ListingCard } from "../components/ListingCard";
-import { SimpleGrid } from "@chakra-ui/react";
+import { Button, SimpleGrid } from "@chakra-ui/react";
+import Link from "next/link";
 
 const Home: NextPage = () => {
   const { data: accountData } = useAccount();
@@ -43,9 +44,16 @@ const Home: NextPage = () => {
     <div className={styles.container}>
       <NavBar />
       <main className={styles.main}>
-        <div className={styles.header}>RECOMMENDED LISTINGS</div>
+        <div className={styles.header}>
+          RECOMMENDED LISTINGS
+        </div>
+        <Link href="/create">
+          <Button>
+            Create Listing
+          </Button>
+        </Link>
         <div>
-          <SimpleGrid columns={[1, 2]} spacing={10}>
+          <SimpleGrid columns={[1, 2]} spacing={10} pt={4}>
             {listings.map((listing, idx) => (
               <ListingCard key={idx} />
             ))}

@@ -32,13 +32,8 @@ export default async function handler(
 
   } else if (req.method === 'PUT') {
     // update specific order
-    // do some validation
-    const object = {
-      type: req.body.type,
-      items: req.body.items
-    };
-
-    const doc = await db.collection('orders').doc(req.query.orderId).set(object);
+    // TODO: do some validation
+    const doc = await db.collection('orders').doc(req.query.orderId).set(req.body);
 
     res.status(200).json(doc.id);
 

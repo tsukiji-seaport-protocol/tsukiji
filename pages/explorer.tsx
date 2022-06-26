@@ -5,13 +5,8 @@ import {
   IconButton,
 } from "@chakra-ui/react";
 import { SmallCloseIcon } from "@chakra-ui/icons";
-import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
-import { useState } from "react";
-import { ERC20Amount, InputItem } from "types/tokenTypes";
 import styles from "@styles/Explorer.module.css";
-import { Input } from "@chakra-ui/react";
-import { ItemType } from "@opensea/seaport-js/lib/constants";
-import { CreateInputItem } from "@opensea/seaport-js/lib/types";
+import { NavBar } from "@components/NavBar";
 
 type Order = {
   timestamp: string;
@@ -172,32 +167,34 @@ type ListItemProps = {
 
 const ListItem = ({ item, isLight }: ListItemProps) => {
   return (
-    <HStack
-      className={`${styles.listItemContainer} ${isLight && styles.light}`}
-    >
-      {/* <VStack className={styles.listItemLabel}> */}
-      <div className={styles.listItemTitle}>{item.timestamp}</div>
-      <div className={styles.listItemTitle}>{item.offerer}</div>
-      <div className={styles.listItemTitle}>
-        {item.numberOfConsiderationItems}
-      </div>
-      <div className={styles.listItemTitle}>{item.numberOfOfferItems}</div>
-      <div className={styles.listItemTitle}>{item.estimatedValue}</div>
-      <div className={styles.listItemTitle}>{item.orderTip}</div>
-      {/*
+    <>
+      <HStack
+        className={`${styles.listItemContainer} ${isLight && styles.light}`}
+      >
+        {/* <VStack className={styles.listItemLabel}> */}
+        <div className={styles.listItemTitle}>{item.timestamp}</div>
+        <div className={styles.listItemTitle}>{item.offerer}</div>
+        <div className={styles.listItemTitle}>
+          {item.numberOfConsiderationItems}
+        </div>
+        <div className={styles.listItemTitle}>{item.numberOfOfferItems}</div>
+        <div className={styles.listItemTitle}>{item.estimatedValue}</div>
+        <div className={styles.listItemTitle}>{item.orderTip}</div>
+        {/*
         <div
           className={styles.listItemSubtitle}
         >{`Token ID: ${item.token_id}`}</div> */}
-      {/* </VStack> */}
+        {/* </VStack> */}
 
-      <IconButton
-        className={styles.listItemRemoveIcon}
-        colorScheme=""
-        aria-label="Search database"
-        icon={<SmallCloseIcon />}
-        onClick={() => removeItem(item.address, item.token_id)}
-      />
-    </HStack>
+        <IconButton
+          className={styles.listItemRemoveIcon}
+          colorScheme=""
+          aria-label="Search database"
+          icon={<SmallCloseIcon />}
+          onClick={() => removeItem(item.address, item.token_id)}
+        />
+      </HStack>
+    </>
   );
 };
 

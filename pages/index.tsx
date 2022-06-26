@@ -1,10 +1,6 @@
 import type { NextPage } from "next";
 import styles from "../styles/Home.module.css";
-import {
-  ConsiderationInputItem,
-  CreateInputItem,
-  CreateOrderInput,
-} from "@opensea/seaport-js/lib/types";
+import { CreateOrderInput } from "@opensea/seaport-js/lib/types";
 import { Seaport } from "@opensea/seaport-js";
 import { useAccount } from "wagmi";
 import { providers } from "ethers";
@@ -31,14 +27,17 @@ const Home: NextPage = () => {
 
   const createSeaportOrder = async () => {
     if (!accountData) throw Error("No address found");
+
     const orderParams: CreateOrderInput = {
       offer: offerItems.map((item) => item.inputItem),
       consideration: considerationItems.map((item) => item.inputItem),
     };
+
     const { executeAllActions } = await seaport?.createOrder(
       orderParams,
       accountData?.address
     );
+
     const order = await executeAllActions();
   };
 

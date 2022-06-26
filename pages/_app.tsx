@@ -4,20 +4,15 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { useEffect, useState } from "react";
 
 // rainbow + wagmi
-import '@rainbow-me/rainbowkit/styles.css';
+import "@rainbow-me/rainbowkit/styles.css";
 import {
   getDefaultWallets,
   lightTheme,
   RainbowKitProvider,
   Theme,
-} from '@rainbow-me/rainbowkit';
-import {
-  chain,
-  configureChains,
-  createClient,
-  WagmiConfig,
-} from 'wagmi';
-import merge from 'lodash.merge';
+} from "@rainbow-me/rainbowkit";
+import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
+import merge from "lodash.merge";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 import { ChakraProvider } from "@chakra-ui/react";
 import Footer from "./components/Footer";
@@ -35,20 +30,20 @@ const { chains, provider } = configureChains(
 );
 
 const { connectors } = getDefaultWallets({
-  appName: 'tsukiji',
-  chains
+  appName: "tsukiji",
+  chains,
 });
 
 const wagmiClient = createClient({
   autoConnect: true,
   connectors,
-  provider
-})
+  provider,
+});
 
 // rainbow theme
 const customTheme = merge(lightTheme(), {
   colors: {
-    accentColor: '#267c8e',
+    accentColor: "#267c8e",
   },
 } as Theme);
 
@@ -61,7 +56,6 @@ function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => setMounted(true), []);
   if (!mounted) return null;
 
-  console.log("heree");
   return (
     <ChakraProvider>
       <QueryClientProvider client={queryClient}>

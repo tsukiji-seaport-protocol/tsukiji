@@ -4,6 +4,10 @@ import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import { ItemType } from "@opensea/seaport-js/lib/constants";
 import { InputItem, OfferItem, ConsiderationItem } from "types/tokenTypes";
+import {
+  CreateInputItem,
+  ConsiderationInputItem,
+} from "@opensea/seaport-js/lib/types";
 
 interface ImageSelectProps {
   imageUrl: string;
@@ -69,11 +73,10 @@ const NFTViewerCard = ({
     contractAddress: string,
     tokenId: string
   ): OfferItem => {
-    const inputItem = {
+    const inputItem: CreateInputItem = {
       itemType: ItemType.ERC721,
       token: contractAddress,
       identifier: tokenId,
-      amount: "",
     };
     return {
       inputItem,
@@ -90,7 +93,7 @@ const NFTViewerCard = ({
     contractAddress: string,
     tokenId: string
   ): ConsiderationItem => {
-    const inputItem = {
+    const inputItem: ConsiderationInputItem = {
       itemType: ItemType.ERC721,
       token: contractAddress,
       identifier: tokenId,

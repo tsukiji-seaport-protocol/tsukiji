@@ -86,11 +86,7 @@ export const OrderPage = ({
           <Button
             colorScheme="blue"
             onClick={createSeaportOrder}
-            disabled={
-              !accountData?.address ||
-              offerItems.length === 0 ||
-              considerationItems.length === 0
-            }
+            // disabled={!accountData?.address || offerItems.length === 0}
           >
             Create Listing
           </Button>

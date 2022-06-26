@@ -11,11 +11,8 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Select,
-  Stack,
   Text,
   useDisclosure,
-  VStack,
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";

@@ -9,7 +9,7 @@ URI: `/api/orders/:orderId`
 - `GET` returns specified order
 - `PUT` updates specified order in DB (via `req.body`)
 
-URI: `/api/orders/relatedOrders/:addressParam`
+URI: `/api/relatedOrders/:addressParam`
 - `GET` returns orders related to address param
 
 
@@ -27,4 +27,22 @@ URI: `/api/orders/relatedOrders/:addressParam`
     }
   ]
 }
+```
+
+## Raw Order Schema
+```
+type CreateOrderInput = {
+  conduitKey?: string;
+  zone?: string;
+  startTime?: string;
+  endTime?: string;
+  offer: readonly CreateInputItem[];
+  consideration: readonly ConsiderationInputItem[];
+  counter?: number;
+  fees?: readonly Fee[];
+  allowPartialFills?: boolean;
+  restrictedByZone?: boolean;
+  useProxy?: boolean;
+  salt?: string;
+};
 ```

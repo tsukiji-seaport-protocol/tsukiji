@@ -2,7 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 const { SkynetClient, genKeyPairFromSeed } = require("@skynetlabs/skynet-nodejs");
 
-const client = new SkynetClient();
+const client = new SkynetClient("", { skynetApiKey: process.env.SKYNET_API_KEY });
 const { publicKey, privateKey } = genKeyPairFromSeed(process.env.SKYNET_SEED || '');
 
 // This handler supports both GET and POST requests.

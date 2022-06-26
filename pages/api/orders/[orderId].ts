@@ -2,8 +2,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 const { initializeApp, cert } = require('firebase-admin/app');
 const { getFirestore } = require('firebase-admin/firestore');
+const admin = require('firebase-admin');
 
-if (process.env.FIREBASE_PRIVATE_KEY) {
+if (process.env.FIREBASE_PRIVATE_KEY && admin.apps.length === 0) {
   initializeApp({
     credential: cert({
       projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,

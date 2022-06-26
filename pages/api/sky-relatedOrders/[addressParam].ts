@@ -4,32 +4,17 @@ import { ethers } from "ethers";
 import dotenv from 'dotenv';
 dotenv.config();
 
-const { initializeApp, applicationDefault, cert } = require('firebase-admin/app');
-const { getFirestore, Timestamp, FieldValue } = require('firebase-admin/firestore');
+const { SkynetClient, genKeyPairFromSeed } = require("@skynetlabs/skynet-nodejs");
 
-const network = 'rinkeby'; // or mainnet
+const client = new SkynetClient();
+const { publicKey, privateKey } = genKeyPairFromSeed(process.env.SKYNET_SEED || '');
 
 // initialize web3 provider; converge on using one of ethers and web3 later
 const Web3 = require('web3');
-const providerUri = `https://eth-${network}.alchemyapi.io/v2/${process.env.ALCHEMY_KEY}/`;
+const providerUri = `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_KEY}/`;
 const provider = new Web3.providers.HttpProvider(providerUri);
 const web3 = new Web3(provider);
-const admin = require('firebase-admin');
 
-if (process.env.FIREBASE_PRIVATE_KEY && admin.apps.length === 0) {
-  initializeApp({
-    credential: cert({
-      projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-      privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n')
-    })
-  });
-}
-
-const db = getFirestore();
-
-// sample mainnet address: 0xF56A5dd899dD95F39f5E01488BDdCbaBa64B8d45
-// sample testnet address: 0x17e547d79C04D01E49fEa275Cf32ba06554f9dF7
 // whitelisted ERC721 contracts
 const erc721Contracts: Record<string, Record<string, string>> = {
   'mainnet': {
@@ -41,8 +26,7 @@ const erc721Contracts: Record<string, Record<string, string>> = {
     // 'punks': '0xb47e3cd837dDF8e4c57F05d70Ab865de6e193BBB', // punks might be too complicated to deal with for this hackathon
   },
   'rinkeby': {
-    'sznouns1': '0xc3A949D2798e13cE845bDd21Bf639A28548faf30',
-    'sznouns2': '0x63f9e083a76e396c45b5f6fce41e6a91ea0a1400'
+    // can deploy some dummies later
   }
 }
 // whitelisted ERC20 contracts
@@ -54,7 +38,7 @@ const erc20Contracts: Record<string, Record<string, string>> = {
     // 'eth': ''
   },
   'rinkeby': {
-    // put something here later
+    // can deploy some dummies later
   }
 }
 // whitelisted ERC1155 contracts
@@ -66,6 +50,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
+  const dataKey = "orders";
   if (req.method === 'GET') {
     // fetch all orders
     const { addressParam } = req.query;
@@ -83,25 +68,23 @@ export default async function handler(
     const tokens = await fetchRelevantTokens(address);
 
     // Inefficient query but it's all g
-    const snapshot = await db.collection('orders').get();
+    const { data: snapshot } = await client.db.getJSON(publicKey, dataKey);
     let relevantOrders: any = [];
 
     // Loop through all existing orders and wallet's items (clearly O(m * n))
     // This jawn could be optimized by just throwing stuff into a hash map to go to O(m + n) but meh rn
     // Type-agnostic for for-loops, but you can't break/continue out of forEach loops.
-    // Iterate through the wallet's tokens first because if there are none, we save a query.
-    for (let i = 0; i < tokens.length; i++) {
-      for (let j = 0; j < snapshot.docs.length; j++) {
-        let docId = snapshot.docs[i].id;
-        let doc = snapshot.docs[i].data();
+    for (let i = 0; i < snapshot.docs.length; i++) {
+      let docId = snapshot.docs[i].id;
+      let doc = snapshot.docs[i].data();
 
-        // The offer[] and consideration[] arrays are stored weirdly in firestore.
-        // They're saved as objects, so all we want is the values of those objects (concatenated).
-        let docItems: any = Object.values(doc['parameters']['offer']).concat(Object.values(doc['parameters']['consideration']));
+      // items[] is stored weirdly in firestore; it's saved as an object, so all we want is the values of that object
+      let docItems: any = Object.values(doc.items);
 
-        for (let k = 0; k < docItems.length; k++) {
-          if (tokens[i].contractAddress === docItems[k].token) {
-            // we got a match!
+      for (let j = 0; j < docItems.length; j++) {
+        for (let k = 0; k < tokens.length; k++) {
+          // we got a match!
+          if (tokens[k].contractAddress === docItems[j].contractAddress) {
             relevantOrders.push({
               _id: docId,
               ...doc
@@ -110,10 +93,10 @@ export default async function handler(
             // if there's a match, no need to continue going through other tokens since we know
             // the current order (document) is relevant
             break;
-          }
-        }
-      }
-    }
+          };
+        };
+      };
+    };
 
     res.status(200).json(relevantOrders);
 
@@ -128,8 +111,8 @@ export default async function handler(
 const fetchRelevantTokens = async (address: string) => {
   const tokens = [];
 
-  for (const erc20 in erc20Contracts[network]) {
-    const contract: string = erc20Contracts[network][erc20];
+  for (const erc20 in erc20Contracts['mainnet']) {
+    const contract: string = erc20Contracts['mainnet'][erc20];
     if (contract.length == 0) {
       continue;
     }
@@ -138,8 +121,8 @@ const fetchRelevantTokens = async (address: string) => {
     if (parseInt(balanceObj['balance'], 10) !== 0) tokens.push(balanceObj);
   }
 
-  for (const erc721 in erc721Contracts[network]) {
-    const contract: string = erc721Contracts[network][erc721];
+  for (const erc721 in erc721Contracts['mainnet']) {
+    const contract: string = erc721Contracts['mainnet'][erc721];
     if (contract.length == 0) {
       continue;
     }

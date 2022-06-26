@@ -12,13 +12,16 @@
     "@chakra-ui/icons": "^2.0.2",
     "@chakra-ui/react": "^2.2.1",
     "@opensea/seaport-js": "^1.0.2",
+    "@skynetlabs/skynet-nodejs": "^2.6.0",
     "ethers": "^5.6.9",
     "lodash.merge": "^4.6.2",
     "next": "12.1.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-query": "^3.39.1",
-    "wagmi": "^0.4.12"
+    "skynet-js": "^4.3.0",
+    "wagmi": "^0.4.12",
+    "web3.storage": "^4.3.0"
   },
   "devDependencies": {
     "@rainbow-me/rainbowkit": "^0.3.4",
@@ -29,9 +32,11 @@
     "dotenv": "^16.0.1",
     "eslint": "8.18.0",
     "eslint-config-next": "12.1.6",
-    "ethers": "^5.6.9",
+    "ethers": "^5.5.4",
     "firebase-admin": "^11.0.0",
     "typescript": "4.7.4",
-    "web3": "^1.7.4"
+    "web3": "^1.7.4",
+    "webpack": "^5.73.0",
+    "webpack-cli": "^4.10.0"
   }
 }

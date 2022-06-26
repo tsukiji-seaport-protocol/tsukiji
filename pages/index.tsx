@@ -61,6 +61,9 @@ const Home: NextPage = () => {
         <div className={styles.header}>RECOMMENDED LISTINGS</div>
         <div>
           <SimpleGrid columns={2} spacing={10}>
+            {/* {relatedOrders.map((listing, idx) => (
+              <ListingCard listing={listing} key={idx} />
+            ))} */}
             {listings.map((listing, idx) => (
               <ListingCard key={idx} />
             ))}

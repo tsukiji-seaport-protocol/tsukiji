@@ -1,13 +1,24 @@
 import { Box, Flex, HStack, VStack } from "@chakra-ui/react";
 import styles from "../styles/ListingCard.module.css";
 import { Image } from "@chakra-ui/react";
+import { OrderWithCounter } from "@opensea/seaport-js/lib/types";
+import { abridgeAddress } from "@utils/abridgeAddress";
 
-export const ListingCard = () => {
+type ListingCardProps = {
+  listing?: OrderWithCounter;
+};
+
+export const ListingCard = ({ listing }: ListingCardProps) => {
+  console.log("listing: ", listing);
   return (
     <>
       <VStack className={styles.container}>
         <HStack className={styles.offerHeader}>
-          <div>OFFER BY 0x17...df:</div>
+          <div>{`OFFER BY ${
+            listing
+              ? abridgeAddress(listing.parameters.offerer)
+              : abridgeAddress("0x301479333CE9CA3e642443E14CC986ABcC548e2e")
+          }:`}</div>
           <button className={styles.offerHeaderButton}>VIEW LISTING</button>
         </HStack>
         <HStack className={styles.offerContainer}>

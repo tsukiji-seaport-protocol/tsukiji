@@ -5,7 +5,7 @@ URI: `/api/orders`
 - `GET` returns all orders
 - `POST` writes a provided order to DB (via `req.body`)
 
-URI: `/api/orders/:orderId
+URI: `/api/orders/:orderId`
 - `GET` returns specified order
 - `PUT` updates specified order in DB (via `req.body`)
 
@@ -22,7 +22,8 @@ URI: `/api/orders/relatedOrders/:addressParam`
       "quantity": type string (using numbers could lead to overflow),
       "contractAddress": type string: contract address for respective token, null for native eth",
       "symbol": type string (e.g. 'MAYC'),
-      "type": type string (e.g. 'erc721')
+      "type": type string (e.g. 'erc721'),
+      "status": type string (e.g. 'open', 'filled', 'partially filled')
     }
   ]
 }

@@ -1,0 +1,166 @@
+.container {
+  box-sizing: border-box;
+
+  width: 733px;
+  height: 420px;
+  left: 81px;
+  top: 204px;
+
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 10px;
+  padding: 1.5rem 2rem;
+}
+
+.offerHeader {
+  width: 100%;
+
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+
+  display: flex;
+  justify-content: space-between;
+  color: #ffffff;
+}
+
+.offerHeaderButton {
+  width: 156px;
+  height: 38px;
+  left: 636px;
+  top: 222px;
+
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+
+  color: #ffffff;
+}
+
+.offerTextContainer {
+  width: 164px;
+  height: 74px;
+  left: 125px;
+  top: 974px;
+}
+
+.offerCollectionLabel {
+  display: flex;
+  background-color: #000000;
+  height: 100%;
+  width: 100%;
+  justify-content: flex-end;
+}
+
+.offerCollectionLabelImg {
+  width: 32px;
+  height: 32px;
+  left: 625px;
+  top: 345px;
+
+  border-radius: 10px;
+}
+.offerCollectionLabelText {
+  width: 78px;
+  height: 24px;
+  left: 665px;
+  top: 349px;
+
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 24px;
+
+  color: #ffffff;
+}
+
+.offerContainer {
+  box-sizing: border-box;
+
+  width: 677px;
+  height: 172px;
+  left: 115px;
+  top: 277px;
+
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 1rem;
+}
+
+.offerImageCard {
+  width: 140px;
+  height: 140px;
+
+  border-radius: 10px;
+}
+
+.considerationHeader {
+  width: 100%;
+
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+
+  color: #ffffff;
+  padding-top: 1rem;
+}
+
+.considerationContainer {
+  box-sizing: border-box;
+
+  width: 677px;
+  height: 99px;
+  left: 115px;
+  top: 496px;
+
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 1rem;
+}
+
+.considerationItem {
+  box-sizing: border-box;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 164px;
+  height: 74px;
+  left: 125px;
+  top: 974px;
+
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+}
+
+.considerationItemText {
+  width: 70px;
+  height: 24px;
+  left: 198px;
+  top: 1001px;
+
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 24px;
+
+  color: #ffffff;
+}
+
+.considerationItemImg {
+  width: 40px;
+  height: 40px;
+
+  padding-right: 1rem;
+  border-radius: 10px;
+}

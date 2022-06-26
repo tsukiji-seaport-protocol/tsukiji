@@ -1,4 +1,4 @@
-import { HStack, VStack } from "@chakra-ui/react";
+import { Box, HStack, SimpleGrid, VStack } from "@chakra-ui/react";
 import styles from "@styles/ListingCard.module.css";
 import { Image } from "@chakra-ui/react";
 
@@ -11,7 +11,7 @@ export const ListingCard = () => {
           <button className={styles.offerHeaderButton}>VIEW LISTING</button>
         </HStack>
         <HStack className={styles.offerContainer}>
-          <HStack className={styles.offerImageContainer}>
+          <SimpleGrid columns={[1, 2, 3]} gap={2} className={styles.offerImageContainer}>
             <Image
               alt="shaddap"
               className={styles.offerImageCard}
@@ -27,7 +27,7 @@ export const ListingCard = () => {
               className={styles.offerImageCard}
               src={"/assets/bobu3.jpg"}
             />
-          </HStack>
+          </SimpleGrid>
           <VStack className={styles.offerTextContainer}>
             <HStack className={styles.offerCollectionLabel}>
               <Image
@@ -39,9 +39,9 @@ export const ListingCard = () => {
             </HStack>
           </VStack>
         </HStack>
-        <HStack className={styles.considerationHeader}>
+        <Box className={styles.considerationHeader}>
           <div>IN EXCHANGE FOR</div>
-        </HStack>
+        </Box>
         <HStack className={styles.considerationContainer}>
           <div className={styles.considerationItem}>
             <Image
@@ -51,7 +51,6 @@ export const ListingCard = () => {
             />
             <div className={styles.considerationItemText}>20 ETH</div>
           </div>
-
           <div className={styles.considerationItem}>
             <Image
               alt="shaddap"

@@ -109,13 +109,6 @@ const Home: NextPage = () => {
       <main className={styles.main}>
         <div className={styles.connectButton}>
           <ConnectButton />
-          {/* <button
-            onClick={() => {
-              saveOrder(sampleOrder);
-            }}
-          >
-            ayoooo
-          </button> */}
         </div>
         <Stack gap={4} alignContent="center">
           <h1 style={{ textAlign: "center" }} className={styles.title}>

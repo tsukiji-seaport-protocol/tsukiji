@@ -27,7 +27,7 @@ const ImageSelect = ({ imageUrl, name }: ImageSelectProps) => {
           src={imageUrl}
         />
       )}
-      {!imageUrl && (
+      {/* {!imageUrl && (
         <Image
           alt="nft placeholder"
           rounded={"lg"}
@@ -36,7 +36,7 @@ const ImageSelect = ({ imageUrl, name }: ImageSelectProps) => {
           objectFit={"cover"}
           src={"/assets/nftplaceholder.jpg"}
         />
-      )}
+      )} */}
     </>
   );
 };
@@ -97,8 +97,7 @@ const NFTViewerCard = ({
       itemType: ItemType.ERC721,
       token: contractAddress,
       identifier: tokenId,
-      amount: "",
-      recipient: "",
+      recipient: "0x17e547d79C04D01E49fEa275Cf32ba06554f9dF7",
     };
     return {
       inputItem,
@@ -162,7 +161,7 @@ export const NFTViewer = ({ items, setItems, isOffer }: NFTViewerProps) => {
     function fetchData() {
       const requestHeaders: HeadersInit = {
         Accept: "application/json",
-        "X-API-KEY": process.env.OPENSEA_API_KEY ?? "",
+        "X-API-KEY": process.env.NEXT_PUBLIC_OPENSEA_API_KEY ?? "",
       };
 
       const requestOptions: RequestInit = {
@@ -178,7 +177,8 @@ export const NFTViewer = ({ items, setItems, isOffer }: NFTViewerProps) => {
         }
         try {
           const response = await fetch(
-            `https://testnets-api.opensea.io/api/v1/assets?owner=${accountData?.address}&limit=100&include_orders=false`,
+            `https://testnets-api.opensea.io/api/v1/assets?owner=${accountData?.address}&limit=50&include_orders=false`,
+            // "https://testnets-api.opensea.io/api/v1/assets?owner=0x50cd8e39e6d1f95a557e34924A2056e5EdEa519a&order_direction=desc&offset=0&limit=20&include_orders=false"
             requestOptions
           );
           const { assets } = await response.json();
@@ -198,7 +198,7 @@ export const NFTViewer = ({ items, setItems, isOffer }: NFTViewerProps) => {
   return (
     <>
       {isLoading && <Spinner />}
-      {!isLoading && (
+      {!isLoading && fetchedTokens && (
         <SimpleGrid
           columns={[2, 3, 4]}
           spacing={5}

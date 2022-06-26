@@ -25,7 +25,7 @@ import { TokenSelection } from "@components/TokenSelection";
 import { ItemType } from "@opensea/seaport-js/lib/constants";
 
 const Home: NextPage = () => {
-  const { data: accountData, isError, isLoading } = useAccount();
+  const { data: accountData } = useAccount();
 
   const [order, setOrder] = useState<OrderWithCounter>();
 

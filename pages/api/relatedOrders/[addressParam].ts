@@ -6,7 +6,6 @@ dotenv.config();
 
 const { initializeApp, applicationDefault, cert } = require('firebase-admin/app');
 const { getFirestore, Timestamp, FieldValue } = require('firebase-admin/firestore');
-const serviceAccount = require('../../../creds.json');
 
 // initialize web3 provider; converge on using one of ethers and web3 later
 const Web3 = require('web3');
@@ -14,14 +13,20 @@ const providerUri = `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_
 const provider = new Web3.providers.HttpProvider(providerUri);
 const web3 = new Web3(provider);
 
-initializeApp({
-  credential: cert(serviceAccount)
-});
+if (process.env.FIREBASE_PRIVATE_KEY) {
+  initializeApp({
+    credential: cert({
+      projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+      privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n')
+    })
+  });
+}
 
 const db = getFirestore();
 
 // whitelisted ERC721 contracts
-const erc721Contracts = {
+const erc721Contracts: Record<string, Record<string, string>> = {
   'mainnet': {
     'azuki': '0xED5AF388653567Af2F388E6224dC7C4b3241C544',
     'bayc': '0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D',
@@ -35,7 +40,7 @@ const erc721Contracts = {
   }
 }
 // whitelisted ERC20 contracts
-const erc20Contracts = {
+const erc20Contracts: Record<string, Record<string, string>> = {
   'mainnet': {
     'usdc': '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
     'weth': '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
@@ -94,9 +99,9 @@ export default async function handler(
               ...doc
             });
 
-            // if there's a match, no need to continue going through other tokens since we know 
+            // if there's a match, no need to continue going through other tokens since we know
             // the current order (document) is relevant
-            break; 
+            break;
           };
         };
       };
@@ -114,9 +119,9 @@ export default async function handler(
 // Optimizations: batch calls; use indexers to prevent having to make live queries.
 const fetchRelevantTokens = async (address: string) => {
   const tokens = [];
-  
+
   for (const erc20 in erc20Contracts['mainnet']) {
-    const contract = erc20Contracts['mainnet'][erc20];
+    const contract: string = erc20Contracts['mainnet'][erc20];
     if (contract.length == 0) {
       continue;
     }
@@ -126,7 +131,7 @@ const fetchRelevantTokens = async (address: string) => {
   }
 
   for (const erc721 in erc721Contracts['mainnet']) {
-    const contract = erc721Contracts['mainnet'][erc721];
+    const contract: string = erc721Contracts['mainnet'][erc721];
     if (contract.length == 0) {
       continue;
     }
@@ -142,70 +147,70 @@ const fetchRelevantTokens = async (address: string) => {
 /* #### HELPER FUNCTIONS BELOW #### */
 
 // returns ERC20 token balance given token address + wallet address
-const getERC20TokenBalance = async (contractAddress: string, walletAddress: string) => {
-	// Get ERC20 Token contract instance
-	let contract = new web3.eth.Contract(minERC20ABI, contractAddress);
+const getERC20TokenBalance = async (contractAddress: string, walletAddress: string): Promise<any> => {
+  // Get ERC20 Token contract instance
+  let contract = new web3.eth.Contract(minERC20ABI, contractAddress);
 
-	let balance = 0;
+  let balance = 0;
 
-	await contract.methods.balanceOf(walletAddress)
-		.call()
-		.then((bal: any) => { 
-			balance = bal
-	});
-	
-	let decimals = 0;
+  await contract.methods.balanceOf(walletAddress)
+    .call()
+    .then((bal: any) => {
+      balance = bal
+    });
 
-	await contract.methods.decimals()
-		.call()
-		.then((dec: any) => { 
-			decimals = dec
-	});
+  let decimals = 0;
+
+  await contract.methods.decimals()
+    .call()
+    .then((dec: any) => {
+      decimals = dec
+    });
 
   let symbol = '';
 
   await contract.methods.symbol()
-		.call()
-		.then((sym: any) => { 
-			symbol = sym
-	});
+    .call()
+    .then((sym: any) => {
+      symbol = sym
+    });
 
-	console.log(`balance: ${balance}, decimals: ${decimals}, symbol: ${symbol}`);
+  console.log(`balance: ${balance}, decimals: ${decimals}, symbol: ${symbol}`);
 
-	return {
+  return {
     type: 'ERC20',
     contractAddress,
     balance,
-    wholeBalance: (balance / (10**decimals)).toString(),
+    wholeBalance: (balance / (10 ** decimals)).toString(),
     decimals,
     symbol
   };
 };
 
 // returns ERC20 token balance given token address + wallet address
-const getERC721Tokens = async (contractAddress: string, walletAddress: string) => {
-	// Get ERC721 Token contract instance
-	let contract = new web3.eth.Contract(minERC721ABI, contractAddress);
+const getERC721Tokens = async (contractAddress: string, walletAddress: string): Promise<any> => {
+  // Get ERC721 Token contract instance
+  let contract = new web3.eth.Contract(minERC721ABI, contractAddress);
 
-	// would be cool to batch these requests
-	// should be able to handle larger numbers as well
-	let balance = 0;
+  // would be cool to batch these requests
+  // should be able to handle larger numbers as well
+  let balance = 0;
 
-	await contract.methods.balanceOf(walletAddress)
-		.call()
-		.then((bal: any) => { 
-			balance = bal
-	});
+  await contract.methods.balanceOf(walletAddress)
+    .call()
+    .then((bal: any) => {
+      balance = bal
+    });
 
   let symbol = '';
 
   await contract.methods.symbol()
-		.call()
-		.then((sym: any) => { 
-			symbol = sym
-	});
+    .call()
+    .then((sym: any) => {
+      symbol = sym
+    });
 
-	console.log(`balance: ${balance}, symbol: ${symbol}`);
+  console.log(`balance: ${balance}, symbol: ${symbol}`);
 
   let tokenIds = [];
 
@@ -215,11 +220,11 @@ const getERC721Tokens = async (contractAddress: string, walletAddress: string) =
       .then((id: any) => {
         return id;
       });
-    
+
     tokenIds.push(tokenId);
   }
 
-	return {
+  return {
     type: 'ERC721',
     contractAddress,
     balance: balance,
@@ -232,27 +237,27 @@ const getERC721Tokens = async (contractAddress: string, walletAddress: string) =
 let minERC20ABI = [
   // balanceOf
   {
-    "constant":true,
-    "inputs":[{"name":"_owner","type":"address"}],
-    "name":"balanceOf",
-    "outputs":[{"name":"balance","type":"uint256"}],
-    "type":"function"
+    "constant": true,
+    "inputs": [{ "name": "_owner", "type": "address" }],
+    "name": "balanceOf",
+    "outputs": [{ "name": "balance", "type": "uint256" }],
+    "type": "function"
   },
   // decimals
   {
-    "constant":true,
-    "inputs":[],
-    "name":"decimals",
-    "outputs":[{"name":"","type":"uint8"}],
-    "type":"function"
+    "constant": true,
+    "inputs": [],
+    "name": "decimals",
+    "outputs": [{ "name": "", "type": "uint8" }],
+    "type": "function"
   },
   // symbol
   {
-    "constant":true,
-    "inputs":[],
-    "name":"symbol",
-    "outputs":[{"name":"","type":"string"}],
-    "type":"function"
+    "constant": true,
+    "inputs": [],
+    "name": "symbol",
+    "outputs": [{ "name": "", "type": "string" }],
+    "type": "function"
   }
 ];
 
@@ -260,23 +265,23 @@ let minERC20ABI = [
 let minERC721ABI = [
   // balanceOf
   {
-    "constant":true,
-    "inputs":[{"name":"_owner","type":"address"}],
-    "name":"balanceOf",
-    "outputs":[{"name":"balance","type":"uint256"}],
-    "type":"function"
+    "constant": true,
+    "inputs": [{ "name": "_owner", "type": "address" }],
+    "name": "balanceOf",
+    "outputs": [{ "name": "balance", "type": "uint256" }],
+    "type": "function"
   },
   // symbol
   {
-    "constant":true,
-    "inputs":[],
-    "name":"symbol",
-    "outputs":[{"name":"","type":"string"}],
-    "type":"function"
+    "constant": true,
+    "inputs": [],
+    "name": "symbol",
+    "outputs": [{ "name": "", "type": "string" }],
+    "type": "function"
   },
   // tokenOfOwnerByIndex
   {
-    "constant":true,
+    "constant": true,
     "inputs": [
       {
         "internalType": "address",
@@ -297,6 +302,6 @@ let minERC721ABI = [
         "type": "uint256"
       }
     ],
-    "type":"function"
+    "type": "function"
   }
 ];

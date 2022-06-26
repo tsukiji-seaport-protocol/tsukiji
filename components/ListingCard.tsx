@@ -3,6 +3,7 @@ import styles from "@styles/ListingCard.module.css";
 import { Image } from "@chakra-ui/react";
 import { OrderWithCounter } from "@opensea/seaport-js/lib/types";
 import { abridgeAddress } from "@utils/abridgeAddress";
+import Link from "next/link";
 
 type ListingCardProps = {
   listing?: OrderWithCounter;
@@ -55,11 +56,10 @@ export const ListingCard = ({ listing, isAlice }: ListingCardProps) => {
     <>
       <VStack className={styles.container}>
         <HStack className={styles.offerHeader}>
-          <div>{`OFFER BY ${
-            listing
+          <div>{`OFFER BY ${listing
               ? abridgeAddress(listing.parameters.offerer)
               : abridgeAddress("0x301479333CE9CA3e642443E14CC986ABcC548e2e")
-          }:`}</div>
+            }:`}</div>
           <button className={styles.offerHeaderButton}>VIEW LISTING</button>
         </HStack>
         <HStack className={styles.offerContainer}>
@@ -128,14 +128,13 @@ const AliceOrder = ({ listing }: ListingCardProps) => {
     <>
       <VStack className={styles.container}>
         <HStack className={styles.offerHeader}>
-          <div>{`OFFER BY ${
-            listing
+          <div>{`OFFER BY ${listing
               ? abridgeAddress(listing.parameters.offerer)
               : abridgeAddress("0x301479333CE9CA3e642443E14CC986ABcC548e2e")
-          }:`}</div>
-          <a href="/CE9CA3e642443E1">
+            }:`}</div>
+          <Link href="/CE9CA3e642443E1">
             <button className={styles.offerHeaderButton}>VIEW LISTING</button>
-          </a>
+          </Link>
         </HStack>
         <HStack className={styles.offerContainer}>
           <SimpleGrid

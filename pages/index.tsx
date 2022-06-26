@@ -1,8 +1,6 @@
 import type { NextPage } from "next";
 import styles from "../styles/Home.module.css";
-import {
-  OrderWithCounter,
-} from "@opensea/seaport-js/lib/types";
+import { OrderWithCounter } from "@opensea/seaport-js/lib/types";
 import { useAccount } from "wagmi";
 import { useEffect, useState } from "react";
 import { NavBar } from "../components/NavBar";
@@ -48,17 +46,13 @@ const Home: NextPage = () => {
     <div className={styles.container}>
       <NavBar />
       <main className={styles.main}>
-        <div className={styles.header}>WELCOME TO TSUKIJI</div>
+        <div className={styles.header}>YOUR DAILY RECOMMENDED LISTINGS</div>
         <HStack gap={4}>
           <Link href="/create">
-            <Button>
-              Create Listing
-            </Button>
+            <Button>Create Listing</Button>
           </Link>
           <Link href="/explorer">
-            <Button>
-              Explorer
-            </Button>
+            <Button>Explorer</Button>
           </Link>
         </HStack>
         <div>

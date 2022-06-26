@@ -3,6 +3,7 @@ import styles from "@styles/ListingCard.module.css";
 import { Image } from "@chakra-ui/react";
 import { OrderWithCounter } from "@opensea/seaport-js/lib/types";
 import { abridgeAddress } from "@utils/abridgeAddress";
+import { useMemo } from "react";
 
 type ListingCardProps = {
   listing?: OrderWithCounter;
@@ -38,18 +39,22 @@ const exchanges = [
   { text: "12 ETH", img: "/assets/ethereum-eth.svg" },
   { text: "2 MAYC", img: "/assets/mayc.jpg" },
   { text: "2 MAYC", img: "/assets/mayc.jpg" },
-  { text: "1 CLONEX", img: "/assets/clonx.png" },
+  { text: "1 CLON", img: "/assets/clonx.png" },
   { text: "2 BAYC", img: "/assets/bayc.png" },
 ];
 
-const exc = [
-  exchanges[Math.floor(Math.random() * exchanges.length)],
-  exchanges[Math.floor(Math.random() * exchanges.length)],
-  exchanges[Math.floor(Math.random() * exchanges.length)],
-].slice(0, 3);
-
 export const ListingCard = ({ listing, isAlice }: ListingCardProps) => {
   if (isAlice) return <AliceOrder listing={listing} />;
+
+  const exc = useMemo(
+    () =>
+      [
+        exchanges[Math.floor(Math.random() * exchanges.length)],
+        exchanges[Math.floor(Math.random() * exchanges.length)],
+        exchanges[Math.floor(Math.random() * exchanges.length)],
+      ].slice(0, 3),
+    []
+  );
 
   return (
     <>
@@ -85,31 +90,45 @@ export const ListingCard = ({ listing, isAlice }: ListingCardProps) => {
             />
           </SimpleGrid>
           <VStack className={styles.offerTextContainer}>
-            <HStack className={styles.offerCollectionLabel}>
-              <Image
-                alt="shaddap"
-                className={styles.offerCollectionLabelImg}
-                src={"/assets/azuki.png"}
-              />
-              <div className={styles.offerCollectionLabelText}>3 AZUKI</div>
-            </HStack>
+            <VStack className={styles.offerCollectionLabel2}>
+              {exc.map((e) => (
+                // <div key={e.text} className={styles.considerationItem}>
+                //   <Image
+                //     alt="shaddap"
+                //     className={styles.considerationItemImg}
+                //     src={e.img}
+                //   />
+                //   <div className={styles.considerationItemText}>{e.text}</div>
+                // </div>
+                <HStack key={e.text} className={styles.offerCollectionLabel}>
+                  <Image
+                    alt="shaddap"
+                    className={styles.offerCollectionLabelImg}
+                    src={e.img}
+                  />
+                  <div className={styles.offerCollectionLabelText}>
+                    {e.text}
+                  </div>
+                </HStack>
+              ))}
+            </VStack>
           </VStack>
         </HStack>
         <Box className={styles.considerationHeader}>
           <div>IN EXCHANGE FOR</div>
         </Box>
+
         <HStack className={styles.considerationContainer}>
-          {exc.map((e) => (
-            <div key={e.text} className={styles.considerationItem}>
-              <Image
-                alt="shaddap"
-                className={styles.considerationItemImg}
-                src={e.img}
-              />
-              <div className={styles.considerationItemText}>{e.text}</div>
-            </div>
-          ))}
-          {/* <div className={styles.considerationItem}>
+          <div className={styles.considerationItem}>
+            <Image
+              alt="shaddap"
+              className={styles.considerationItemImg}
+              src={"/assets/azuki.png"}
+            />
+            <div className={styles.considerationItemText}>3 AZUKI</div>
+          </div>
+        </HStack>
+        {/* <div className={styles.considerationItem}>
             <Image
               alt="shaddap"
               className={styles.considerationItemImg}
@@ -117,7 +136,6 @@ export const ListingCard = ({ listing, isAlice }: ListingCardProps) => {
             />
             <div className={styles.considerationItemText}>1 BAYC</div>
           </div> */}
-        </HStack>
       </VStack>
     </>
   );

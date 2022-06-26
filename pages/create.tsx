@@ -8,6 +8,7 @@ import {
   Spacer,
   Text,
   InputGroup,
+  VStack,
 } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import styles from "../styles/Create.module.css";
@@ -28,6 +29,8 @@ const Home: NextPage = () => {
   const { data: accountData } = useAccount();
 
   const [order, setOrder] = useState<OrderWithCounter>();
+  const [loading, setLoading] = useState<boolean>(false);
+  const [txnsuccess, setTxnSuccess] = useState<boolean>(false);
 
   const [offerItems, setOfferItems] = useState<OfferItem[]>([]);
 
@@ -43,6 +46,7 @@ const Home: NextPage = () => {
 
   const createSeaportOrder = async () => {
     if (!accountData) throw Error("No address found");
+    setLoading(true);
     const filteredOfferItems = offerItems.filter(
       (item) => item.name !== "Ether"
     );
@@ -64,6 +68,8 @@ const Home: NextPage = () => {
     setOrder(res);
     console.log("order: ", JSON.stringify(res));
     await saveOrder(res);
+    setTxnSuccess(true);
+    setLoading(false);
   };
 
   const sampleOrder = {
@@ -125,10 +131,12 @@ const Home: NextPage = () => {
     <div className={styles.container}>
       <NavBar />
       <main className={styles.main}>
-        <div className={`${styles.header}`}>
-          CREATE LISTING
-        </div>
-        {!accountData?.address && <Text color="white" fontSize='1.2rem' pb={5}>Please connect your wallet to get started.</Text>}
+        <div className={`${styles.header}`}>CREATE LISTING</div>
+        {!accountData?.address && (
+          <Text color="white" fontSize="1.2rem" pb={5}>
+            Please connect your wallet to get started.
+          </Text>
+        )}
         <HStack className={styles.inputContainer}>
           <TokenSelection
             title="YOUR OFFER"
@@ -176,19 +184,22 @@ const Home: NextPage = () => {
 
           <Spacer style={{ width: "550px" }} />
 
-          <Button
-            onClick={createSeaportOrder}
-            fontSize='2xl'
-            size="lg"
-            disabled={
-              !accountData?.address ||
-              offerItems.length === 0 ||
-              considerationItems.length === 0
-            }
-            className={styles.confirmListingButton}
-          >
-            Confirm Listing
-          </Button>
+          <VStack>
+            <Button
+              onClick={createSeaportOrder}
+              disabled={
+                !accountData?.address ||
+                offerItems.length === 0 ||
+                considerationItems.length === 0
+              }
+              className={styles.confirmListingButton}
+            >
+              Confirm Listing
+            </Button>
+            {txnsuccess && (
+              <div style={{ color: "white" }}>YOUR LISTING WAS SUCCESSFUL!</div>
+            )}
+          </VStack>
         </HStack>
       </main>
     </div>

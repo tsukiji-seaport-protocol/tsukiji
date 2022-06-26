@@ -72,7 +72,7 @@ const TokenSelection = ({
       address: "0x00000",
       symbol: "ETH",
     };
-    setItems((prev) => [...prev, newItem]);
+    isOffer && setItems((prev) => [...prev, newItem]);
     closeAddTokenModal();
   };
 

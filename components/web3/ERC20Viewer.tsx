@@ -1,4 +1,4 @@
-import { HStack, Image, VStack } from "@chakra-ui/react";
+import { HStack, Image, Text, VStack } from "@chakra-ui/react";
 import { NumberInput, NumberInputField } from "@chakra-ui/react";
 import { ERC20Amount } from "types/tokenTypes";
 import { useAccount, useBalance } from "wagmi";
@@ -42,7 +42,7 @@ export const ERC20Viewer = ({ eth, setETH }: ERC20ViewerProps) => {
             height={50}
             src="/assets/ethereum-eth.svg"
           />
-          <p style={{ color: "white" }}>ETH</p>
+          <Text color={'white'}>ETH</Text>
           <NumberInput
             key="index"
             defaultValue={""}

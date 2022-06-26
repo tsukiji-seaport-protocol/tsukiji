@@ -25,7 +25,7 @@ import { TokenSelection } from "@components/TokenSelection";
 import { ItemType } from "@opensea/seaport-js/lib/constants";
 
 const Home: NextPage = () => {
-  const { data: accountData, isError, isLoading } = useAccount();
+  const { data: accountData } = useAccount();
 
   const [order, setOrder] = useState<OrderWithCounter>();
 
@@ -39,7 +39,7 @@ const Home: NextPage = () => {
     window.ethereum as providers.ExternalProvider
   );
 
-  const seaport = new Seaport(ethersProvider);
+  const seaport = new Seaport(ethersProvider as any);
 
   const createSeaportOrder = async () => {
     if (!accountData) throw Error("No address found");
@@ -125,20 +125,24 @@ const Home: NextPage = () => {
     <div className={styles.container}>
       <NavBar />
       <main className={styles.main}>
-        <div className={styles.header}>CREATE LISTING</div>
-
+        <div className={`${styles.header}`}>
+          CREATE LISTING
+        </div>
+        {!accountData?.address && <Text color="white" fontSize='1.2rem' pb={5}>Please connect your wallet to get started.</Text>}
         <HStack className={styles.inputContainer}>
           <TokenSelection
             title="YOUR OFFER"
             setItems={setOfferItems}
             items={offerItems}
             isOffer
+            account={accountData?.address}
           />
           <TokenSelection
             title="IN EXCHANGE FOR"
             setItems={setConsiderationItems}
             items={considerationItems}
             isOffer={false}
+            account={accountData?.address}
           />
         </HStack>
 
@@ -174,6 +178,8 @@ const Home: NextPage = () => {
 
           <Button
             onClick={createSeaportOrder}
+            fontSize='2xl'
+            size="lg"
             disabled={
               !accountData?.address ||
               offerItems.length === 0 ||

@@ -8,11 +8,12 @@
   color: #ffffff;
   font-weight: 500;
   font-size: 2rem;
-  padding-bottom: 3rem;
+  padding-bottom: 2rem;
+  text-align: center;
 }
 
 .main {
-  min-height: 100vh;
+  min-height: 80vh;
   padding: 4rem 0;
   flex: 1;
   display: flex;

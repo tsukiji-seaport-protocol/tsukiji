@@ -1,56 +1,19 @@
 import type { NextPage } from "next";
 import styles from "../styles/Home.module.css";
 import {
-  CreateOrderInput,
   OrderWithCounter,
 } from "@opensea/seaport-js/lib/types";
 import { useAccount } from "wagmi";
-import { providers } from "ethers";
-import { useCallback, useEffect, useState } from "react";
-import { OfferItem, ConsiderationItem } from "types/tokenTypes";
+import { useEffect, useState } from "react";
 import { NavBar } from "../components/NavBar";
 import { ListingCard } from "../components/ListingCard";
-import { SimpleGrid } from "@chakra-ui/react";
+import { Button, SimpleGrid } from "@chakra-ui/react";
+import Link from "next/link";
 
 const Home: NextPage = () => {
-  const { data: accountData, isError, isLoading } = useAccount();
+  const { data: accountData } = useAccount();
 
   const [aliceOrder, setAliceOrder] = useState<OrderWithCounter>();
-
-  const [order, setOrder] = useState<OrderWithCounter>();
-
-  const [offerItems, setOfferItems] = useState<OfferItem[]>([]);
-
-  const [considerationItems, setConsiderationItems] = useState<
-    ConsiderationItem[]
-  >([]);
-
-  const ethersProvider = new providers.Web3Provider(
-    window.ethereum as providers.ExternalProvider
-  );
-
-  // useEffect(() => {
-  //   const fetchOrders = async () => {
-  //     console.log("here?");
-  //     try {
-  //       const response = await fetch(
-  //         `/api/relatedOrders/${accountData?.address}`,
-  //         {
-  //           method: "GET",
-  //           headers: {
-  //             "content-type": "application/json",
-  //           },
-  //         }
-  //       );
-  //       const data = await response.json();
-  //       console.log("data: ", data);
-  //       setRelatedOrders(data);
-  //     } catch (err) {
-  //       console.log("Error request: ", err);
-  //     }
-  //   };
-  //   fetchOrders();
-  // }, [accountData?.address]);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -86,6 +49,11 @@ const Home: NextPage = () => {
       <NavBar />
       <main className={styles.main}>
         <div className={styles.header}>WELCOME TO TSUKIJI</div>
+        <Link href="/create">
+          <Button>
+            Create Listing
+          </Button>
+        </Link>
         <div>
           <SimpleGrid columns={2} spacing={10}>
             {aliceOrder && (

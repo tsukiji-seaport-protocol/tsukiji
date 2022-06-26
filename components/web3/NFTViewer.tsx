@@ -1,4 +1,11 @@
-import { Box, Image, SimpleGrid, Spinner, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Image,
+  SimpleGrid,
+  Spinner,
+  StylesProvider,
+  VStack,
+} from "@chakra-ui/react";
 import { abridgeAddress } from "@utils/abridgeAddress";
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
@@ -27,7 +34,7 @@ const ImageSelect = ({ imageUrl, name }: ImageSelectProps) => {
           src={imageUrl}
         />
       )}
-      {/* {!imageUrl && (
+      {!imageUrl && (
         <Image
           alt="nft placeholder"
           rounded={"lg"}
@@ -36,7 +43,7 @@ const ImageSelect = ({ imageUrl, name }: ImageSelectProps) => {
           objectFit={"cover"}
           src={"/assets/nftplaceholder.jpg"}
         />
-      )} */}
+      )}
     </>
   );
 };
@@ -46,11 +53,13 @@ interface NFTViewerCardProps {
   name: string;
   tokenId: string;
   contractAddress: string;
+  collectionName: string;
   items: InputItem[];
   setItems: (
     tokens: InputItem[] | ((prevState: InputItem[]) => InputItem[])
   ) => void;
   isOffer: boolean;
+  symbol: string;
 }
 
 const NFTViewerCard = ({
@@ -58,9 +67,11 @@ const NFTViewerCard = ({
   name,
   tokenId,
   contractAddress,
+  collectionName,
   items,
   setItems,
   isOffer,
+  symbol,
 }: NFTViewerCardProps) => {
   const selected = !!items.find(
     (token) =>
@@ -71,7 +82,9 @@ const NFTViewerCard = ({
     name: string,
     imageUrl: string,
     contractAddress: string,
-    tokenId: string
+    tokenId: string,
+    collectionName: string,
+    symbol: string
   ): OfferItem => {
     const inputItem: CreateInputItem = {
       itemType: ItemType.ERC721,
@@ -81,9 +94,11 @@ const NFTViewerCard = ({
     return {
       inputItem,
       name,
+      collectionName,
       image_url: imageUrl,
       token_id: tokenId,
       address: contractAddress,
+      symbol: symbol,
     };
   };
 
@@ -91,7 +106,9 @@ const NFTViewerCard = ({
     name: string,
     imageUrl: string,
     contractAddress: string,
-    tokenId: string
+    tokenId: string,
+    collectionName: string,
+    symbol: string
   ): ConsiderationItem => {
     const inputItem: ConsiderationInputItem = {
       itemType: ItemType.ERC721,
@@ -102,9 +119,11 @@ const NFTViewerCard = ({
     return {
       inputItem,
       name,
+      collectionName,
       image_url: imageUrl,
       token_id: tokenId,
       address: contractAddress,
+      symbol: symbol,
     };
   };
 
@@ -119,8 +138,22 @@ const NFTViewerCard = ({
       setItems((prev: any) => [
         ...prev,
         isOffer
-          ? createOfferItem(name, imageUrl, contractAddress, tokenId)
-          : createConsiderationItem(name, imageUrl, contractAddress, tokenId),
+          ? createOfferItem(
+              name,
+              imageUrl,
+              contractAddress,
+              tokenId,
+              collectionName,
+              symbol
+            )
+          : createConsiderationItem(
+              name,
+              imageUrl,
+              contractAddress,
+              tokenId,
+              collectionName,
+              symbol
+            ),
       ]);
     }
   };
@@ -129,16 +162,17 @@ const NFTViewerCard = ({
     <Box
       as="button"
       overflow="hidden"
-      _hover={{ bg: "gray.100", transform: "scale(1.02)", opacity: 0.95 }}
+      _hover={{ bg: "gray.600", transform: "scale(1.02)", opacity: 0.95 }}
       padding={2}
-      borderRadius="sm"
-      background={selected ? "gray.300" : ""}
+      borderRadius="m"
+      background={selected ? "gray.600" : ""}
       onClick={selectNFT}
     >
       <VStack spacing={2}>
         <ImageSelect imageUrl={imageUrl} name={name} />
-        {name && <p>{name}</p>}
-        {!name && <p>{abridgeAddress(contractAddress)}</p>}
+        <div style={{ color: "white" }}>
+          {name ? name : abridgeAddress(contractAddress)}
+        </div>
       </VStack>
     </Box>
   );
@@ -152,6 +186,181 @@ interface NFTViewerProps {
   isOffer: boolean;
 }
 
+const dummyData = [
+  {
+    inputItem: {
+      itemType: ItemType.ERC721,
+      token: "0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e",
+      identifier: 582,
+    },
+    name: "Azuki #582",
+    image_url:
+      "https://gateway.pinata.cloud/ipfs/QmfDVMnhvkULBUszfb8nVq6uRRPzafVymzJqUsqqSAH4DQ/1.png",
+    token_id: "582",
+    address: "0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e",
+    collectionName: "Azuki",
+    symbol: "AZUKI",
+  },
+  {
+    inputItem: {
+      itemType: ItemType.ERC721,
+      token: "0xfc3e0d0c54a7b7ea9c5bb976a46dcdbdade7cd3e",
+      identifier: 2294,
+    },
+    name: "Punk #2294",
+    image_url:
+      "https://gateway.pinata.cloud/ipfs/QmfDVMnhvkULBUszfb8nVq6uRRPzafVymzJqUsqqSAH4DQ/10.png",
+    token_id: "326",
+    address: "0xfc3e0d0c54a7b7ea9c5bb976a46dcdbdade7cd3e",
+    collectionName: "CryptoPunks",
+    symbol: "PUNK",
+  },
+  {
+    inputItem: {
+      itemType: ItemType.ERC721,
+      token: "0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e",
+      identifier: 68,
+    },
+    name: "Doodle #68",
+    image_url:
+      "https://gateway.pinata.cloud/ipfs/QmfDVMnhvkULBUszfb8nVq6uRRPzafVymzJqUsqqSAH4DQ/2.png",
+    token_id: "68",
+    address: "0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e",
+    collectionName: "Doodles",
+    symbol: "DOODLE",
+  },
+  {
+    inputItem: {
+      itemType: ItemType.ERC721,
+      token: "0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e",
+      identifier: 1478,
+    },
+    name: "MAYC #1478",
+    image_url:
+      "https://gateway.pinata.cloud/ipfs/QmfDVMnhvkULBUszfb8nVq6uRRPzafVymzJqUsqqSAH4DQ/21.png",
+    token_id: "1478",
+    address: "0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e",
+    collectionName: "Mutant Ape Yacht Club",
+    symbol: "MAYC",
+  },
+  {
+    inputItem: {
+      itemType: ItemType.ERC721,
+      token: "0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e",
+      identifier: 2938,
+    },
+    name: "Azuki #2938",
+    image_url:
+      "https://gateway.pinata.cloud/ipfs/QmfDVMnhvkULBUszfb8nVq6uRRPzafVymzJqUsqqSAH4DQ/8.jpg",
+    token_id: "2938",
+    address: "0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e",
+    collectionName: "Azuki",
+    symbol: "AZUKI",
+  },
+
+  {
+    inputItem: {
+      itemType: ItemType.ERC721,
+      token: "0xfc3e0d0c54a7b7ea9c5bb976a46dcdbdade7cd3e",
+      identifier: 24,
+    },
+    name: "Punk #24",
+    image_url:
+      "https://gateway.pinata.cloud/ipfs/QmfDVMnhvkULBUszfb8nVq6uRRPzafVymzJqUsqqSAH4DQ/9.png",
+    token_id: "24",
+    address: "0xfc3e0d0c54a7b7ea9c5bb976a46dcdbdade7cd3e",
+    collectionName: "CryptoPunks",
+    symbol: "PUNK",
+  },
+
+  {
+    inputItem: {
+      itemType: ItemType.ERC721,
+      token: "0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e",
+      identifier: 8482,
+    },
+    name: "Doodle #8482",
+    image_url:
+      "https://gateway.pinata.cloud/ipfs/QmfDVMnhvkULBUszfb8nVq6uRRPzafVymzJqUsqqSAH4DQ/7.png",
+    token_id: "8482",
+    address: "0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e",
+    collectionName: "Doodles",
+    symbol: "DOODLE",
+  },
+
+  {
+    inputItem: {
+      itemType: ItemType.ERC721,
+      token: "0xfc3e0d0c54a7b7ea9c5bb976a46dcdbdade7cd3e",
+      identifier: 3859,
+    },
+    name: "Punk #3859",
+    image_url:
+      "https://gateway.pinata.cloud/ipfs/QmfDVMnhvkULBUszfb8nVq6uRRPzafVymzJqUsqqSAH4DQ/22.png",
+    token_id: "3859",
+    address: "0xfc3e0d0c54a7b7ea9c5bb976a46dcdbdade7cd3e",
+    collectionName: "CryptoPunks",
+    symbol: "PUNK",
+  },
+  {
+    inputItem: {
+      itemType: ItemType.ERC721,
+      token: "0xfc3e0d0c54a7b7ea9c5bb976a46dcdbdade7cd3e",
+      identifier: 2028,
+    },
+    name: "Punk #2028",
+    image_url:
+      "https://gateway.pinata.cloud/ipfs/QmfDVMnhvkULBUszfb8nVq6uRRPzafVymzJqUsqqSAH4DQ/12.png",
+    token_id: "2028",
+    address: "0xfc3e0d0c54a7b7ea9c5bb976a46dcdbdade7cd3e",
+    collectionName: "CryptoPunks",
+    symbol: "PUNK",
+  },
+
+  {
+    inputItem: {
+      itemType: ItemType.ERC721,
+      token: "0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e",
+      identifier: 13,
+    },
+    name: "Azuki #13",
+    image_url:
+      "https://gateway.pinata.cloud/ipfs/QmfDVMnhvkULBUszfb8nVq6uRRPzafVymzJqUsqqSAH4DQ/17.jpg",
+    token_id: "13",
+    address: "0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e",
+    collectionName: "Azuki",
+    symbol: "AZUKI",
+  },
+  {
+    inputItem: {
+      itemType: ItemType.ERC721,
+      token: "0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e",
+      identifier: 2084,
+    },
+    name: "Doodles #2084",
+    image_url:
+      "https://gateway.pinata.cloud/ipfs/QmfDVMnhvkULBUszfb8nVq6uRRPzafVymzJqUsqqSAH4DQ/5.png",
+    token_id: "2084",
+    address: "0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e",
+    collectionName: "Doodles",
+    symbol: "DOODLE",
+  },
+  {
+    inputItem: {
+      itemType: ItemType.ERC721,
+      token: "0xfc3e0d0c54a7b7ea9c5bb976a46dcdbdade7cd3e",
+      identifier: 1,
+    },
+    name: "Punk #1",
+    image_url:
+      "https://gateway.pinata.cloud/ipfs/QmfDVMnhvkULBUszfb8nVq6uRRPzafVymzJqUsqqSAH4DQ/24.png",
+    token_id: "1",
+    address: "0xfc3e0d0c54a7b7ea9c5bb976a46dcdbdade7cd3e",
+    collectionName: "CryptoPunks",
+    symbol: "PUNK",
+  },
+];
+
 export const NFTViewer = ({ items, setItems, isOffer }: NFTViewerProps) => {
   const [fetchedTokens, setFetchedTokens] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -159,6 +368,11 @@ export const NFTViewer = ({ items, setItems, isOffer }: NFTViewerProps) => {
 
   useEffect(
     function fetchData() {
+      if (!isOffer) {
+        setFetchedTokens(dummyData);
+        return;
+      }
+
       const requestHeaders: HeadersInit = {
         Accept: "application/json",
         "X-API-KEY": process.env.NEXT_PUBLIC_OPENSEA_API_KEY ?? "",
@@ -205,22 +419,50 @@ export const NFTViewer = ({ items, setItems, isOffer }: NFTViewerProps) => {
           maxHeight={"60vh"}
           overflow="scroll"
         >
-          {fetchedTokens.map(
-            ({ name, image_url, token_id, asset_contract }) => (
-              <NFTViewerCard
-                key={`${asset_contract.address}-${token_id}`}
-                {...{
+          {isOffer
+            ? fetchedTokens.map(
+                ({ name, image_url, token_id, asset_contract }) => (
+                  <NFTViewerCard
+                    key={`${asset_contract.address}-${token_id}`}
+                    {...{
+                      name,
+                      imageUrl: image_url,
+                      tokenId: token_id,
+                      contractAddress: asset_contract.address,
+                      collectionName: asset_contract.name,
+                      items,
+                      setItems,
+                      isOffer,
+                      symbol: asset_contract.symbol,
+                    }}
+                  />
+                )
+              )
+            : fetchedTokens.map(
+                ({
                   name,
-                  imageUrl: image_url,
-                  tokenId: token_id,
-                  contractAddress: asset_contract.address,
-                  items,
-                  setItems,
-                  isOffer,
-                }}
-              />
-            )
-          )}
+                  image_url,
+                  token_id,
+                  address,
+                  collectionName,
+                  symbol,
+                }) => (
+                  <NFTViewerCard
+                    key={`${address}-${token_id}`}
+                    {...{
+                      name,
+                      imageUrl: image_url,
+                      tokenId: token_id,
+                      contractAddress: address,
+                      collectionName: collectionName,
+                      items,
+                      setItems,
+                      isOffer,
+                      symbol: symbol,
+                    }}
+                  />
+                )
+              )}
         </SimpleGrid>
       )}
     </>

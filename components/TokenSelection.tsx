@@ -180,6 +180,7 @@ interface TokenSelectionProps {
     value: InputItem[] | ((prevState: InputItem[]) => InputItem[])
   ) => void;
   items: InputItem[];
+  account?: string;
 }
 
 const TokenSelection = ({
@@ -187,6 +188,7 @@ const TokenSelection = ({
   isOffer,
   setItems,
   items,
+  account,
 }: TokenSelectionProps) => {
   const {
     isOpen,
@@ -233,6 +235,7 @@ const TokenSelection = ({
           className={styles.addAssetButton}
           variant=""
           onClick={openAddTokenModal}
+          disabled={!account}
         >
           ADD ASSETS
         </Button>

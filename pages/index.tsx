@@ -1,8 +1,8 @@
 import type { NextPage } from "next";
-import styles from "../styles/Home.module.css";
+import styles from "@styles/Home.module.css";
 import { useState } from "react";
-import { NavBar } from "./components/NavBar";
-import { ListingCard } from "./components/ListingCard";
+import { NavBar } from "@components/NavBar";
+import { ListingCard } from "@components/ListingCard";
 import { SimpleGrid } from "@chakra-ui/react";
 
 const Home: NextPage = () => {

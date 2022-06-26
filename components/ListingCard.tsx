@@ -1,5 +1,5 @@
 import { HStack, VStack } from "@chakra-ui/react";
-import styles from "../../styles/ListingCard.module.css";
+import styles from "@styles/ListingCard.module.css";
 import { Image } from "@chakra-ui/react";
 
 export const ListingCard = () => {

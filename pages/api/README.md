@@ -37,6 +37,13 @@ URI: `/api/sky-orders`
 
 URI: `/api/orders/sky-relatedOrders/:addressParam`
 - `GET` returns orders related to address param
+
+## Filecoin Data
+
+URI: `/api/filecoin-orders`
+- `GET` returns orders
+- `PUT` uploads and pins orders in IPFS (via `req.body`)
+
 ## Raw Order Schema
 ```
 type CreateOrderInput = {

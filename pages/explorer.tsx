@@ -190,7 +190,6 @@ const ListItem = ({ item, isLight }: ListItemProps) => {
           colorScheme=""
           aria-label="Search database"
           icon={<SmallCloseIcon />}
-          onClick={() => removeItem(item.address, item.token_id)}
         />
       </HStack>
     </>

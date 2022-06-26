@@ -4,20 +4,18 @@ import {
   CreateOrderInput,
   OrderWithCounter,
 } from "@opensea/seaport-js/lib/types";
-import { Seaport } from "@opensea/seaport-js";
 import { useAccount } from "wagmi";
 import { providers } from "ethers";
-import { useCallback, useState } from "react";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { OrderPage } from "@components/OrderPage";
-import { Stack } from "@chakra-ui/react";
+import { useCallback, useEffect, useState } from "react";
 import { OfferItem, ConsiderationItem } from "types/tokenTypes";
-import { NavBar } from "./components/NavBar";
-import { ListingCard } from "./components/ListingCard";
+import { NavBar } from "../components/NavBar";
+import { ListingCard } from "../components/ListingCard";
 import { SimpleGrid } from "@chakra-ui/react";
 
 const Home: NextPage = () => {
   const { data: accountData, isError, isLoading } = useAccount();
+
+  const [relatedOrders, setRelatedOrders] = useState<OrderWithCounter[]>([]);
 
   const [order, setOrder] = useState<OrderWithCounter>();
 
@@ -31,11 +29,34 @@ const Home: NextPage = () => {
     window.ethereum as providers.ExternalProvider
   );
 
+  useEffect(() => {
+    const fetchOrders = async () => {
+      console.log("here?");
+      try {
+        const response = await fetch(
+          `/api/relatedOrders/${accountData?.address}`,
+          {
+            method: "GET",
+            headers: {
+              "content-type": "application/json",
+            },
+          }
+        );
+        const data = await response.json();
+        console.log("data: ", data);
+        setRelatedOrders(data);
+      } catch (err) {
+        console.log("Error request: ", err);
+      }
+    };
+    fetchOrders();
+  }, [accountData?.address]);
+
   const [listings, setListings] = useState([0, 0, 0, 0]);
 
   return (
     <div className={styles.container}>
-      <NavBar></NavBar>
+      <NavBar />
       <main className={styles.main}>
         <div className={styles.header}>RECOMMENDED LISTINGS</div>
         <div>

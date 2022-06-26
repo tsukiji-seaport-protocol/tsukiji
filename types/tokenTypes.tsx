@@ -17,6 +17,8 @@ export type OfferItem = {
   image_url: string;
   token_id: string;
   address: string;
+  collectionName: string;
+  symbol: string;
 };
 
 export type ConsiderationItem = {
@@ -25,4 +27,6 @@ export type ConsiderationItem = {
   image_url: string;
   token_id: string;
   address: string;
+  collectionName: string;
+  symbol: string;
 };

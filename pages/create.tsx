@@ -315,6 +315,8 @@ const Home: NextPage = () => {
 
           <Button
             onClick={createSeaportOrder}
+            fontSize='2xl'
+            size="lg"
             disabled={
               !accountData?.address ||
               offerItems.length === 0 ||

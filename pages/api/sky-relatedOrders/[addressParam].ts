@@ -4,26 +4,16 @@ import { ethers } from "ethers";
 import dotenv from 'dotenv';
 dotenv.config();
 
-const { initializeApp, applicationDefault, cert } = require('firebase-admin/app');
-const { getFirestore, Timestamp, FieldValue } = require('firebase-admin/firestore');
+const { SkynetClient, genKeyPairFromSeed } = require("@skynetlabs/skynet-nodejs");
+
+const client = new SkynetClient();
+const { publicKey, privateKey } = genKeyPairFromSeed(process.env.SKYNET_SEED || '');
 
 // initialize web3 provider; converge on using one of ethers and web3 later
 const Web3 = require('web3');
 const providerUri = `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_KEY}/`;
 const provider = new Web3.providers.HttpProvider(providerUri);
 const web3 = new Web3(provider);
-
-if (process.env.FIREBASE_PRIVATE_KEY) {
-  initializeApp({
-    credential: cert({
-      projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-      privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n')
-    })
-  });
-}
-
-const db = getFirestore();
 
 // whitelisted ERC721 contracts
 const erc721Contracts: Record<string, Record<string, string>> = {
@@ -60,6 +50,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
+  const dataKey = "orders";
   if (req.method === 'GET') {
     // fetch all orders
     const { addressParam } = req.query;
@@ -77,7 +68,7 @@ export default async function handler(
     const tokens = await fetchRelevantTokens(address);
 
     // Inefficient query but it's all g
-    const snapshot = await db.collection('orders').get();
+    const { data: snapshot } = await client.db.getJSON(publicKey, dataKey);
     let relevantOrders: any = [];
 
     // Loop through all existing orders and wallet's items (clearly O(m * n))

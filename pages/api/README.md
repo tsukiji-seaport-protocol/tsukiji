@@ -28,3 +28,12 @@ URI: `/api/orders/relatedOrders/:addressParam`
   ]
 }
 ```
+
+## Skynet Data
+
+URI: `/api/sky-orders`
+- `GET` returns orders
+- `PUT` updates orders in Skynet File (via `req.body`)
+
+URI: `/api/orders/sky-relatedOrders/:addressParam`
+- `GET` returns orders related to address param

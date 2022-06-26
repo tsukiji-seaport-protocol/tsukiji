@@ -1,5 +1,4 @@
-import { Box, Flex, HStack, VStack } from "@chakra-ui/react";
-import Image from "next/image";
+import { Box, Flex, HStack, VStack, Image } from "@chakra-ui/react";
 import { InputItem } from "types/tokenTypes";
 
 interface ListItemProps {

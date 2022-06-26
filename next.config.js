@@ -3,6 +3,8 @@ const nextConfig = {
   reactStrictMode: true,
   images: {
     domains: ["openseauserdata.com"],
+    loader: "imgix",
+    path: "",
   },
 };
 

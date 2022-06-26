@@ -8,6 +8,7 @@ import "@rainbow-me/rainbowkit/styles.css";
 import {
   getDefaultWallets,
   lightTheme,
+  darkTheme,
   RainbowKitProvider,
   Theme,
 } from "@rainbow-me/rainbowkit";
@@ -41,7 +42,7 @@ const wagmiClient = createClient({
 });
 
 // rainbow theme
-const customTheme = merge(lightTheme(), {
+const customTheme = merge(darkTheme(), {
   colors: {
     accentColor: "#267c8e",
   },

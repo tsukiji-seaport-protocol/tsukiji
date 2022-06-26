@@ -5,6 +5,9 @@
   padding: 2rem 0;
   justify-content: center;
   align-items: center;
+  background-color: #000000;
+  color: #ffffff;
+  font-family: "Inter";
 }
 
 .footer a {

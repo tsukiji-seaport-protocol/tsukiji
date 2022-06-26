@@ -3,14 +3,6 @@
   background-color: #000000;
 }
 
-.header {
-  top: 10rem;
-  color: #ffffff;
-  font-weight: 500;
-  font-size: 2rem;
-  padding-bottom: 3rem;
-}
-
 .main {
   min-height: 100vh;
   padding: 4rem 0;

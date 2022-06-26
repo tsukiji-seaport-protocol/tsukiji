@@ -15,7 +15,7 @@ import { SimpleGrid } from "@chakra-ui/react";
 const Home: NextPage = () => {
   const { data: accountData, isError, isLoading } = useAccount();
 
-  const [relatedOrders, setRelatedOrders] = useState<OrderWithCounter[]>([]);
+  const [aliceOrder, setAliceOrder] = useState<OrderWithCounter>();
 
   const [order, setOrder] = useState<OrderWithCounter>();
 
@@ -29,22 +29,49 @@ const Home: NextPage = () => {
     window.ethereum as providers.ExternalProvider
   );
 
+  // useEffect(() => {
+  //   const fetchOrders = async () => {
+  //     console.log("here?");
+  //     try {
+  //       const response = await fetch(
+  //         `/api/relatedOrders/${accountData?.address}`,
+  //         {
+  //           method: "GET",
+  //           headers: {
+  //             "content-type": "application/json",
+  //           },
+  //         }
+  //       );
+  //       const data = await response.json();
+  //       console.log("data: ", data);
+  //       setRelatedOrders(data);
+  //     } catch (err) {
+  //       console.log("Error request: ", err);
+  //     }
+  //   };
+  //   fetchOrders();
+  // }, [accountData?.address]);
+
   useEffect(() => {
     const fetchOrders = async () => {
       console.log("here?");
       try {
-        const response = await fetch(
-          `/api/relatedOrders/${accountData?.address}`,
-          {
-            method: "GET",
-            headers: {
-              "content-type": "application/json",
-            },
-          }
-        );
+        const response = await fetch(`/api/orders`, {
+          method: "GET",
+          headers: {
+            "content-type": "application/json",
+          },
+        });
         const data = await response.json();
-        console.log("data: ", data);
-        setRelatedOrders(data);
+
+        const aliceData = data.find(
+          (item: any) =>
+            item?.parameters.offerer ===
+            "0x439440B818Cac3380aB2d9923F45b675BbA0CB18"
+        );
+
+        console.log(JSON.stringify(aliceData));
+        setAliceOrder(aliceData);
       } catch (err) {
         console.log("Error request: ", err);
       }
@@ -58,12 +85,12 @@ const Home: NextPage = () => {
     <div className={styles.container}>
       <NavBar />
       <main className={styles.main}>
-        <div className={styles.header}>RECOMMENDED LISTINGS</div>
+        <div className={styles.header}>WELCOME TO TSUKIJI</div>
         <div>
           <SimpleGrid columns={2} spacing={10}>
-            {/* {relatedOrders.map((listing, idx) => (
-              <ListingCard listing={listing} key={idx} />
-            ))} */}
+            {aliceOrder && (
+              <ListingCard listing={aliceOrder} key="alice" isAlice={true} />
+            )}
             {listings.map((listing, idx) => (
               <ListingCard key={idx} />
             ))}

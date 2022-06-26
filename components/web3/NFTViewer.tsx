@@ -391,11 +391,12 @@ export const NFTViewer = ({ items, setItems, isOffer }: NFTViewerProps) => {
         }
         try {
           const response = await fetch(
-            `https://testnets-api.opensea.io/api/v1/assets?owner=${accountData?.address}&limit=50&include_orders=false`,
+            `https://testnets-api.opensea.io/api/v1/assets?owner=${accountData?.address}&limit=25&include_orders=false`,
             // "https://testnets-api.opensea.io/api/v1/assets?owner=0x50cd8e39e6d1f95a557e34924A2056e5EdEa519a&order_direction=desc&offset=0&limit=20&include_orders=false"
             requestOptions
           );
           const { assets } = await response.json();
+          console.log("assets: ", assets);
           setFetchedTokens(assets);
         } catch (err) {
           console.log(`Error fetching assets from Opensea: ${err}`);
@@ -421,22 +422,23 @@ export const NFTViewer = ({ items, setItems, isOffer }: NFTViewerProps) => {
         >
           {isOffer
             ? fetchedTokens.map(
-                ({ name, image_url, token_id, asset_contract }) => (
-                  <NFTViewerCard
-                    key={`${asset_contract.address}-${token_id}`}
-                    {...{
-                      name,
-                      imageUrl: image_url,
-                      tokenId: token_id,
-                      contractAddress: asset_contract.address,
-                      collectionName: asset_contract.name,
-                      items,
-                      setItems,
-                      isOffer,
-                      symbol: asset_contract.symbol,
-                    }}
-                  />
-                )
+                ({ name, image_url, token_id, asset_contract }) =>
+                  image_url && (
+                    <NFTViewerCard
+                      key={`${asset_contract.address}-${token_id}`}
+                      {...{
+                        name,
+                        imageUrl: image_url,
+                        tokenId: token_id,
+                        contractAddress: asset_contract.address,
+                        collectionName: asset_contract.name,
+                        items,
+                        setItems,
+                        isOffer,
+                        symbol: asset_contract.symbol,
+                      }}
+                    />
+                  )
               )
             : fetchedTokens.map(
                 ({

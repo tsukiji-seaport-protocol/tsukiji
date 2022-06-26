@@ -45,10 +45,14 @@
 }
 
 .offerTextContainer {
-  width: 164px;
+  min-width: 180px;
   height: 74px;
-  left: 125px;
-  top: 974px;
+  padding: 1rem;
+}
+
+.offerTextContainerAlice {
+  min-width: 135px;
+  padding-right: 1rem;
 }
 
 .offerCollectionLabel {
@@ -96,8 +100,16 @@
 }
 
 .offerImageCard {
-  width: 140px;
+  min-width: 140px;
   height: 140px;
+
+  border-radius: 10px;
+}
+
+.offerImageCardAlice {
+  min-width: 120px;
+  height: 140px;
+  padding-right: 30px;
 
   border-radius: 10px;
 }
@@ -134,20 +146,15 @@
   justify-content: center;
   align-items: center;
 
-  width: 164px;
   height: 74px;
-  left: 125px;
-  top: 974px;
+  padding: 0 1rem;
 
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 10px;
 }
 
 .considerationItemText {
-  width: 70px;
   height: 24px;
-  left: 198px;
-  top: 1001px;
 
   font-family: "Inter";
   font-style: normal;
@@ -162,6 +169,16 @@
   width: 40px;
   height: 40px;
 
-  padding-right: 1rem;
-  border-radius: 10px;
+  margin-right: 1rem;
+  border-radius: 50%;
+}
+
+.offerImageContainer {
+  width: 1000px;
+  overflow: scroll;
+}
+
+.offerImageContainerAlice {
+  width: 800px;
+  overflow: scroll;
 }

@@ -9,11 +9,6 @@ interface ERC20ViewerProps {
 }
 
 export const ERC20Viewer = ({ eth, setETH }: ERC20ViewerProps) => {
-  const { data: accountData } = useAccount();
-  const balance = useBalance({
-    addressOrName: accountData?.address,
-  });
-
   const handleChange = (value: number | string) => {
     setETH({ value: value });
   };
@@ -23,18 +18,38 @@ export const ERC20Viewer = ({ eth, setETH }: ERC20ViewerProps) => {
       <VStack maxHeight={"60vh"} overflow="scroll">
         <HStack>
           <Image
-            alt="ethereum logo"
+            alt="WETH logo"
+            width={50}
+            height={50}
+            src="/assets/weth.png"
+          />
+          <p style={{ color: "white" }}>WETH</p>
+          <NumberInput
+            key="index"
+            defaultValue={""}
+            min={0}
+            value={eth.amount}
+            onChange={handleChange}
+            style={{ color: "white" }}
+          >
+            <NumberInputField />
+          </NumberInput>
+        </HStack>
+        <HStack>
+          <Image
+            alt="ETH logo"
             width={50}
             height={50}
             src="/assets/ethereum-eth.svg"
           />
-          <p>ETH</p>
+          <p style={{ color: "white" }}>ETH</p>
           <NumberInput
             key="index"
-            defaultValue={balance.data?.formatted}
+            defaultValue={""}
             min={0}
             value={eth.amount}
             onChange={handleChange}
+            style={{ color: "white" }}
           >
             <NumberInputField />
           </NumberInput>

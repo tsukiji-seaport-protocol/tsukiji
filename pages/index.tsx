@@ -1,33 +1,18 @@
 import type { NextPage } from "next";
 import styles from "../styles/Home.module.css";
 import {
-  CreateOrderInput,
   OrderWithCounter,
 } from "@opensea/seaport-js/lib/types";
 import { useAccount } from "wagmi";
-import { providers } from "ethers";
-import { useCallback, useEffect, useState } from "react";
-import { OfferItem, ConsiderationItem } from "types/tokenTypes";
+import { useEffect, useState } from "react";
 import { NavBar } from "../components/NavBar";
 import { ListingCard } from "../components/ListingCard";
 import { SimpleGrid } from "@chakra-ui/react";
 
 const Home: NextPage = () => {
-  const { data: accountData, isError, isLoading } = useAccount();
+  const { data: accountData } = useAccount();
 
   const [relatedOrders, setRelatedOrders] = useState<OrderWithCounter[]>([]);
-
-  const [order, setOrder] = useState<OrderWithCounter>();
-
-  const [offerItems, setOfferItems] = useState<OfferItem[]>([]);
-
-  const [considerationItems, setConsiderationItems] = useState<
-    ConsiderationItem[]
-  >([]);
-
-  const ethersProvider = new providers.Web3Provider(
-    window.ethereum as providers.ExternalProvider
-  );
 
   useEffect(() => {
     const fetchOrders = async () => {

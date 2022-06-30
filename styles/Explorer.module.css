@@ -1,0 +1,147 @@
+.addAssetButton {
+  width: 180px;
+  height: 57px;
+
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+
+  color: white;
+}
+
+.itemListHeader {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  padding: 0 3rem;
+}
+
+.listItemOfferer {
+  width: 100px;
+}
+
+.title {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+  padding-top: 1rem;
+
+  color: #ffffff;
+}
+
+.itemListContainer {
+  width: 1200px;
+  height: 1000px;
+  left: 137px;
+  top: 328px;
+
+  margin: 1rem;
+
+  display: flex;
+  flex-direction: column;
+
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  overflow: scroll;
+}
+
+.listItemContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.5rem 2rem;
+  color: white;
+}
+
+.listItemImage {
+  width: 38px;
+  height: 38px;
+  left: 171px;
+  top: 344px;
+
+  margin-right: 1rem;
+
+  border-radius: 50%;
+}
+
+.listItemLabel {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 2;
+  align-items: flex-start !important;
+}
+
+.listItemTitle {
+  color: white;
+}
+
+.listItemSubtitle {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  margin-top: 0 !important;
+
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.listItemQuantity {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+
+  color: #ffffff;
+}
+
+.listItemRemoveIcon {
+  opacity: 0.5;
+}
+
+.light {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.tokenSelectionContainer {
+  display: flex;
+  margin: auto;
+  margin-top: 2rem;
+  flex-direction: column;
+  width: 1500px;
+  height: 800px;
+  left: 78px;
+  top: 255px;
+
+  padding: 1rem;
+
+  align-items: center;
+
+  border: 1px solid #dddddd;
+  border-radius: 10px;
+}
+
+.modalContent {
+  width: 1097px;
+  height: 690px;
+
+  background: #000000 !important;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 20px;
+}
+
+.modalOverlay {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  /* Note: backdrop-filter has minimal browser support */
+}
+
+.tab[aria-selected="true"] {
+  color: white !important;
+}
+
+.tab[aria-selected="false"] {
+  border-color: grey !important;
+  color: grey;
+}

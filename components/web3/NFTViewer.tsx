@@ -1,11 +1,4 @@
-import {
-  Box,
-  Image,
-  SimpleGrid,
-  Spinner,
-  StylesProvider,
-  VStack,
-} from "@chakra-ui/react";
+import { Box, Image, SimpleGrid, Spinner, VStack } from "@chakra-ui/react";
 import { abridgeAddress } from "@utils/abridgeAddress";
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
@@ -15,176 +8,6 @@ import {
   CreateInputItem,
   ConsiderationInputItem,
 } from "@opensea/seaport-js/lib/types";
-
-interface ImageSelectProps {
-  imageUrl: string;
-  name: string;
-}
-
-const ImageSelect = ({ imageUrl, name }: ImageSelectProps) => {
-  return (
-    <>
-      {imageUrl && (
-        <Image
-          alt={name}
-          rounded={"lg"}
-          height={230}
-          width={230}
-          objectFit={"cover"}
-          src={imageUrl}
-        />
-      )}
-      {!imageUrl && (
-        <Image
-          alt="nft placeholder"
-          rounded={"lg"}
-          height={230}
-          width={230}
-          objectFit={"cover"}
-          src={"/assets/nftplaceholder.jpg"}
-        />
-      )}
-    </>
-  );
-};
-
-interface NFTViewerCardProps {
-  imageUrl: string;
-  name: string;
-  tokenId: string;
-  contractAddress: string;
-  collectionName: string;
-  items: InputItem[];
-  setItems: (
-    tokens: InputItem[] | ((prevState: InputItem[]) => InputItem[])
-  ) => void;
-  isOffer: boolean;
-  symbol: string;
-}
-
-const NFTViewerCard = ({
-  imageUrl,
-  name,
-  tokenId,
-  contractAddress,
-  collectionName,
-  items,
-  setItems,
-  isOffer,
-  symbol,
-}: NFTViewerCardProps) => {
-  const selected = !!items.find(
-    (token) =>
-      `${token.address}-${token.token_id}` === `${contractAddress}-${tokenId}`
-  );
-
-  const createOfferItem = (
-    name: string,
-    imageUrl: string,
-    contractAddress: string,
-    tokenId: string,
-    collectionName: string,
-    symbol: string
-  ): OfferItem => {
-    const inputItem: CreateInputItem = {
-      itemType: ItemType.ERC721,
-      token: contractAddress,
-      identifier: tokenId,
-    };
-    return {
-      inputItem,
-      name,
-      collectionName,
-      image_url: imageUrl,
-      token_id: tokenId,
-      address: contractAddress,
-      symbol: symbol,
-    };
-  };
-
-  const createConsiderationItem = (
-    name: string,
-    imageUrl: string,
-    contractAddress: string,
-    tokenId: string,
-    collectionName: string,
-    symbol: string
-  ): ConsiderationItem => {
-    const inputItem: ConsiderationInputItem = {
-      itemType: ItemType.ERC721,
-      token: contractAddress,
-      identifier: tokenId,
-      recipient: "0x17e547d79C04D01E49fEa275Cf32ba06554f9dF7",
-    };
-    return {
-      inputItem,
-      name,
-      collectionName,
-      image_url: imageUrl,
-      token_id: tokenId,
-      address: contractAddress,
-      symbol: symbol,
-    };
-  };
-
-  const selectNFT = () => {
-    if (selected) {
-      // remove if already selected
-      setItems((prev: any) =>
-        prev.filter((item: InputItem) => item.address != contractAddress)
-      );
-    } else {
-      // select if not
-      setItems((prev: any) => [
-        ...prev,
-        isOffer
-          ? createOfferItem(
-            name,
-            imageUrl,
-            contractAddress,
-            tokenId,
-            collectionName,
-            symbol
-          )
-          : createConsiderationItem(
-            name,
-            imageUrl,
-            contractAddress,
-            tokenId,
-            collectionName,
-            symbol
-          ),
-      ]);
-    }
-  };
-
-  return (
-    <Box
-      as="button"
-      overflow="hidden"
-      _hover={{ bg: "gray.600", transform: "scale(1.02)", opacity: 0.95 }}
-      padding={2}
-      borderRadius="m"
-      background={selected ? "gray.600" : ""}
-      onClick={selectNFT}
-    >
-      <VStack spacing={2}>
-        <ImageSelect imageUrl={imageUrl} name={name} />
-        <div style={{ color: "white" }}>
-          {name ? name : abridgeAddress(contractAddress)}
-        </div>
-      </VStack>
-    </Box>
-  );
-};
-
-interface NFTViewerProps {
-  items: InputItem[];
-  setItems: (
-    tokens: InputItem[] | ((prevState: InputItem[]) => InputItem[])
-  ) => void;
-  isOffer: boolean;
-}
 
 const dummyData = [
   {
@@ -361,6 +184,179 @@ const dummyData = [
   },
 ];
 
+interface ImageSelectProps {
+  imageUrl: string;
+  name: string;
+}
+
+const ImageSelect = ({ imageUrl, name }: ImageSelectProps) => {
+  return (
+    <>
+      {imageUrl && (
+        <Image
+          alt={name}
+          rounded={"lg"}
+          height={230}
+          width={230}
+          objectFit={"cover"}
+          src={imageUrl}
+        />
+      )}
+      {!imageUrl && (
+        <Image
+          alt="nft placeholder"
+          rounded={"lg"}
+          height={230}
+          width={230}
+          objectFit={"cover"}
+          src={"/assets/nftplaceholder.jpg"}
+        />
+      )}
+    </>
+  );
+};
+
+interface NFTViewerCardProps {
+  imageUrl: string;
+  name: string;
+  tokenId: string;
+  contractAddress: string;
+  collectionName: string;
+  items: InputItem[];
+  setItems: (
+    tokens: InputItem[] | ((prevState: InputItem[]) => InputItem[])
+  ) => void;
+  isOffer: boolean;
+  symbol: string;
+}
+
+const NFTViewerCard = ({
+  imageUrl,
+  name,
+  tokenId,
+  contractAddress,
+  collectionName,
+  items,
+  setItems,
+  isOffer,
+  symbol,
+}: NFTViewerCardProps) => {
+  const selected = !!items.find(
+    (token) =>
+      `${token.address}-${token.token_id}` === `${contractAddress}-${tokenId}`
+  );
+
+  const createOfferItem = (
+    name: string,
+    imageUrl: string,
+    contractAddress: string,
+    tokenId: string,
+    collectionName: string,
+    symbol: string
+  ): OfferItem => {
+    const inputItem: CreateInputItem = {
+      itemType: ItemType.ERC721,
+      token: contractAddress,
+      identifier: tokenId,
+    };
+    return {
+      inputItem,
+      name,
+      collectionName,
+      image_url: imageUrl,
+      token_id: tokenId,
+      address: contractAddress,
+      symbol: symbol,
+    };
+  };
+
+  const createConsiderationItem = (
+    name: string,
+    imageUrl: string,
+    contractAddress: string,
+    tokenId: string,
+    collectionName: string,
+    symbol: string
+  ): ConsiderationItem => {
+    const inputItem: ConsiderationInputItem = {
+      itemType: ItemType.ERC721,
+      token: contractAddress,
+      identifier: tokenId,
+      recipient: "0x17e547d79C04D01E49fEa275Cf32ba06554f9dF7",
+    };
+    return {
+      inputItem,
+      name,
+      collectionName,
+      image_url: imageUrl,
+      token_id: tokenId,
+      address: contractAddress,
+      symbol: symbol,
+    };
+  };
+
+  const selectNFT = () => {
+    if (selected) {
+      // remove if already selected
+      setItems((prev: InputItem[]) =>
+        prev.filter(
+          ({ address, token_id }: InputItem) =>
+            `${address}-${token_id}` != `${contractAddress}-${tokenId}`
+        )
+      );
+    } else {
+      // select if not
+      setItems((prev: InputItem[]) => [
+        ...prev,
+        isOffer
+          ? createOfferItem(
+              name,
+              imageUrl,
+              contractAddress,
+              tokenId,
+              collectionName,
+              symbol
+            )
+          : createConsiderationItem(
+              name,
+              imageUrl,
+              contractAddress,
+              tokenId,
+              collectionName,
+              symbol
+            ),
+      ]);
+    }
+  };
+
+  return (
+    <Box
+      as="button"
+      overflow="hidden"
+      _hover={{ bg: "gray.600", transform: "scale(1.02)", opacity: 0.95 }}
+      padding={2}
+      borderRadius="m"
+      background={selected ? "gray.600" : ""}
+      onClick={selectNFT}
+    >
+      <VStack spacing={2}>
+        <ImageSelect imageUrl={imageUrl} name={name} />
+        <div style={{ color: "white" }}>
+          {name ? name : abridgeAddress(contractAddress)}
+        </div>
+      </VStack>
+    </Box>
+  );
+};
+
+interface NFTViewerProps {
+  items: InputItem[];
+  setItems: (
+    tokens: InputItem[] | ((prevState: InputItem[]) => InputItem[])
+  ) => void;
+  isOffer: boolean;
+}
+
 export const NFTViewer = ({ items, setItems, isOffer }: NFTViewerProps) => {
   const [fetchedTokens, setFetchedTokens] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -421,48 +417,48 @@ export const NFTViewer = ({ items, setItems, isOffer }: NFTViewerProps) => {
         >
           {isOffer
             ? fetchedTokens.map(
-              ({ name, image_url, token_id, asset_contract }) => (
-                <NFTViewerCard
-                  key={`${asset_contract.address}-${token_id}`}
-                  {...{
-                    name,
-                    imageUrl: image_url,
-                    tokenId: token_id,
-                    contractAddress: asset_contract.address,
-                    collectionName: asset_contract.name,
-                    items,
-                    setItems,
-                    isOffer,
-                    symbol: asset_contract.symbol,
-                  }}
-                />
+                ({ name, image_url, token_id, asset_contract }) => (
+                  <NFTViewerCard
+                    key={`${asset_contract.address}-${token_id}`}
+                    {...{
+                      name,
+                      imageUrl: image_url,
+                      tokenId: token_id,
+                      contractAddress: asset_contract.address,
+                      collectionName: asset_contract.name,
+                      items,
+                      setItems,
+                      isOffer,
+                      symbol: asset_contract.symbol,
+                    }}
+                  />
+                )
               )
-            )
             : fetchedTokens.map(
-              ({
-                name,
-                image_url,
-                token_id,
-                address,
-                collectionName,
-                symbol,
-              }) => (
-                <NFTViewerCard
-                  key={`${address}-${token_id}`}
-                  {...{
-                    name,
-                    imageUrl: image_url,
-                    tokenId: token_id,
-                    contractAddress: address,
-                    collectionName: collectionName,
-                    items,
-                    setItems,
-                    isOffer,
-                    symbol: symbol,
-                  }}
-                />
-              )
-            )}
+                ({
+                  name,
+                  image_url,
+                  token_id,
+                  address,
+                  collectionName,
+                  symbol,
+                }) => (
+                  <NFTViewerCard
+                    key={`${address}-${token_id}`}
+                    {...{
+                      name,
+                      imageUrl: image_url,
+                      tokenId: token_id,
+                      contractAddress: address,
+                      collectionName: collectionName,
+                      items,
+                      setItems,
+                      isOffer,
+                      symbol: symbol,
+                    }}
+                  />
+                )
+              )}
         </SimpleGrid>
       )}
     </>

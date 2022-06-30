@@ -4,6 +4,7 @@ import { Image } from "@chakra-ui/react";
 import { OrderWithCounter } from "@opensea/seaport-js/lib/types";
 import { abridgeAddress } from "@utils/abridgeAddress";
 import { useMemo } from "react";
+import Link from "next/link";
 
 type ListingCardProps = {
   listing?: OrderWithCounter;
@@ -92,14 +93,6 @@ export const ListingCard = ({ listing, isAlice }: ListingCardProps) => {
           <VStack className={styles.offerTextContainer}>
             <VStack className={styles.offerCollectionLabel2}>
               {exc.map((e) => (
-                // <div key={e.text} className={styles.considerationItem}>
-                //   <Image
-                //     alt="shaddap"
-                //     className={styles.considerationItemImg}
-                //     src={e.img}
-                //   />
-                //   <div className={styles.considerationItemText}>{e.text}</div>
-                // </div>
                 <HStack key={e.text} className={styles.offerCollectionLabel}>
                   <Image
                     alt="shaddap"
@@ -128,14 +121,6 @@ export const ListingCard = ({ listing, isAlice }: ListingCardProps) => {
             <div className={styles.considerationItemText}>3 AZUKI</div>
           </div>
         </HStack>
-        {/* <div className={styles.considerationItem}>
-            <Image
-              alt="shaddap"
-              className={styles.considerationItemImg}
-              src={"/assets/ethereum-eth.svg"}
-            />
-            <div className={styles.considerationItemText}>1 BAYC</div>
-          </div> */}
       </VStack>
     </>
   );
@@ -151,9 +136,9 @@ const AliceOrder = ({ listing }: ListingCardProps) => {
               ? abridgeAddress(listing.parameters.offerer)
               : abridgeAddress("0x301479333CE9CA3e642443E14CC986ABcC548e2e")
           }:`}</div>
-          <a href="/CE9CA3e642443E1">
+          <Link href="/CE9CA3e642443E1">
             <button className={styles.offerHeaderButton}>VIEW LISTING</button>
-          </a>
+          </Link>
         </HStack>
         <HStack className={styles.offerContainer}>
           <SimpleGrid

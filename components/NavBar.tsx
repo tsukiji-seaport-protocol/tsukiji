@@ -36,19 +36,50 @@ export const NavBar = () => {
       </div>
       <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
         <DrawerOverlay />
-        <DrawerContent>
-          <DrawerCloseButton />
-          <DrawerHeader>Create your account</DrawerHeader>
+        <DrawerContent
+          bgColor="#000000"
+          borderLeft="1px solid rgba(255,255,255,.3)"
+          paddingTop="3rem"
+        >
+          <DrawerCloseButton color="#FFFFFF" />
 
-          <DrawerBody>
-            <Button>Hi</Button>
+          <DrawerBody className={styles.drawerBody}>
+            <Button className={styles.drawerButton}>EXPLORE</Button>
+            <Button className={styles.drawerButton}>CREATE</Button>
+            <Button className={styles.drawerButton}>RANKINGS</Button>
+            <Button className={styles.drawerButton}>HOW IT WORKS</Button>
+            <Button className={styles.drawerButton}>BLOG</Button>
           </DrawerBody>
 
-          <DrawerFooter>
-            <Button variant="outline" mr={3} onClick={onClose}>
-              Cancel
+          <DrawerFooter className={styles.drawerFooter}>
+            <div className={styles.drawerFooterLabel}>Made With ❤️ By</div>
+            <Button className={styles.drawerFooterButton}>
+              <a
+                href="https://twitter.com/jeongminc_"
+                target="
+              _blank"
+              >
+                @jeongminc_
+              </a>
             </Button>
-            <Button colorScheme="blue">Save</Button>
+            <Button className={styles.drawerFooterButton}>
+              <a
+                href="https://twitter.com/straightupjac"
+                target="
+              _blank"
+              >
+                @straightupjac
+              </a>
+            </Button>
+            <Button className={styles.drawerFooterButton}>
+              <a
+                href="https://twitter.com/andrewkjmin"
+                target="
+              _blank"
+              >
+                @andrewkjmin
+              </a>
+            </Button>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>

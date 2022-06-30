@@ -34,3 +34,45 @@
 .hamburgerButton:hover {
   opacity: 1;
 }
+
+.drawerBody {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.drawerButton {
+  background-color: transparent !important;
+  font-size: 1.2rem !important;
+  color: #ffffff;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.drawerFooter {
+  display: flex;
+  flex-direction: column;
+  color: white;
+  justify-content: flex-start;
+  align-items: flex-start !important;
+}
+
+.drawerFooterLabel {
+  padding: 0.5rem 0;
+  width: 300px;
+  opacity: 0.8;
+}
+
+.drawerFooterButton {
+  background-color: transparent !important;
+  color: #ffffff;
+  width: 120px;
+  padding-left: 0 !important;
+  justify-content: flex-start !important;
+  opacity: 0.7;
+}
+
+.drawerFooterButton:hover {
+  opacity: 1;
+}

@@ -11,7 +11,7 @@ type ListingCardProps = {
 type ItemData = {
   count: number;
   tokenIds: number[];
-  name: string;
+  symbol: string;
 };
 
 type OfferData = Map<string, ItemData>;
@@ -22,17 +22,17 @@ export const ListingCard = ({ listing }: ListingCardProps) => {
       return map.set(item.address, {
         count: 1,
         tokenIds: [Number(item.token_id)],
-        name: item.collectionName,
+        symbol: item.symbol,
       });
     }
 
     const data = map.get(item.address);
-    const { count, tokenIds, name } = data!;
+    const { count, tokenIds, symbol } = data!;
 
     return map.set(item.address, {
       count: count + 1,
       tokenIds: [...tokenIds, Number(item.token_id)],
-      name,
+      symbol,
     });
   }, new Map<string, ItemData>());
 
@@ -42,17 +42,17 @@ export const ListingCard = ({ listing }: ListingCardProps) => {
         return map.set(item.address, {
           count: 1,
           tokenIds: [Number(item.token_id)],
-          name: item.collectionName,
+          symbol: item.symbol,
         });
       }
 
       const data = map.get(item.address);
-      const { count, tokenIds, name } = data!;
+      const { count, tokenIds, symbol } = data!;
 
       return map.set(item.address, {
         count: count + 1,
         tokenIds: [...tokenIds, Number(item.token_id)],
-        name,
+        symbol,
       });
     },
     new Map<string, ItemData>()
@@ -90,7 +90,7 @@ export const ListingCard = ({ listing }: ListingCardProps) => {
                 <HStack className={styles.offerCollectionLabel} key={address}>
                   <div
                     className={styles.offerCollectionLabelText}
-                  >{`${data.count} ${data.name}`}</div>
+                  >{`${data.count} ${data.symbol}`}</div>
                 </HStack>
               )
             )}
@@ -105,7 +105,7 @@ export const ListingCard = ({ listing }: ListingCardProps) => {
               <div className={styles.considerationItem} key={address}>
                 <div
                   className={styles.considerationItemText}
-                >{`${data.count} ${data.name}`}</div>
+                >{`${data.count} ${data.symbol}`}</div>
               </div>
             )
           )}

@@ -14,6 +14,7 @@
     "@opensea/seaport-js": "^1.0.2",
     "@skynetlabs/skynet-nodejs": "^2.6.0",
     "ethers": "^5.6.9",
+    "gsap": "^3.10.4",
     "lodash.merge": "^4.6.2",
     "next": "12.1.6",
     "react": "18.2.0",
@@ -21,6 +22,7 @@
     "react-icons": "^4.4.0",
     "react-query": "^3.39.1",
     "skynet-js": "^4.3.0",
+    "vanta": "^0.5.22",
     "wagmi": "^0.4.12",
     "web3.storage": "^4.3.0"
   },

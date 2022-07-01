@@ -45,10 +45,7 @@
 }
 
 .offerTextContainer {
-  width: 164px;
-  height: 74px;
-  left: 125px;
-  top: 974px;
+  padding-left: 2rem;
 }
 
 .offerCollectionLabel {
@@ -56,7 +53,7 @@
   background-color: #000000;
   height: 100%;
   width: 100%;
-  justify-content: flex-end;
+  justify-content: flex-start;
 }
 
 .offerCollectionLabelImg {
@@ -69,11 +66,6 @@
 }
 
 .offerCollectionLabelText {
-  width: 78px;
-  height: 24px;
-  left: 665px;
-  top: 349px;
-
   font-family: "Inter";
   font-style: normal;
   font-weight: 400;
@@ -136,19 +128,12 @@
 
   width: 164px;
   height: 74px;
-  left: 125px;
-  top: 974px;
 
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 10px;
 }
 
 .considerationItemText {
-  width: 70px;
-  height: 24px;
-  left: 198px;
-  top: 1001px;
-
   font-family: "Inter";
   font-style: normal;
   font-weight: 400;

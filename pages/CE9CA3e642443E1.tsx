@@ -113,7 +113,7 @@ const TokenSelection = () => {
         "0x0000000000000000000000000000000000000000000000000000000000000000",
       counter: 0,
       zone: "0x0000000000000000000000000000000000000000",
-      offerer: "0x439440B818Cac3380aB2d9923F45b675BbA0CB18",
+      offerer: "0xB7a235bC60f0E81b95262a25c64D714F4C430B8a",
       consideration: [
         {
           identifierOrCriteria: "1",
@@ -121,7 +121,7 @@ const TokenSelection = () => {
           endAmount: "1",
           token: "0xfc3e0d0c54a7b7ea9c5bb976a46dcdbdade7cd3e",
           startAmount: "1",
-          recipient: "0x17e547d79C04D01E49fEa275Cf32ba06554f9dF7",
+          recipient: "0xB7a235bC60f0E81b95262a25c64D714F4C430B8a",
         },
       ],
     },
@@ -174,7 +174,7 @@ const TokenSelection = () => {
       <div className={styles.tokenSelectionContainer}>
         <h1 className={styles.title}>
           {`OFFER TO EXCHANGE BY ${abridgeAddress(
-            "0x439440B818Cac3380aB2d9923F45b675BbA0CB18"
+            "0xB7a235bC60f0E81b95262a25c64D714F4C430B8a"
           )}`}{" "}
         </h1>
 

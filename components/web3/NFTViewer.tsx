@@ -114,7 +114,7 @@ const NFTViewerCard = ({
       itemType: ItemType.ERC721,
       token: contractAddress,
       identifier: tokenId,
-      recipient: "0x17e547d79C04D01E49fEa275Cf32ba06554f9dF7",
+      recipient: "0xB7a235bC60f0E81b95262a25c64D714F4C430B8a",
     };
     return {
       inputItem,

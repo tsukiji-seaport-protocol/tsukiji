@@ -27,8 +27,8 @@ const Home: NextPage = () => {
 
         const aliceData = data.find(
           (item: any) =>
-            item?.parameters.offerer ===
-            "0x439440B818Cac3380aB2d9923F45b675BbA0CB18"
+            item?.parameters?.offerer ===
+            "0xB7a235bC60f0E81b95262a25c64D714F4C430B8a"
         );
 
         console.log(JSON.stringify(aliceData));

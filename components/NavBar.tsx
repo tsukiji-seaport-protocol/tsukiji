@@ -15,6 +15,7 @@ import {
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import styles from "@styles/NavBar.module.css";
 import { HamburgerIcon } from "@chakra-ui/icons";
+import { FaGithub } from "react-icons/fa";
 
 export const NavBar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -80,6 +81,14 @@ export const NavBar = () => {
                 @andrewkjmin
               </a>
             </Button>
+            <a href="https://github.com/tsukiji-seaport-protocol/tsukiji" rel="noreferrer" target="_blank" >
+        <IconButton
+          aria-label="github icon"
+          colorScheme="dark"
+          variant="ghost"
+          icon={<FaGithub />}
+        />
+      </a>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>

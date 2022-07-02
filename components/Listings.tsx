@@ -58,23 +58,23 @@ export const Listings = ({ address }: ListingsProps) => {
 
   // hook to fetch related orders from API
   // currently unused in the frontend
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const response = await fetch(`/api/relatedOrders/${address}`, {
-          method: "GET",
-          headers: {
-            "content-type": "application/json",
-          },
-        });
-        const data = await response.json();
-        setRelatedOrders(data);
-      } catch (err) {
-        console.log("Error request: ", err);
-      }
-    };
-    fetchOrders();
-  }, [address]);
+  // useEffect(() => {
+  //   const fetchOrders = async () => {
+  //     try {
+  //       const response = await fetch(`/api/relatedOrders/${address}`, {
+  //         method: "GET",
+  //         headers: {
+  //           "content-type": "application/json",
+  //         },
+  //       });
+  //       const data = await response.json();
+  //       setRelatedOrders(data);
+  //     } catch (err) {
+  //       console.log("Error request: ", err);
+  //     }
+  //   };
+  //   fetchOrders();
+  // }, [address]);
 
   useEffect(() => {
     const fetchOrders = async () => {

@@ -121,6 +121,10 @@
   /* Note: backdrop-filter has minimal browser support */
 }
 
+.modalBody {
+  overflow: hidden;
+}
+
 .tab[aria-selected="true"] {
   color: white !important;
 }
@@ -128,4 +132,9 @@
 .tab[aria-selected="false"] {
   border-color: grey !important;
   color: grey;
+}
+
+.grid {
+  height: 540px;
+  overflow:scroll;
 }

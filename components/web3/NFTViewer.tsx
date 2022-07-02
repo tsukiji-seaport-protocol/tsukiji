@@ -1,4 +1,11 @@
-import { Box, Image, SimpleGrid, Spinner, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Image,
+  SimpleGrid,
+  Spinner,
+  styled,
+  VStack,
+} from "@chakra-ui/react";
 import { abridgeAddress } from "@utils/abridgeAddress";
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
@@ -8,6 +15,7 @@ import {
   CreateInputItem,
   ConsiderationInputItem,
 } from "@opensea/seaport-js/lib/types";
+import styles from "@styles/TokenSelection.module.css";
 
 const dummyData = [
   {
@@ -387,8 +395,7 @@ export const NFTViewer = ({ items, setItems, isOffer }: NFTViewerProps) => {
         }
         try {
           const response = await fetch(
-            `https://testnets-api.opensea.io/api/v1/assets?owner=${accountData?.address}&limit=50&include_orders=false`,
-            // "https://testnets-api.opensea.io/api/v1/assets?owner=0x50cd8e39e6d1f95a557e34924A2056e5EdEa519a&order_direction=desc&offset=0&limit=20&include_orders=false"
+            `https://testnets-api.opensea.io/api/v1/assets?owner=${accountData?.address}&limit=200&include_orders=false`,
             requestOptions
           );
           const { assets } = await response.json();
@@ -402,11 +409,11 @@ export const NFTViewer = ({ items, setItems, isOffer }: NFTViewerProps) => {
 
       fetchData();
     },
-    [accountData?.address]
+    [accountData?.address, isOffer]
   );
 
   return (
-    <>
+    <div className={styles.grid}>
       {isLoading && <Spinner />}
       {!isLoading && fetchedTokens && (
         <SimpleGrid
@@ -461,6 +468,6 @@ export const NFTViewer = ({ items, setItems, isOffer }: NFTViewerProps) => {
               )}
         </SimpleGrid>
       )}
-    </>
+    </div>
   );
 };

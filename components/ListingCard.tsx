@@ -1,8 +1,10 @@
-import { Box, HStack, SimpleGrid, VStack } from "@chakra-ui/react";
+import { Box, Container, HStack, SimpleGrid, VStack } from "@chakra-ui/react";
 import styles from "@styles/ListingCard.module.css";
 import { Image } from "@chakra-ui/react";
 import { abridgeAddress } from "@utils/abridgeAddress";
 import { OfferItem, OrderWithMetadata } from "types/tokenTypes";
+import { ItemType } from "@opensea/seaport-js/lib/constants";
+import { formatEther } from "ethers/lib/utils";
 
 type ListingCardProps = {
   listing: OrderWithMetadata;
@@ -18,12 +20,21 @@ type OfferData = Map<string, ItemData>;
 
 export const ListingCard = ({ listing }: ListingCardProps) => {
   const offersMap = listing.offers.reduce((map: OfferData, item: OfferItem) => {
+    console.log("item:", item);
     if (!map.has(item.address)) {
-      return map.set(item.address, {
-        count: 1,
-        tokenIds: [Number(item.token_id)],
-        symbol: item.symbol,
-      });
+      if (item.type !== ItemType.ERC721) {
+        return map.set(item.address ?? "ethereum", {
+          count: Number(formatEther(item.inputItem.amount)),
+          tokenIds: [Number(item.token_id)],
+          symbol: item.symbol,
+        });
+      } else {
+        return map.set(item.address, {
+          count: 1,
+          tokenIds: [Number(item.token_id)],
+          symbol: item.symbol,
+        });
+      }
     }
 
     const data = map.get(item.address);
@@ -39,11 +50,19 @@ export const ListingCard = ({ listing }: ListingCardProps) => {
   const considerationsMap = listing.considerations.reduce(
     (map: OfferData, item: OfferItem) => {
       if (!map.has(item.address)) {
-        return map.set(item.address, {
-          count: 1,
-          tokenIds: [Number(item.token_id)],
-          symbol: item.symbol,
-        });
+        if (item.type !== ItemType.ERC721) {
+          return map.set(item.address ?? "ethereum", {
+            count: Number(formatEther(item.inputItem.amount)),
+            tokenIds: [Number(item.token_id)],
+            symbol: item.symbol,
+          });
+        } else {
+          return map.set(item.address, {
+            count: 1,
+            tokenIds: [Number(item.token_id)],
+            symbol: item.symbol,
+          });
+        }
       }
 
       const data = map.get(item.address);
@@ -62,20 +81,21 @@ export const ListingCard = ({ listing }: ListingCardProps) => {
     <>
       <VStack className={styles.container}>
         <HStack className={styles.offerHeader}>
-          <div>{`OFFER BY ${
-            listing
-              ? abridgeAddress(listing.order.parameters.offerer)
-              : abridgeAddress("0x301479333CE9CA3e642443E14CC986ABcC548e2e")
-          }:`}</div>
+          <div>
+            OFFER BY{" "}
+            <a
+              href={`https://rinkeby.etherscan.io/address/${listing.order.parameters.offerer}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {abridgeAddress(listing.order.parameters.offerer)}
+            </a>
+          </div>
           <button className={styles.offerHeaderButton}>VIEW LISTING</button>
         </HStack>
         <HStack className={styles.offerContainer}>
-          <SimpleGrid
-            columns={[1, 2, 3]}
-            gap={2}
-            className={styles.offerImageContainer}
-          >
-            {listing.offers.map(({ image_url, address, token_id }) => (
+          <HStack gap={2} className={styles.offerImageContainer}>
+            {listing.offers.map(({ name, image_url, address, token_id }) => (
               <Image
                 key={`${address}-${token_id}`}
                 alt={`Image for ${name}`}
@@ -83,11 +103,14 @@ export const ListingCard = ({ listing }: ListingCardProps) => {
                 src={image_url}
               />
             ))}
-          </SimpleGrid>
+          </HStack>
           <VStack className={styles.offerTextContainer}>
             {Array.from(offersMap.entries()).map(
               ([address, data]: [string, ItemData]) => (
-                <HStack className={styles.offerCollectionLabel} key={address}>
+                <HStack
+                  className={styles.offerCollectionLabel}
+                  key={address ?? "ethereum"}
+                >
                   <div
                     className={styles.offerCollectionLabelText}
                   >{`${data.count} ${data.symbol}`}</div>
@@ -102,7 +125,10 @@ export const ListingCard = ({ listing }: ListingCardProps) => {
         <HStack className={styles.considerationContainer}>
           {Array.from(considerationsMap.entries()).map(
             ([address, data]: [string, ItemData]) => (
-              <div className={styles.considerationItem} key={address}>
+              <div
+                className={styles.considerationItem}
+                key={address ?? "ethereum"}
+              >
                 <div
                   className={styles.considerationItemText}
                 >{`${data.count} ${data.symbol}`}</div>

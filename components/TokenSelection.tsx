@@ -140,6 +140,7 @@ const TokenSelection = ({
   };
 
   const openModal = () => {
+    setSearchText("");
     setCurrencyAmount("");
     setTab("ERC721");
     openAddTokenModal();

@@ -145,25 +145,12 @@ export const NFTConsiderationViewer = ({
   account,
 }: NFTViewerProps) => {
   const [fetchedCollections, setFetchedCollections] = useState<any[]>([]);
+  const [searchedCollections, setSearchedCollections] = useState<any[]>([]);
   const [fetchedTokens, setFetchedTokens] = useState<any[]>([]);
   const [isCollectionsLoading, setIsCollectionsLoading] =
     useState<boolean>(false);
   const [isTokensLoading, setIsTokensLoading] = useState<boolean>(false);
   const [selectedCollection, setSelectedCollection] = useState<string>("");
-
-  const filteredCollection = fetchedCollections.filter((coll) => {
-    if (
-      coll.primary_asset_contracts &&
-      coll.primary_asset_contracts[0] &&
-      coll.primary_asset_contracts[0].total_supply !== "0"
-    )
-      return coll;
-  });
-
-  const aggregatedCollections =
-    searchText.length > 40
-      ? fetchedCollections
-      : [...pinnedCollections, ...filteredCollection];
 
   useEffect(
     function fetchCollections() {
@@ -183,6 +170,7 @@ export const NFTConsiderationViewer = ({
         try {
           let response;
           if (searchText.length > 40) {
+            console.log("here");
             response = await fetch(
               `https://testnets-api.opensea.io/api/v1/assets?asset_contract_address=${searchText}&order_direction=desc&offset=0&limit=50&include_orders=false`,
               requestOptions
@@ -193,8 +181,7 @@ export const NFTConsiderationViewer = ({
             const { assets } = await response.json();
             const { asset_contract, image_url } = assets[0];
             asset_contract.image_url = image_url;
-            setFetchedCollections([asset_contract]);
-            console.log("assets: ", assets);
+            setSearchedCollections([asset_contract]);
           } else {
             response = await fetch(
               "https://testnets-api.opensea.io/api/v1/collections?offset=0&limit=300",
@@ -242,7 +229,6 @@ export const NFTConsiderationViewer = ({
         throw new Error(`Error! status: ${response.status}`);
       }
 
-      console.log("fetched data: ", assets);
       setFetchedTokens(assets);
     } catch (err) {
       console.log(`Error fetching collections from Opensea: ${err}`);
@@ -255,6 +241,28 @@ export const NFTConsiderationViewer = ({
     setSelectedCollection(address);
     fetchCollectionTokens(address);
   };
+
+  const filteredCollection = fetchedCollections.filter((coll) => {
+    if (
+      coll.primary_asset_contracts &&
+      coll.primary_asset_contracts[0] &&
+      coll.primary_asset_contracts[0].total_supply !== "0"
+    )
+      return coll;
+  });
+
+  // opensea returns duplicate collections which renders DOM errors
+  const uniqueCollections = filteredCollection.reduce((unique, o) => {
+    if (!unique.some((obj) => obj.name === o.name)) {
+      unique.push(o);
+    }
+    return unique;
+  }, []);
+
+  const aggregatedCollections =
+    searchText.length > 40
+      ? searchedCollections
+      : [...pinnedCollections, ...uniqueCollections];
 
   return (
     <div className={styles.container}>

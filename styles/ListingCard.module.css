@@ -9,6 +9,9 @@
   border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: 10px;
   padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .offerHeader {
@@ -28,8 +31,6 @@
 .offerHeaderButton {
   width: 156px;
   height: 38px;
-  left: 636px;
-  top: 222px;
 
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.5);
@@ -92,6 +93,17 @@
   height: 140px;
 
   border-radius: 10px;
+}
+
+.offerImageContainer {
+  width: 450px;
+  overflow-y: hidden;
+  overflow-x: scroll;
+}
+
+.offerImageContainer::-webkit-scrollbar {
+  width: 0; /* Remove scrollbar space */
+  background: transparent; /* Optional: just make scrollbar invisible */
 }
 
 .considerationHeader {

@@ -5,6 +5,7 @@ import { ListingCard } from "../components/ListingCard";
 import { Button, SimpleGrid } from "@chakra-ui/react";
 import Link from "next/link";
 import { OrderWithMetadata } from "types/tokenTypes";
+import { parseEther } from "ethers/lib/utils";
 
 type ListingsProps = {
   address?: string;

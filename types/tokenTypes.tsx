@@ -13,7 +13,7 @@ export type OfferItem = {
   name: string;
   image_url: string;
   token_id: string;
-  address: string;
+  address?: string;
   collectionName: string;
   symbol: string;
 };
@@ -24,7 +24,7 @@ export type ConsiderationItem = {
   name: string;
   image_url: string;
   token_id: string;
-  address: string;
+  address?: string;
   collectionName: string;
   symbol: string;
 };

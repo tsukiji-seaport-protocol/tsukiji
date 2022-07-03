@@ -33,9 +33,7 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
           <Link href="/create">
             <Button className={styles.drawerButton}>CREATE</Button>
           </Link>
-          <Button className={styles.drawerButton}>RANKINGS</Button>
           <Button className={styles.drawerButton}>HOW IT WORKS</Button>
-          <Button className={styles.drawerButton}>BLOG</Button>
         </DrawerBody>
 
         <DrawerFooter className={styles.drawerFooter}>

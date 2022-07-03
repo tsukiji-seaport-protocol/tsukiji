@@ -3,11 +3,8 @@ import {
   Box,
   Button,
   HStack,
-  NumberInputField,
-  NumberInput,
   Spacer,
   Text,
-  InputGroup,
   VStack,
 } from "@chakra-ui/react";
 import type { NextPage } from "next";
@@ -27,8 +24,8 @@ import {
 } from "types/tokenTypes";
 import { NavBar } from "../components/NavBar";
 import { TokenSelection } from "@components/TokenSelection";
+import { Switch } from "@chakra-ui/react";
 import { ItemType } from "@opensea/seaport-js/lib/constants";
-import { connectorsForWallets } from "@rainbow-me/rainbowkit";
 
 const Home: NextPage = () => {
   const { data: accountData } = useAccount();
@@ -44,6 +41,8 @@ const Home: NextPage = () => {
 
   const [loading, setLoading] = useState<boolean>(false);
   const [txnsuccess, setTxnSuccess] = useState<boolean>(false);
+
+  const [isWETH, setIsWETH] = useState<boolean>(false);
 
   const ethersProvider = new providers.Web3Provider(
     window.ethereum as providers.ExternalProvider
@@ -100,8 +99,37 @@ const Home: NextPage = () => {
 
   const handleSelectDuration = (e: any) => {
     e.preventDefault();
-    console.log("selected: ", e.target.value);
     setDuration(Number(e.target.value));
+  };
+
+  const handleCurrencySwitch = (e: any) => {
+    const wethSelected = e.target.checked;
+
+    // remove ETH from order if WETH selected
+    if (wethSelected) {
+      const newOfferItems = offerItems.filter(
+        ({ type }) => type !== ItemType.NATIVE
+      );
+      const newConsiderationItems = considerationItems.filter(
+        ({ type }) => type !== ItemType.NATIVE
+      );
+      setOfferItems(newOfferItems);
+      setConsiderationItems(newConsiderationItems);
+    }
+
+    // remove WETH from order if ETH selected
+    if (!wethSelected) {
+      const newOfferItems = offerItems.filter(
+        ({ type }) => type !== ItemType.ERC20
+      );
+      const newConsiderationItems = considerationItems.filter(
+        ({ type }) => type !== ItemType.ERC20
+      );
+      setOfferItems(newOfferItems);
+      setConsiderationItems(newConsiderationItems);
+    }
+
+    setIsWETH(wethSelected);
   };
 
   return (
@@ -109,66 +137,89 @@ const Home: NextPage = () => {
       <NavBar />
       <main className={styles.main}>
         <div className={`${styles.header}`}>CREATE LISTING</div>
-        {!accountData?.address && (
+        {!accountData?.address ? (
           <Text color="white" fontSize="1.2rem" pb={5}>
             Please connect your wallet to get started.
           </Text>
+        ) : (
+          <>
+            <HStack className={styles.inputContainer}>
+              <TokenSelection
+                title="YOUR OFFER"
+                setItems={setOfferItems}
+                items={offerItems}
+                isOffer
+                account={accountData!.address!}
+                isWETH={isWETH}
+              />
+              <TokenSelection
+                title="IN EXCHANGE FOR"
+                setItems={setConsiderationItems}
+                items={considerationItems}
+                isOffer={false}
+                account={accountData!.address!}
+                isWETH={isWETH}
+              />
+            </HStack>
+
+            <HStack className={styles.bottomContainer}>
+              <HStack>
+                <Box>
+                  <Text mb="6px" color={"gray"}>
+                    Duration
+                  </Text>
+                  <div className={styles.selector}>
+                    <Select
+                      placeholder="Forever"
+                      onChange={handleSelectDuration}
+                      color="rgba(255,255,255,.7)"
+                    >
+                      <option value="86400">1 day</option>
+                      <option value="259200">3 days</option>
+                      <option value="604800">7 days</option>
+                      <option value="2592000">1 month</option>
+                    </Select>
+                  </div>
+                </Box>
+                <Spacer style={{ width: "30px" }} />
+                <Box>
+                  <Text mb="6px" color={"gray"}>
+                    Use WETH
+                  </Text>
+                  <Switch
+                    size="lg"
+                    colorScheme="teal"
+                    onChange={handleCurrencySwitch}
+                    className={styles.currencySwitch}
+                  />
+                </Box>
+              </HStack>
+
+              <Spacer style={{ width: "840px" }} />
+
+              <VStack>
+                <Button
+                  onClick={createSeaportOrder}
+                  fontSize="2xl"
+                  size="lg"
+                  disabled={
+                    !accountData?.address ||
+                    offerItems.length === 0 ||
+                    considerationItems.length === 0
+                  }
+                  className={styles.confirmListingButton}
+                >
+                  Confirm Listing
+                </Button>
+                {txnsuccess && (
+                  <div style={{ color: "white" }}>
+                    YOUR LISTING WAS SUCCESSFUL!
+                  </div>
+                )}
+              </VStack>
+            </HStack>
+          </>
         )}
-        <HStack className={styles.inputContainer}>
-          <TokenSelection
-            title="YOUR OFFER"
-            setItems={setOfferItems}
-            items={offerItems}
-            isOffer
-            account={accountData!.address!}
-          />
-          <TokenSelection
-            title="IN EXCHANGE FOR"
-            setItems={setConsiderationItems}
-            items={considerationItems}
-            isOffer={false}
-            account={accountData!.address!}
-          />
-        </HStack>
-
-        <HStack className={styles.bottomContainer}>
-          <HStack>
-            <Box>
-              <Text mb="6px" color={"gray"}>
-                Duration
-              </Text>
-              <div className={styles.selector}>
-                <Select placeholder="Duration" onChange={handleSelectDuration}>
-                  <option value="86400">1 day</option>
-                  <option value="259200">3 days</option>
-                  <option value="604800">7 days</option>
-                  <option value="2592000">1 month</option>
-                </Select>
-              </div>
-            </Box>
-          </HStack>
-
-          <Spacer style={{ width: "800px" }} />
-
-          <VStack>
-            <Button
-              onClick={createSeaportOrder}
-              fontSize="2xl"
-              size="lg"
-              disabled={
-                !accountData?.address ||
-                offerItems.length === 0 ||
-                considerationItems.length === 0
-              }
-              className={styles.confirmListingButton}
-            >
-              Confirm Listing
-            </Button>
-            {txnsuccess && (
-              <div style={{ color: "white" }}>YOUR LISTING WAS SUCCESSFUL!</div>
-            )}
-          </VStack>
-        </HStack>
       </main>
     </div>
   );

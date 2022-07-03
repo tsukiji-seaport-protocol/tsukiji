@@ -1,10 +1,6 @@
 import { ItemType } from "@opensea/seaport-js/lib/constants";
 import { OfferItem, ConsiderationItem } from "types/tokenTypes";
-import {
-  CurrencyItem,
-  CreateInputItem,
-  ConsiderationInputItem,
-} from "@opensea/seaport-js/lib/types";
+import { CurrencyItem, CreateInputItem } from "@opensea/seaport-js/lib/types";
 
 export const createOfferItem = (
   type: ItemType,
@@ -12,14 +8,14 @@ export const createOfferItem = (
   imageUrl: string,
   symbol: string,
   amount: string,
-  contractAddress: string = "",
+  contractAddress?: string,
   collectionName: string = "",
   tokenId: string = ""
 ): OfferItem => {
   let inputItem: CreateInputItem;
-  if (type === ItemType.ERC20) {
+  if (type !== ItemType.ERC721) {
     inputItem = {
-      token: contractAddress,
+      token: contractAddress ?? undefined,
       amount,
     } as CurrencyItem;
   } else {
@@ -48,12 +44,12 @@ export const createConsiderationItem = (
   symbol: string,
   amount: string,
   recipient: string,
-  contractAddress: string = "",
+  contractAddress?: string,
   collectionName: string = "",
   tokenId: string = ""
 ): ConsiderationItem => {
   let inputItem: CreateInputItem;
-  if (type === ItemType.ERC20) {
+  if (type !== ItemType.ERC721) {
     inputItem = {
       token: contractAddress,
       amount,

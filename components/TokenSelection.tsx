@@ -16,7 +16,7 @@ import { SmallCloseIcon } from "@chakra-ui/icons";
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 import { NFTViewer } from "./web3/NFTViewer";
 import { useState } from "react";
-import { ERC20Viewer } from "./web3/ERC20Viewer";
+import { CurrencyViewer } from "./web3/CurrencyViewer";
 import { InputItem } from "types/tokenTypes";
 import styles from "@styles/TokenSelection.module.css";
 import { Input } from "@chakra-ui/react";
@@ -24,6 +24,7 @@ import { ItemType } from "@opensea/seaport-js/lib/constants";
 import { createConsiderationItem, createOfferItem } from "@utils/createItem";
 import { useBalance } from "wagmi";
 import { NFTConsiderationViewer } from "./web3/NFTConsiderationViewer";
+import { formatEther, parseEther } from "ethers/lib/utils";
 
 const WETH_ADDRESS = "0xc778417E063141139Fce010982780140Aa0cD5Ab";
 
@@ -35,6 +36,7 @@ interface TokenSelectionProps {
   ) => void;
   items: InputItem[];
   account: string;
+  isWETH: boolean;
 }
 
 const TokenSelection = ({
@@ -43,6 +45,7 @@ const TokenSelection = ({
   setItems,
   items,
   account,
+  isWETH,
 }: TokenSelectionProps) => {
   const { data: ethData, isSuccess: isEthSuccess } = useBalance({
     addressOrName: account,
@@ -56,26 +59,18 @@ const TokenSelection = ({
   const [tab, setTab] = useState<string>("ERC721");
   const [searchText, setSearchText] = useState<string>("");
 
-  const [ethAmount, setEthAmount] = useState<string>("0");
-  const [wethAmount, setWethAmount] = useState<string>("0");
+  const [currencyAmount, setCurrencyAmount] = useState<string>("0");
+  // const [ethAmount, setEthAmount] = useState<string>("0");
+  // const [wethAmount, setWethAmount] = useState<string>("0");
   const [errorMessage, setErrorMessage] = useState<string>("");
 
-  const handleEthInput = (value: string) => {
-    if (isEthSuccess && Number(ethData!.formatted) < Number(value)) {
+  const handleCurrencyInput = (value: string) => {
+    if (isOffer && isEthSuccess && Number(ethData!.formatted) < Number(value)) {
       setErrorMessage("Insufficient Funds: ETH");
     } else {
       setErrorMessage("");
     }
-    setEthAmount(value);
-  };
-
-  const handleWethInput = (value: string) => {
-    if (isWethSuccess && Number(wethData!.formatted) < Number(value)) {
-      setErrorMessage("Insufficient Funds: WETH");
-    } else {
-      setErrorMessage("");
-    }
-    setWethAmount(value);
+    setCurrencyAmount(value);
   };
 
   const {
@@ -85,60 +80,69 @@ const TokenSelection = ({
   } = useDisclosure();
 
   const loadTokens = () => {
-    if (Number(ethAmount)) {
-      let ETHItem: InputItem;
+    if (Number(currencyAmount)) {
+      let CurrencyItem: InputItem;
 
-      if (isOffer) {
-        ETHItem = createOfferItem(
-          ItemType.ERC20,
-          "Ethereum",
-          "assets/eth.svg",
-          "ETH",
-          ethAmount
-        );
+      if (!isWETH) {
+        const newItems = items.filter(({ type }) => type !== ItemType.NATIVE);
+
+        const formattedAmount = parseEther(currencyAmount).toString();
+
+        if (isOffer) {
+          CurrencyItem = createOfferItem(
+            ItemType.NATIVE,
+            "Ethereum",
+            "assets/eth.svg",
+            "ETH",
+            formattedAmount
+          );
+        } else {
+          CurrencyItem = createConsiderationItem(
+            ItemType.NATIVE,
+            "Ethereum",
+            "assets/eth.svg",
+            "ETH",
+            formattedAmount,
+            account
+          );
+        }
+
+        setItems([...newItems, CurrencyItem]);
       } else {
-        ETHItem = createConsiderationItem(
-          ItemType.ERC20,
-          "Ethereum",
-          "assets/eth.svg",
-          "ETH",
-          ethAmount,
-          account
-        );
+        const newItems = items.filter(({ type }) => type !== ItemType.ERC20);
+
+        const formattedAmount = parseEther(currencyAmount).toString();
+
+        if (isOffer) {
+          CurrencyItem = createOfferItem(
+            ItemType.ERC20,
+            "Wrapped Ethereum",
+            "assets/weth.png",
+            "WETH",
+            formattedAmount,
+            WETH_ADDRESS
+          );
+        } else {
+          CurrencyItem = createConsiderationItem(
+            ItemType.ERC20,
+            "Wrapped Ethereum",
+            "assets/weth.png",
+            "WETH",
+            formattedAmount,
+            account,
+            WETH_ADDRESS
+          );
+        }
+        setItems([...newItems, CurrencyItem]);
       }
-
-      setItems((prev: InputItem[]) => [...prev, ETHItem]);
     }
-
-    if (Number(wethAmount)) {
-      let WETHItem: InputItem;
-
-      if (isOffer) {
-        WETHItem = createOfferItem(
-          ItemType.ERC20,
-          "Wrapped Ethereum",
-          "assets/weth.svg",
-          "WETH",
-          wethAmount,
-          WETH_ADDRESS
-        );
-      } else {
-        WETHItem = createConsiderationItem(
-          ItemType.ERC20,
-          "Wrapped Ethereum",
-          "assets/weth.svg",
-          "WETH",
-          wethAmount,
-          account,
-          WETH_ADDRESS
-        );
-      }
-
-      setItems((prev: InputItem[]) => [...prev, WETHItem]);
-    }
-    setEthAmount("");
-    setWethAmount("");
     closeAddTokenModal();
+  };
+
+  const openModal = () => {
+    setCurrencyAmount("");
+    setTab("ERC721");
+    openAddTokenModal();
   };
 
   const removeItem = (address: string, tokenId: string) => {
@@ -173,7 +177,7 @@ const TokenSelection = ({
         <Button
           className={styles.addAssetButton}
           variant=""
-          onClick={openAddTokenModal}
+          onClick={openModal}
           disabled={!account}
         >
           ADD ASSETS
@@ -191,7 +195,7 @@ const TokenSelection = ({
                   ERC721
                 </Tab>
                 <Tab className={styles.tab} onClick={() => setTab("ERC20")}>
-                  ERC20
+                  Currency
                 </Tab>
               </TabList>
               <TabPanels>
@@ -215,13 +219,11 @@ const TokenSelection = ({
                   )}
                 </TabPanel>
                 <TabPanel>
-                  <ERC20Viewer
+                  <CurrencyViewer
                     {...{
-                      wethData,
-                      ethAmount,
-                      wethAmount,
-                      handleEthInput,
-                      handleWethInput,
+                      isWETH,
+                      currencyAmount,
+                      handleCurrencyInput,
                       errorMessage,
                     }}
                   />
@@ -294,7 +296,7 @@ const ListItem = ({ item, isLight, removeItem }: ListItemProps) => {
       </VStack>
 
       <div className={styles.listItemQuantity}>
-        {isNFT ? `1 ${symbol}` : `${Number(inputItem.amount)} ${symbol}`}
+        {isNFT ? `1 ${symbol}` : `${formatEther(inputItem.amount)} ${symbol}`}
       </div>
 
       <IconButton

@@ -226,7 +226,7 @@ interface NFTViewerCardProps {
   ) => void;
   isOffer: boolean;
   symbol: string;
-  recipient: string;
+  recipient?: string;
 }
 
 const NFTViewerCard = ({
@@ -239,7 +239,7 @@ const NFTViewerCard = ({
   setItems,
   isOffer,
   symbol,
-  recipient,
+  recipient = "",
 }: NFTViewerCardProps) => {
   const selected = !!items.find(
     (token) =>
@@ -375,55 +375,60 @@ export const NFTViewer = ({
           {"Oops, looks like you don't own any tokens."}
         </Box>
       )}
-      {isLoading && <Spinner />}
-      {!isLoading && fetchedTokens && (
-        <SimpleGrid columns={[2, 3, 4]} spacing={5} maxHeight={"50vh"}>
-          {isOffer
-            ? filteredTokens.map(
-                ({ name, image_url, token_id, asset_contract }) => (
-                  <NFTViewerCard
-                    key={`${asset_contract.address}-${token_id}`}
-                    {...{
-                      name,
-                      imageUrl: image_url,
-                      tokenId: token_id,
-                      contractAddress: asset_contract.address,
-                      collectionName: asset_contract.name,
-                      items,
-                      setItems,
-                      isOffer,
-                      symbol: asset_contract.symbol,
-                      recipient: account,
-                    }}
-                  />
+      {isLoading ? (
+        <Box width="100%" display="flex" justifyContent="center">
+          <Spinner color="white" />
+        </Box>
+      ) : (
+        fetchedTokens && (
+          <SimpleGrid columns={[2, 3, 4]} spacing={5} maxHeight={"50vh"}>
+            {isOffer
+              ? filteredTokens.map(
+                  ({ name, image_url, token_id, asset_contract }) => (
+                    <NFTViewerCard
+                      key={`${asset_contract.address}-${token_id}`}
+                      {...{
+                        name,
+                        imageUrl: image_url,
+                        tokenId: token_id,
+                        contractAddress: asset_contract.address,
+                        collectionName: asset_contract.name,
+                        items,
+                        setItems,
+                        isOffer,
+                        symbol: asset_contract.symbol,
+                        recipient: account,
+                      }}
+                    />
+                  )
                 )
-              )
-            : filteredTokens.map(
-                ({
-                  name,
-                  image_url,
-                  token_id,
-                  address,
-                  collectionName,
-                  symbol,
-                }) => (
-                  <NFTViewerCard
-                    key={`${address}-${token_id}`}
-                    {...{
-                      name,
-                      imageUrl: image_url,
-                      tokenId: token_id,
-                      contractAddress: address,
-                      collectionName: collectionName,
-                      items,
-                      setItems,
-                      isOffer,
-                      symbol: symbol,
-                    }}
-                  />
-                )
-              )}
-        </SimpleGrid>
+              : filteredTokens.map(
+                  ({
+                    name,
+                    image_url,
+                    token_id,
+                    address,
+                    collectionName,
+                    symbol,
+                  }) => (
+                    <NFTViewerCard
+                      key={`${address}-${token_id}`}
+                      {...{
+                        name,
+                        imageUrl: image_url,
+                        tokenId: token_id,
+                        contractAddress: address,
+                        collectionName: collectionName,
+                        items,
+                        setItems,
+                        isOffer,
+                        symbol: symbol,
+                      }}
+                    />
+                  )
+                )}
+          </SimpleGrid>
+        )
       )}
       {searchText && filteredTokens.length === 0 && (
         <Box className={styles.noResultMessage}>

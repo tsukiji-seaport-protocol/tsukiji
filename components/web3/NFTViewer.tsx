@@ -1,21 +1,11 @@
-import {
-  Box,
-  Image,
-  SimpleGrid,
-  Spinner,
-  styled,
-  VStack,
-} from "@chakra-ui/react";
+import { Box, Image, SimpleGrid, Spinner, VStack } from "@chakra-ui/react";
 import { abridgeAddress } from "@utils/abridgeAddress";
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import { ItemType } from "@opensea/seaport-js/lib/constants";
-import { InputItem, OfferItem, ConsiderationItem } from "types/tokenTypes";
-import {
-  CreateInputItem,
-  ConsiderationInputItem,
-} from "@opensea/seaport-js/lib/types";
+import { InputItem } from "types/tokenTypes";
 import styles from "@styles/TokenSelection.module.css";
+import { createOfferItem, createConsiderationItem } from "@utils/createItem";
 
 const dummyData = [
   {
@@ -236,6 +226,7 @@ interface NFTViewerCardProps {
   ) => void;
   isOffer: boolean;
   symbol: string;
+  recipient: string;
 }
 
 const NFTViewerCard = ({
@@ -248,60 +239,12 @@ const NFTViewerCard = ({
   setItems,
   isOffer,
   symbol,
+  recipient,
 }: NFTViewerCardProps) => {
   const selected = !!items.find(
     (token) =>
       `${token.address}-${token.token_id}` === `${contractAddress}-${tokenId}`
   );
-
-  const createOfferItem = (
-    name: string,
-    imageUrl: string,
-    contractAddress: string,
-    tokenId: string,
-    collectionName: string,
-    symbol: string
-  ): OfferItem => {
-    const inputItem: CreateInputItem = {
-      itemType: ItemType.ERC721,
-      token: contractAddress,
-      identifier: tokenId,
-    };
-    return {
-      inputItem,
-      name,
-      collectionName,
-      image_url: imageUrl,
-      token_id: tokenId,
-      address: contractAddress,
-      symbol: symbol,
-    };
-  };
-
-  const createConsiderationItem = (
-    name: string,
-    imageUrl: string,
-    contractAddress: string,
-    tokenId: string,
-    collectionName: string,
-    symbol: string
-  ): ConsiderationItem => {
-    const inputItem: ConsiderationInputItem = {
-      itemType: ItemType.ERC721,
-      token: contractAddress,
-      identifier: tokenId,
-      recipient: "0x17e547d79C04D01E49fEa275Cf32ba06554f9dF7",
-    };
-    return {
-      inputItem,
-      name,
-      collectionName,
-      image_url: imageUrl,
-      token_id: tokenId,
-      address: contractAddress,
-      symbol: symbol,
-    };
-  };
 
   const selectNFT = () => {
     if (selected) {
@@ -318,20 +261,25 @@ const NFTViewerCard = ({
         ...prev,
         isOffer
           ? createOfferItem(
+              ItemType.ERC721,
               name,
               imageUrl,
+              symbol,
+              "1",
               contractAddress,
-              tokenId,
               collectionName,
-              symbol
+              tokenId
             )
           : createConsiderationItem(
+              ItemType.ERC721,
               name,
               imageUrl,
+              symbol,
+              "1",
+              recipient,
               contractAddress,
-              tokenId,
               collectionName,
-              symbol
+              tokenId
             ),
       ]);
     }
@@ -363,12 +311,23 @@ interface NFTViewerProps {
     tokens: InputItem[] | ((prevState: InputItem[]) => InputItem[])
   ) => void;
   isOffer: boolean;
+  searchText: string;
+  account: string;
 }
 
-export const NFTViewer = ({ items, setItems, isOffer }: NFTViewerProps) => {
+export const NFTViewer = ({
+  items,
+  setItems,
+  isOffer,
+  searchText,
+  account,
+}: NFTViewerProps) => {
   const [fetchedTokens, setFetchedTokens] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { data: accountData } = useAccount();
+
+  const filteredTokens = fetchedTokens.filter((token) =>
+    token.collection.name.toLowerCase().includes(searchText.toLowerCase())
+  );
 
   useEffect(
     function fetchData() {
@@ -376,6 +335,7 @@ export const NFTViewer = ({ items, setItems, isOffer }: NFTViewerProps) => {
         setFetchedTokens(dummyData);
         return;
       }
+      setIsLoading(true);
 
       const requestHeaders: HeadersInit = {
         Accept: "application/json",
@@ -388,18 +348,14 @@ export const NFTViewer = ({ items, setItems, isOffer }: NFTViewerProps) => {
       };
 
       const fetchData = async () => {
-        setIsLoading(true);
-        if (!accountData?.address) {
-          setIsLoading(false);
-          return;
-        }
         try {
           const response = await fetch(
-            `https://testnets-api.opensea.io/api/v1/assets?owner=${accountData?.address}&limit=200&include_orders=false`,
+            `https://testnets-api.opensea.io/api/v1/assets?owner=${account}&limit=200&include_orders=false`,
             requestOptions
           );
           const { assets } = await response.json();
           setFetchedTokens(assets);
+          console.log("fetched assets: ", assets);
         } catch (err) {
           console.log(`Error fetching assets from Opensea: ${err}`);
           return new Error(`Error fetching assets from Opensea: ${err}`);
@@ -409,21 +365,21 @@ export const NFTViewer = ({ items, setItems, isOffer }: NFTViewerProps) => {
 
       fetchData();
     },
-    [accountData?.address, isOffer]
+    [account, isOffer]
   );
 
   return (
     <div className={styles.grid}>
+      {fetchedTokens.length === 0 && (
+        <Box className={styles.noTokensMessage}>
+          {"Oops, looks like you don't own any tokens."}
+        </Box>
+      )}
       {isLoading && <Spinner />}
       {!isLoading && fetchedTokens && (
-        <SimpleGrid
-          columns={[2, 3, 4]}
-          spacing={5}
-          maxHeight={"50vh"}
-          overflow="scroll"
-        >
+        <SimpleGrid columns={[2, 3, 4]} spacing={5} maxHeight={"50vh"}>
           {isOffer
-            ? fetchedTokens.map(
+            ? filteredTokens.map(
                 ({ name, image_url, token_id, asset_contract }) => (
                   <NFTViewerCard
                     key={`${asset_contract.address}-${token_id}`}
@@ -437,11 +393,12 @@ export const NFTViewer = ({ items, setItems, isOffer }: NFTViewerProps) => {
                       setItems,
                       isOffer,
                       symbol: asset_contract.symbol,
+                      recipient: account,
                     }}
                   />
                 )
               )
-            : fetchedTokens.map(
+            : filteredTokens.map(
                 ({
                   name,
                   image_url,
@@ -467,6 +424,13 @@ export const NFTViewer = ({ items, setItems, isOffer }: NFTViewerProps) => {
                 )
               )}
         </SimpleGrid>
+      )}
+      {searchText && filteredTokens.length === 0 && (
+        <Box className={styles.noResultMessage}>
+          {
+            "Sorry, we couldn't find any tokens in your wallet for your search :("
+          }
+        </Box>
       )}
     </div>
   );

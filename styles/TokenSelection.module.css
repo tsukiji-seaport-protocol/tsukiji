@@ -127,14 +127,44 @@
 
 .tab[aria-selected="true"] {
   color: white !important;
+  transition: .3s;
 }
 
 .tab[aria-selected="false"] {
   border-color: grey !important;
   color: grey;
+  transition: .3s;
+}
+
+.tab:active {
+  background-color: black !important;
 }
 
 .grid {
   height: 540px;
-  overflow:scroll;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.grid::-webkit-scrollbar {
+  width: 0;  /* Remove scrollbar space */
+  background: transparent;  /* Optional: just make scrollbar invisible */
+}
+
+.tabPanel {
+  overflow: hidden;
+}
+
+.noTokenMessage {
+  width: 100%;
+  text-align: center;
+  color: white;
+}
+
+.noResultMessage {
+  width: 100%;
+  text-align: center;
+  color: white;
 }

@@ -1,20 +1,14 @@
-import { ItemType, OrderType } from "@opensea/seaport-js/lib/constants";
+import { ItemType } from "@opensea/seaport-js/lib/constants";
 import {
   ConsiderationInputItem,
   CreateInputItem,
   OrderWithCounter,
 } from "@opensea/seaport-js/lib/types";
-import { BigNumberish } from "ethers";
-
-export interface ERC20Amount {
-  address: string;
-  name: string;
-  amount: string;
-}
 
 export type InputItem = OfferItem | ConsiderationItem;
 
 export type OfferItem = {
+  type: ItemType;
   inputItem: CreateInputItem;
   name: string;
   image_url: string;
@@ -25,6 +19,7 @@ export type OfferItem = {
 };
 
 export type ConsiderationItem = {
+  type: ItemType;
   inputItem: ConsiderationInputItem;
   name: string;
   image_url: string;

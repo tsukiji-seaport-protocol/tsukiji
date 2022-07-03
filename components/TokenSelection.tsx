@@ -1,14 +1,10 @@
 import {
-  Box,
   Button,
-  Flex,
   HStack,
   Modal,
   ModalBody,
-  ModalCloseButton,
   ModalContent,
   ModalFooter,
-  ModalHeader,
   ModalOverlay,
   Text,
   useDisclosure,
@@ -16,162 +12,20 @@ import {
   Image,
   IconButton,
 } from "@chakra-ui/react";
-import { AddIcon, SmallCloseIcon } from "@chakra-ui/icons";
+import { SmallCloseIcon } from "@chakra-ui/icons";
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 import { NFTViewer } from "./web3/NFTViewer";
 import { useState } from "react";
 import { ERC20Viewer } from "./web3/ERC20Viewer";
-import { ERC20Amount, InputItem } from "types/tokenTypes";
+import { InputItem } from "types/tokenTypes";
 import styles from "@styles/TokenSelection.module.css";
 import { Input } from "@chakra-ui/react";
 import { ItemType } from "@opensea/seaport-js/lib/constants";
+import { createConsiderationItem, createOfferItem } from "@utils/createItem";
+import { useBalance } from "wagmi";
+import { NFTConsiderationViewer } from "./web3/NFTConsiderationViewer";
 
-const dummyData = [
-  {
-    inputItem: {
-      itemType: ItemType.ERC721,
-      token: "0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e",
-      identifier: 582,
-    },
-    name: "Azuki #582",
-    image_url:
-      "https://gateway.pinata.cloud/ipfs/QmfDVMnhvkULBUszfb8nVq6uRRPzafVymzJqUsqqSAH4DQ/1.png",
-    token_id: "582",
-    address: "0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e",
-    collectionName: "Azuki",
-    symbol: "AZUKI",
-  },
-  {
-    inputItem: {
-      itemType: ItemType.ERC721,
-      token: "0xfc3e0d0c54a7b7ea9c5bb976a46dcdbdade7cd3e",
-      identifier: 2294,
-    },
-    name: "Punk #2294",
-    image_url:
-      "https://gateway.pinata.cloud/ipfs/QmfDVMnhvkULBUszfb8nVq6uRRPzafVymzJqUsqqSAH4DQ/10.png",
-    token_id: "326",
-    address: "0xfc3e0d0c54a7b7ea9c5bb976a46dcdbdade7cd3e",
-    collectionName: "CryptoPunks",
-    symbol: "PUNK",
-  },
-  {
-    inputItem: {
-      itemType: ItemType.ERC721,
-      token: "0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e",
-      identifier: 68,
-    },
-    name: "Doodle #68",
-    image_url:
-      "https://gateway.pinata.cloud/ipfs/QmfDVMnhvkULBUszfb8nVq6uRRPzafVymzJqUsqqSAH4DQ/2.png",
-    token_id: "68",
-    address: "0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e",
-    collectionName: "Doodles",
-    symbol: "DOODLE",
-  },
-  {
-    inputItem: {
-      itemType: ItemType.ERC721,
-      token: "0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e",
-      identifier: 1478,
-    },
-    name: "MAYC #1478",
-    image_url:
-      "https://gateway.pinata.cloud/ipfs/QmfDVMnhvkULBUszfb8nVq6uRRPzafVymzJqUsqqSAH4DQ/21.png",
-    token_id: "1478",
-    address: "0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e",
-    collectionName: "Mutant Ape Yacht Club",
-    symbol: "MAYC",
-  },
-  {
-    inputItem: {
-      itemType: ItemType.ERC721,
-      token: "0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e",
-      identifier: 2938,
-    },
-    name: "Azuki #2938",
-    image_url:
-      "https://gateway.pinata.cloud/ipfs/QmfDVMnhvkULBUszfb8nVq6uRRPzafVymzJqUsqqSAH4DQ/8.jpg",
-    token_id: "2938",
-    address: "0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e",
-    collectionName: "Azuki",
-    symbol: "AZUKI",
-  },
-
-  {
-    inputItem: {
-      itemType: ItemType.ERC721,
-      token: "0xfc3e0d0c54a7b7ea9c5bb976a46dcdbdade7cd3e",
-      identifier: 24,
-    },
-    name: "Punk #24",
-    image_url:
-      "https://gateway.pinata.cloud/ipfs/QmfDVMnhvkULBUszfb8nVq6uRRPzafVymzJqUsqqSAH4DQ/9.png",
-    token_id: "24",
-    address: "0xfc3e0d0c54a7b7ea9c5bb976a46dcdbdade7cd3e",
-    collectionName: "CryptoPunks",
-    symbol: "PUNK",
-  },
-
-  {
-    inputItem: {
-      itemType: ItemType.ERC721,
-      token: "0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e",
-      identifier: 8482,
-    },
-    name: "Doodle #8482",
-    image_url:
-      "https://gateway.pinata.cloud/ipfs/QmfDVMnhvkULBUszfb8nVq6uRRPzafVymzJqUsqqSAH4DQ/7.png",
-    token_id: "8482",
-    address: "0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e",
-    collectionName: "Doodles",
-    symbol: "DOODLE",
-  },
-
-  {
-    inputItem: {
-      itemType: ItemType.ERC721,
-      token: "0xfc3e0d0c54a7b7ea9c5bb976a46dcdbdade7cd3e",
-      identifier: 3859,
-    },
-    name: "Punk #3859",
-    image_url:
-      "https://gateway.pinata.cloud/ipfs/QmfDVMnhvkULBUszfb8nVq6uRRPzafVymzJqUsqqSAH4DQ/22.png",
-    token_id: "3859",
-    address: "0xfc3e0d0c54a7b7ea9c5bb976a46dcdbdade7cd3e",
-    collectionName: "CryptoPunks",
-    symbol: "PUNK",
-  },
-
-  {
-    inputItem: {
-      itemType: ItemType.ERC721,
-      token: "0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e",
-      identifier: 13,
-    },
-    name: "Azuki #13",
-    image_url:
-      "https://gateway.pinata.cloud/ipfs/QmfDVMnhvkULBUszfb8nVq6uRRPzafVymzJqUsqqSAH4DQ/17.jpg",
-    token_id: "13",
-    address: "0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e",
-    collectionName: "Azuki",
-    symbol: "AZUKI",
-  },
-  {
-    inputItem: {
-      itemType: ItemType.ERC721,
-      token: "0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e",
-      identifier: 2084,
-    },
-    name: "Doodles #2084",
-    image_url:
-      "https://gateway.pinata.cloud/ipfs/QmfDVMnhvkULBUszfb8nVq6uRRPzafVymzJqUsqqSAH4DQ/5.png",
-    token_id: "2084",
-    address: "0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e",
-    collectionName: "Doodles",
-    symbol: "DOODLE",
-  },
-];
+const WETH_ADDRESS = "0xc778417E063141139Fce010982780140Aa0cD5Ab";
 
 interface TokenSelectionProps {
   title: string;
@@ -180,7 +34,7 @@ interface TokenSelectionProps {
     value: InputItem[] | ((prevState: InputItem[]) => InputItem[])
   ) => void;
   items: InputItem[];
-  account?: string;
+  account: string;
 }
 
 const TokenSelection = ({
@@ -190,20 +44,100 @@ const TokenSelection = ({
   items,
   account,
 }: TokenSelectionProps) => {
+  const { data: ethData, isSuccess: isEthSuccess } = useBalance({
+    addressOrName: account,
+  });
+
+  const { data: wethData, isSuccess: isWethSuccess } = useBalance({
+    addressOrName: account,
+    token: WETH_ADDRESS,
+  });
+
+  const [tab, setTab] = useState<string>("ERC721");
+  const [searchText, setSearchText] = useState<string>("");
+
+  const [ethAmount, setEthAmount] = useState<string>("0");
+  const [wethAmount, setWethAmount] = useState<string>("0");
+  const [errorMessage, setErrorMessage] = useState<string>("");
+
+  const handleEthInput = (value: string) => {
+    if (isEthSuccess && Number(ethData!.formatted) < Number(value)) {
+      setErrorMessage("Insufficient Funds: ETH");
+    } else {
+      setErrorMessage("");
+    }
+    setEthAmount(value);
+  };
+
+  const handleWethInput = (value: string) => {
+    if (isWethSuccess && Number(wethData!.formatted) < Number(value)) {
+      setErrorMessage("Insufficient Funds: WETH");
+    } else {
+      setErrorMessage("");
+    }
+    setWethAmount(value);
+  };
+
   const {
     isOpen,
     onOpen: openAddTokenModal,
     onClose: closeAddTokenModal,
   } = useDisclosure();
 
-  // TODO: remove hard code
-  const [eth, setETH] = useState<ERC20Amount>({
-    address: "",
-    name: " eth",
-    amount: "0",
-  });
+  const loadTokens = () => {
+    if (Number(ethAmount)) {
+      let ETHItem: InputItem;
 
-  const addNewToken = () => {
+      if (isOffer) {
+        ETHItem = createOfferItem(
+          ItemType.ERC20,
+          "Ethereum",
+          "assets/eth.svg",
+          "ETH",
+          ethAmount
+        );
+      } else {
+        ETHItem = createConsiderationItem(
+          ItemType.ERC20,
+          "Ethereum",
+          "assets/eth.svg",
+          "ETH",
+          ethAmount,
+          account
+        );
+      }
+
+      setItems((prev: InputItem[]) => [...prev, ETHItem]);
+    }
+
+    if (Number(wethAmount)) {
+      let WETHItem: InputItem;
+
+      if (isOffer) {
+        WETHItem = createOfferItem(
+          ItemType.ERC20,
+          "Wrapped Ethereum",
+          "assets/weth.svg",
+          "WETH",
+          wethAmount,
+          WETH_ADDRESS
+        );
+      } else {
+        WETHItem = createConsiderationItem(
+          ItemType.ERC20,
+          "Wrapped Ethereum",
+          "assets/weth.svg",
+          "WETH",
+          wethAmount,
+          account,
+          WETH_ADDRESS
+        );
+      }
+
+      setItems((prev: InputItem[]) => [...prev, WETHItem]);
+    }
+    setEthAmount("");
+    setWethAmount("");
     closeAddTokenModal();
   };
 
@@ -213,6 +147,11 @@ const TokenSelection = ({
         `${token.address}-${token.token_id}` !== `${address}-${tokenId}`
     );
     setItems(filteredItems);
+  };
+
+  const handleSearch = (e: any) => {
+    e.preventDefault();
+    setSearchText(e.target.value);
   };
 
   return (
@@ -248,37 +187,72 @@ const TokenSelection = ({
           <ModalBody className={styles.modalBody}>
             <Tabs isFitted>
               <TabList>
-                <Tab className={styles.tab}>ERC721</Tab>
-                <Tab className={styles.tab}>ERC20</Tab>
+                <Tab className={styles.tab} onClick={() => setTab("ERC721")}>
+                  ERC721
+                </Tab>
+                <Tab className={styles.tab} onClick={() => setTab("ERC20")}>
+                  ERC20
+                </Tab>
               </TabList>
               <TabPanels>
-                <TabPanel>
-                  <NFTViewer
-                    items={items}
-                    setItems={setItems}
-                    isOffer={isOffer}
-                  />
+                <TabPanel className={styles.tabPanel}>
+                  {isOffer ? (
+                    <NFTViewer
+                      items={items}
+                      setItems={setItems}
+                      isOffer={isOffer}
+                      searchText={searchText}
+                      account={account}
+                    />
+                  ) : (
+                    <NFTConsiderationViewer
+                      items={items}
+                      setItems={setItems}
+                      isOffer={isOffer}
+                      searchText={searchText}
+                      account={account}
+                    />
+                  )}
                 </TabPanel>
                 <TabPanel>
-                  <ERC20Viewer {...{ eth, setETH }} />
+                  <ERC20Viewer
+                    {...{
+                      wethData,
+                      ethAmount,
+                      wethAmount,
+                      handleEthInput,
+                      handleWethInput,
+                      errorMessage,
+                    }}
+                  />
                 </TabPanel>
               </TabPanels>
             </Tabs>
           </ModalBody>
           <ModalFooter width={"100%"} alignContent="space-between">
-            <Input
-              style={{ color: "white" }}
-              placeholder="Search Contract Address"
-            />
+            {tab === "ERC721" && (
+              <Input
+                style={{ color: "white" }}
+                placeholder="Search by Collection Name"
+                value={searchText}
+                onChange={handleSearch}
+              />
+            )}
             <Text
               px={3}
               fontStyle="italic"
               style={{ color: "rgba(255, 255, 255, 0.5)" }}
             >
-              {items.length} NFTs selected
+              {tab === "ERC721" && `${items.length} NFTs selected`}
             </Text>
-            <Button colorScheme="white" mr={3} onClick={addNewToken} pl={4}>
-              Update
+            <Button
+              colorScheme="white"
+              mr={3}
+              onClick={loadTokens}
+              pl={4}
+              disabled={!!errorMessage}
+            >
+              Add
             </Button>
           </ModalFooter>
         </ModalContent>
@@ -294,6 +268,10 @@ type ListItemProps = {
 };
 
 const ListItem = ({ item, isLight, removeItem }: ListItemProps) => {
+  const isNFT = item.type === ItemType.ERC721;
+
+  const { name, collectionName, address, token_id, inputItem, symbol } = item;
+
   return (
     <HStack
       className={`${styles.listItemContainer} ${isLight && styles.light}`}
@@ -306,21 +284,25 @@ const ListItem = ({ item, isLight, removeItem }: ListItemProps) => {
         className={styles.listItemImage}
       />
       <VStack className={styles.listItemLabel}>
-        <div className={styles.listItemTitle}>{item.collectionName}</div>
+        <div className={styles.listItemTitle}>
+          {isNFT ? collectionName : name}
+        </div>
 
-        <div
-          className={styles.listItemSubtitle}
-        >{`Token ID: ${item.token_id}`}</div>
+        <div className={styles.listItemSubtitle}>
+          {isNFT ? `Token ID: ${token_id}` : ""}
+        </div>
       </VStack>
 
-      <div className={styles.listItemQuantity}>{`1 ${item.symbol}`}</div>
+      <div className={styles.listItemQuantity}>
+        {isNFT ? `1 ${symbol}` : `${Number(inputItem.amount)} ${symbol}`}
+      </div>
 
       <IconButton
         className={styles.listItemRemoveIcon}
         colorScheme=""
         aria-label="Search database"
         icon={<SmallCloseIcon />}
-        onClick={() => removeItem(item.address, item.token_id)}
+        onClick={() => removeItem(address, token_id)}
       />
     </HStack>
   );

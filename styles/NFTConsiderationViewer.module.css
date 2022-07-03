@@ -1,0 +1,44 @@
+.container {
+  display: flex;
+}
+
+.collectionGrid {
+  height: 540px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  align-items: flex-start;
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+  width: 100%;
+}
+
+.collectionGrid::-webkit-scrollbar {
+  width: 0; /* Remove scrollbar space */
+  background: transparent; /* Optional: just make scrollbar invisible */
+}
+
+.tokenGrid {
+  height: 540px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  align-items: flex-start;
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+  width: 100%;
+}
+
+.tokenGrid::-webkit-scrollbar {
+  width: 0; /* Remove scrollbar space */
+  background: transparent; /* Optional: just make scrollbar invisible */
+}
+
+.collectionRow {
+  color: rgba(255, 255, 255, 0.7);
+  padding: 1rem;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.collectionRow:hover {
+  color: rgba(255, 255, 255, 1);
+}

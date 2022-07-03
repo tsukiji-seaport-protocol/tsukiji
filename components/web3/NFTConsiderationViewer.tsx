@@ -9,7 +9,7 @@ import {
   Center,
   Divider,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ItemType } from "@opensea/seaport-js/lib/constants";
 import { InputItem } from "types/tokenTypes";
 import styles from "@styles/NFTConsiderationViewer.module.css";
@@ -153,46 +153,74 @@ export const NFTConsiderationViewer = ({
 
   const filteredCollection = fetchedCollections.filter((coll) => {
     if (
+      coll.primary_asset_contracts &&
       coll.primary_asset_contracts[0] &&
       coll.primary_asset_contracts[0].total_supply !== "0"
     )
       return coll;
   });
 
-  const aggregatedCollections = [...pinnedCollections, ...filteredCollection];
+  const aggregatedCollections =
+    searchText.length > 40
+      ? fetchedCollections
+      : [...pinnedCollections, ...filteredCollection];
 
-  useEffect(function fetchCollections() {
-    setIsCollectionsLoading(true);
-    const requestHeaders: HeadersInit = {
-      Accept: "application/json",
-      "X-API-KEY": process.env.NEXT_PUBLIC_OPENSEA_API_KEY ?? "",
-    };
+  useEffect(
+    function fetchCollections() {
+      setIsCollectionsLoading(true);
 
-    const requestOptions: RequestInit = {
-      method: "GET",
-      headers: requestHeaders,
-    };
+      const requestHeaders: HeadersInit = {
+        Accept: "application/json",
+        "X-API-KEY": process.env.NEXT_PUBLIC_OPENSEA_API_KEY ?? "",
+      };
 
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          "https://testnets-api.opensea.io/api/v1/collections?offset=0&limit=300",
-          requestOptions
-        );
-        const { collections } = await response.json();
-        setFetchedCollections(collections);
-        console.log("fetched collections: ", collections);
-      } catch (err) {
-        console.log(`Error fetching collections from Opensea: ${err}`);
-        return new Error(`Error fetching collections from Opensea: ${err}`);
-      }
-      setIsCollectionsLoading(false);
-    };
+      const requestOptions: RequestInit = {
+        method: "GET",
+        headers: requestHeaders,
+      };
 
-    fetchData();
-  }, []);
+      const fetchData = async () => {
+        try {
+          let response;
+          if (searchText.length > 40) {
+            response = await fetch(
+              `https://testnets-api.opensea.io/api/v1/assets?asset_contract_address=${searchText}&order_direction=desc&offset=0&limit=50&include_orders=false`,
+              requestOptions
+            );
+            if (!response.ok) {
+              throw new Error(`Error! status: ${response.status}`);
+            }
+            const { assets } = await response.json();
+            const { asset_contract, image_url } = assets[0];
+            asset_contract.image_url = image_url;
+            setFetchedCollections([asset_contract]);
+            console.log("assets: ", assets);
+          } else {
+            response = await fetch(
+              "https://testnets-api.opensea.io/api/v1/collections?offset=0&limit=300",
+              requestOptions
+            );
+            if (!response.ok) {
+              throw new Error(`Error! status: ${response.status}`);
+            }
+            const { collections } = await response.json();
 
-  const fetchCollectionTokens = async (address: string) => {
+            setFetchedCollections(collections);
+            console.log("fetched collections: ", collections);
+          }
+        } catch (err) {
+          console.log(`Error fetching collections from Opensea: ${err}`);
+          return new Error(`Error fetching collections from Opensea: ${err}`);
+        }
+        setIsCollectionsLoading(false);
+      };
+
+      fetchData();
+    },
+    [searchText]
+  );
+
+  const fetchCollectionTokens = useCallback(async (address: string) => {
     setIsTokensLoading(true);
     const requestHeaders: HeadersInit = {
       Accept: "application/json",
@@ -221,7 +249,7 @@ export const NFTConsiderationViewer = ({
       return new Error(`Error fetching collections from Opensea: ${err}`);
     }
     setIsTokensLoading(false);
-  };
+  }, []);
 
   const handleSelectCollection = async (address: string) => {
     setSelectedCollection(address);
@@ -236,51 +264,47 @@ export const NFTConsiderationViewer = ({
             <Spinner color="white" />
           </Box>
         ) : (
-          aggregatedCollections.map((coll) => (
-            <HStack
-              key={
-                coll.primary_asset_contracts
-                  ? coll.primary_asset_contracts[0].address
-                  : coll.address
-              }
-              className={`${styles.collectionRow} ${
-                coll.address === selectedCollection
-                  ? styles.selectedCollection
-                  : ""
-              }`}
-              onClick={() =>
-                handleSelectCollection(
-                  coll.primary_asset_contracts
-                    ? coll.primary_asset_contracts[0].address
-                    : coll.address
-                )
-              }
-            >
-              {coll.image_url && (
-                <Image
-                  alt={coll.name}
-                  rounded={"lg"}
-                  height={50}
-                  width={50}
-                  borderRadius="100%"
-                  objectFit={"cover"}
-                  src={coll.image_url}
-                />
-              )}
-              {!coll.image_url && (
-                <Image
-                  alt="nft placeholder"
-                  rounded={"lg"}
-                  height={50}
-                  width={50}
-                  borderRadius="100%"
-                  objectFit={"cover"}
-                  src={"/assets/poggo.jpg"}
-                />
-              )}
-              <Text paddingLeft={"1rem"}>{coll.name}</Text>
-            </HStack>
-          ))
+          aggregatedCollections.map((coll) => {
+            const contractAddress =
+              coll.primary_asset_contracts && coll.primary_asset_contracts[0]
+                ? coll.primary_asset_contracts[0].address
+                : coll.address;
+
+            return (
+              <HStack
+                key={contractAddress}
+                className={`${styles.collectionRow} ${
+                  coll.address === selectedCollection
+                    ? styles.selectedCollection
+                    : ""
+                }`}
+                onClick={() => handleSelectCollection(contractAddress)}
+              >
+                {coll.image_url ? (
+                  <Image
+                    alt={coll.name}
+                    rounded={"lg"}
+                    height={50}
+                    width={50}
+                    borderRadius="100%"
+                    objectFit={"cover"}
+                    src={coll.image_url}
+                  />
+                ) : (
+                  <Image
+                    alt="nft placeholder"
+                    rounded={"lg"}
+                    height={50}
+                    width={50}
+                    borderRadius="100%"
+                    objectFit={"cover"}
+                    src={"/assets/poggo.jpg"}
+                  />
+                )}
+                <Text paddingLeft={"1rem"}>{coll.name}</Text>
+              </HStack>
+            );
+          })
         )}
       </div>
       <Center height="540px">

@@ -235,7 +235,11 @@ const TokenSelection = ({
             {tab === "ERC721" && (
               <Input
                 style={{ color: "white" }}
-                placeholder="Search by Collection Name"
+                placeholder={
+                  isOffer
+                    ? "Search by Collection Name"
+                    : "Search by Contract Address"
+                }
                 value={searchText}
                 onChange={handleSearch}
               />

@@ -1,0 +1,56 @@
+.container {
+  background-color: black;
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.centerEllipse {
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -695px;
+  width: 1000px;
+  height: 1000px;
+  background-image: url(/assets/ellipse.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.content {
+  width: 1440px;
+  max-width: 100%;
+  margin: 0px auto;
+  padding: 0px 20px;
+  margin: 100px auto;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  width: 1280px;
+  max-width: 100%;
+}
+
+.header {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 45px;
+  text-align: center;
+
+  color: #ffffff;
+}
+
+.subheader {
+  color: rgb(255, 255, 255, 0.7);
+}
+
+.seaportLogo {
+  width: 400px;
+  opacity: 0.6;
+  -webkit-filter: drop-shadow(2px 2px 10px rgb(255, 255, 255, 0.7));
+  filter: drop-shadow(0px 2px 50px rgb(255, 255, 255, 0.7));
+}

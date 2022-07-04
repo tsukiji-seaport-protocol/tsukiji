@@ -1,0 +1,39 @@
+.container {
+  padding: 3rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  position: relative;
+  width: 100%;
+}
+
+.header {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 40px;
+  text-align: center;
+
+  color: #ffffff;
+}
+
+.subheader {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.centerEllipse {
+  left: 50%;
+  transform: translateX(-50%);
+  top: -700px;
+  width: 1000px;
+  height: 1000px;
+  background-image: url(/assets/ellipse.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.content {
+  width: 100%;
+  justify-content: space-between;
+}

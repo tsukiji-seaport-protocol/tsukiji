@@ -1,15 +1,18 @@
 .container {
-  padding: 0 2rem;
+  padding: 3rem;
   background-color: #000000;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  z-index: 10;
 }
 
 .header {
-  top: 10rem;
-  color: #ffffff;
-  font-weight: 500;
-  font-size: 2rem;
-  padding-bottom: 2rem;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 40px;
   text-align: center;
+
+  color: #ffffff;
 }
 
 .main {
@@ -102,16 +105,16 @@
 }
 
 .viewListingButton {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.8);
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 10px;
   padding: 1rem;
 
   font-family: "Inter";
   font-style: normal;
-  font-weight: 400;
+  font-weight: 600;
   font-size: 14px;
   line-height: 17px;
 
-  color: #ffffff;
+  color: black;
 }

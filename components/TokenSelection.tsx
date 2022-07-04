@@ -117,7 +117,7 @@ const TokenSelection = ({
           CurrencyItem = createOfferItem(
             ItemType.ERC20,
             "Wrapped Ethereum",
-            "assets/weth.png",
+            "/assets/weth.png",
             "WETH",
             formattedAmount,
             WETH_ADDRESS
@@ -126,7 +126,7 @@ const TokenSelection = ({
           CurrencyItem = createConsiderationItem(
             ItemType.ERC20,
             "Wrapped Ethereum",
-            "assets/weth.png",
+            "/assets/weth.png",
             "WETH",
             formattedAmount,
             account,

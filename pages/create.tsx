@@ -26,6 +26,7 @@ import { NavBar } from "../components/NavBar";
 import { TokenSelection } from "@components/TokenSelection";
 import { Switch } from "@chakra-ui/react";
 import { ItemType } from "@opensea/seaport-js/lib/constants";
+import CRC32 from "crc-32";
 
 const Home: NextPage = () => {
   const { data: accountData } = useAccount();
@@ -71,6 +72,7 @@ const Home: NextPage = () => {
     setOrder(res);
 
     const orderToSave: OrderWithMetadata = {
+      id: CRC32.str(res.signature).toString(),
       order: res,
       offers: offerItems,
       considerations: considerationItems,

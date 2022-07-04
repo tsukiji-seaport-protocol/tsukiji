@@ -30,6 +30,7 @@ export type ConsiderationItem = {
 };
 
 export type OrderWithMetadata = {
+  id: string;
   order: OrderWithCounter;
   offers: OfferItem[];
   considerations: ConsiderationItem[];

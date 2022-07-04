@@ -1,4 +1,11 @@
-import { Box, Container, HStack, SimpleGrid, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Container,
+  HStack,
+  Link,
+  SimpleGrid,
+  VStack,
+} from "@chakra-ui/react";
 import styles from "@styles/ListingCard.module.css";
 import { Image } from "@chakra-ui/react";
 import { abridgeAddress } from "@utils/abridgeAddress";
@@ -20,7 +27,6 @@ type OfferData = Map<string, ItemData>;
 
 export const ListingCard = ({ listing }: ListingCardProps) => {
   const offersMap = listing.offers.reduce((map: OfferData, item: OfferItem) => {
-    console.log("item:", item);
     if (!map.has(item.address)) {
       if (item.type !== ItemType.ERC721) {
         return map.set(item.address ?? "ethereum", {
@@ -91,7 +97,9 @@ export const ListingCard = ({ listing }: ListingCardProps) => {
               {abridgeAddress(listing.order.parameters.offerer)}
             </a>
           </div>
-          <button className={styles.offerHeaderButton}>VIEW LISTING</button>
+          <Link href={`/listings/${listing.id}`}>
+            <button className={styles.offerHeaderButton}>VIEW LISTING</button>
+          </Link>
         </HStack>
         <HStack className={styles.offerContainer}>
           <HStack gap={2} className={styles.offerImageContainer}>

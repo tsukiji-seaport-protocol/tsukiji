@@ -49,6 +49,35 @@
   margin-bottom: 10px;
 }
 
+.drawerButton {
+  position: relative;
+  color: white;
+  text-decoration: none;
+  padding: 0 0 0 0 !important;
+  margin-left: 1rem;
+}
+
+.drawerButton:hover {
+  color: white;
+}
+
+.drawerButton::before {
+  content: "";
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: white;
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.drawerButton:hover::before {
+  transform: scaleX(1);
+}
+
 .drawerFooter {
   display: flex;
   flex-direction: column;

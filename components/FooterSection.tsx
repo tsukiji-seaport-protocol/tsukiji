@@ -6,24 +6,62 @@ export const FooterSection = () => {
     <div className={styles.container}>
       <div className={styles.centerEllipse} />
       <HStack className={styles.content}>
-        <VStack>
-          <h1 className={styles.header}>FOMO</h1>
-          <Text className={styles.subheader}>Hit us up</Text>
-          <Text className={styles.subheader}>Dope Vibez Only</Text>
+        <VStack className={styles.footerSubsection}>
+          <h1 className={styles.header}>Made With ❤️ for Web3</h1>
+          <Text className={styles.subheader}>No Rights Reserved.</Text>
+          <Text className={styles.subheader} paddingTop="2rem">
+            Tsukiji 2022
+          </Text>
         </VStack>
         <HStack>
-          <VStack>
+          <VStack className={styles.footerSubsection}>
             <h1 className={styles.header}>Docs</h1>
-            <Text className={styles.subheader}>Github</Text>
-            <Text className={styles.subheader}>Opensea Seaport</Text>
-            <Text className={styles.subheader}>ETHGlobal</Text>
+            <a
+              href="https://github.com/tsukiji-seaport-protocol/tsukiji"
+              target="
+              _blank"
+            >
+              <Text className={styles.subheaderLink}>Github</Text>
+            </a>
+            <a
+              href="https://docs.opensea.io/v2.0/reference/seaport-overview"
+              target="
+              _blank"
+            >
+              <Text className={styles.subheaderLink}>Seaport</Text>
+            </a>
+            <a
+              href="https://ethglobal.com/"
+              target="
+              _blank"
+            >
+              <Text className={styles.subheaderLink}>ETHGlobal</Text>
+            </a>
           </VStack>
           <Spacer style={{ width: "30px" }} />
-          <VStack>
+          <VStack className={styles.footerSubsection}>
             <h1 className={styles.header}>Contact</h1>
-            <Text className={styles.subheader}>@jeongminc</Text>
-            <Text className={styles.subheader}>@andrewkjmin</Text>
-            <Text className={styles.subheader}>@straightupjac</Text>
+            <a
+              href="https://twitter.com/jeongminc_"
+              target="
+              _blank"
+            >
+              <Text className={styles.subheaderLink}>@jeongminc_</Text>
+            </a>
+            <a
+              href="https://twitter.com/andrewkjmin"
+              target="
+              _blank"
+            >
+              <Text className={styles.subheaderLink}>@andrewkjmin</Text>
+            </a>
+            <a
+              href="https://twitter.com/straightupjac"
+              target="
+              _blank"
+            >
+              <Text className={styles.subheaderLink}>@straightupjac</Text>
+            </a>
           </VStack>
         </HStack>
       </HStack>

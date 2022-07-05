@@ -29,11 +29,18 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
         <DrawerCloseButton color="#FFFFFF" />
 
         <DrawerBody className={styles.drawerBody}>
-          <Button className={styles.drawerButton}>EXPLORE</Button>
+          <Link href="/about">
+            <Button className={styles.drawerButton}>ABOUT</Button>
+          </Link>
           <Link href="/create">
             <Button className={styles.drawerButton}>CREATE</Button>
           </Link>
-          <Button className={styles.drawerButton}>HOW IT WORKS</Button>
+          <Link href="/listings">
+            <Button className={styles.drawerButton}>LISTINGS</Button>
+          </Link>
+          <Link href="/listings">
+            <Button className={styles.drawerButton}>DEMO</Button>
+          </Link>
         </DrawerBody>
 
         <DrawerFooter className={styles.drawerFooter}>
@@ -74,6 +81,7 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
               aria-label="github icon"
               colorScheme="dark"
               variant="ghost"
+              opacity=".7"
               icon={<FaGithub />}
             />
           </a>

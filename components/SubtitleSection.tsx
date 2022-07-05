@@ -1,7 +1,8 @@
-import { HStack, VStack, Image, Text } from "@chakra-ui/react";
+import { HStack, VStack, Image, Text, Box } from "@chakra-ui/react";
 import styles from "@styles/SubtitleSection.module.css";
 import { chakra } from "@chakra-ui/react";
 import { motion, isValidMotionProp } from "framer-motion";
+import Link from "next/link";
 
 const ChakraBox = chakra(motion.div, {
   shouldForwardProp: (prop) => isValidMotionProp(prop) || prop === "children",
@@ -19,6 +20,11 @@ export const SubtitleSection = () => {
           Access the Seaport Protocol ‘s dope shit through Tsukiji’s user
           interface
         </Text>
+        <Box padding="1rem">
+          <Link href={`/create`}>
+            <button className={styles.createButton}>CREATE LISTING</button>
+          </Link>
+        </Box>
       </VStack>
     </div>
   );

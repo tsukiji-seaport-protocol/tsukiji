@@ -1,4 +1,4 @@
-import { HStack, VStack, Image, Text, Box } from "@chakra-ui/react";
+import { HStack, VStack, Image, Text, Box, Spacer } from "@chakra-ui/react";
 import styles from "@styles/TitleSection.module.css";
 import { chakra } from "@chakra-ui/react";
 import { motion, isValidMotionProp } from "framer-motion";
@@ -19,11 +19,7 @@ export const TitleSection = () => {
             Built using Opensea's Seaport Protocol
           </Text>
         </VStack>
-        <VStack
-          justifyContent="center"
-          alignItems="center"
-          className={styles.animationStack}
-        >
+        <VStack className={styles.animationStack}>
           <ChakraBox
             animate={{
               y: ["0%", "5%", "0%", "5%", "0%"],
@@ -37,9 +33,6 @@ export const TitleSection = () => {
               repeat: Infinity,
               repeatType: "loop",
             }}
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
           >
             <Image
               alt="seaport logo"
@@ -61,7 +54,7 @@ export const TitleSection = () => {
               repeatType: "loop",
             }}
             position="absolute"
-            right={370}
+            right={280}
             bottom={180}
           >
             <div className={styles.offerImages}>
@@ -91,7 +84,7 @@ export const TitleSection = () => {
               repeatType: "loop",
             }}
             position="absolute"
-            right={370}
+            right={280}
             bottom={180}
           >
             <div className={styles.offerImages}>

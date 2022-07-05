@@ -1,17 +1,16 @@
 .container {
   box-sizing: border-box;
 
-  width: 700px;
-  height: 420px;
-  left: 81px;
-  top: 204px;
+  width: 600px;
 
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.4);
   border-radius: 10px;
   padding: 1.5rem 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  background-color: #000000;
 }
 
 .offerHeader {
@@ -46,15 +45,17 @@
 }
 
 .offerTextContainer {
-  padding-left: 2rem;
+  max-height: 172px;
+  width: 100px;
+  padding-left: 0.5rem;
+  overflow-y: scroll;
 }
 
 .offerCollectionLabel {
   display: flex;
-  background-color: #000000;
-  height: 100%;
   width: 100%;
   justify-content: flex-start;
+  align-items: center;
 }
 
 .offerCollectionLabelImg {
@@ -69,22 +70,23 @@
 .offerCollectionLabelText {
   font-family: "Inter";
   font-style: normal;
-  font-weight: 400;
-  font-size: 20px;
-  line-height: 24px;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 20px;
 
-  color: #ffffff;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .offerContainer {
   box-sizing: border-box;
 
-  width: 680px;
+  width: 570px;
   height: 172px;
   left: 115px;
   top: 277px;
 
   border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
   padding: 1rem;
 }
 
@@ -122,12 +124,10 @@
 .considerationContainer {
   box-sizing: border-box;
 
-  width: 677px;
-  height: 99px;
-  left: 115px;
-  top: 496px;
+  width: 570px;
 
   border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
   padding: 1rem;
 }
 

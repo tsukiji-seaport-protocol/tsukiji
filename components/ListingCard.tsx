@@ -88,7 +88,7 @@ export const ListingCard = ({ listing }: ListingCardProps) => {
       <VStack className={styles.container}>
         <HStack className={styles.offerHeader}>
           <div>
-            OFFER BY{" "}
+            Offer By{" "}
             <a
               href={`https://rinkeby.etherscan.io/address/${listing.order.parameters.offerer}`}
               target="_blank"
@@ -128,7 +128,7 @@ export const ListingCard = ({ listing }: ListingCardProps) => {
           </VStack>
         </HStack>
         <Box className={styles.considerationHeader}>
-          <div>IN EXCHANGE FOR</div>
+          <div>In Exchange For</div>
         </Box>
         <HStack className={styles.considerationContainer}>
           {Array.from(considerationsMap.entries()).map(

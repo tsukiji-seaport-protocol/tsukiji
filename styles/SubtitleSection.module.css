@@ -3,13 +3,13 @@
   overflow: hidden;
   width: 100%;
   position: relative;
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .centerEllipse {
   left: 50%;
   transform: translateX(-50%);
-  bottom: -695px;
+  bottom: -715px;
   width: 1000px;
   height: 1000px;
   background-image: url(/assets/ellipse.png);
@@ -17,7 +17,7 @@
   background-repeat: no-repeat;
   position: absolute;
   pointer-events: none;
-  opacity: 0.7;
+  opacity: 0.3;
 }
 
 .content {
@@ -46,6 +46,7 @@
 
 .subheader {
   color: rgb(255, 255, 255, 0.7);
+  font-size: 18px;
 }
 
 .seaportLogo {
@@ -53,4 +54,90 @@
   opacity: 0.6;
   -webkit-filter: drop-shadow(2px 2px 10px rgb(255, 255, 255, 0.7));
   filter: drop-shadow(0px 2px 50px rgb(255, 255, 255, 0.7));
+}
+
+.createButton {
+  padding: 1rem;
+
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 17px;
+
+  width: 220px;
+  height: 50px;
+  border: none;
+  outline: none;
+  color: #fff;
+  background: #111;
+  cursor: pointer;
+  position: relative;
+  z-index: 0;
+  border-radius: 10px;
+}
+
+/* credits to https://codepen.io/kocsten */
+.createButton:before {
+  content: "";
+  background: linear-gradient(
+    45deg,
+    #ff0000,
+    #ff7300,
+    #fffb00,
+    #48ff00,
+    #00ffd5,
+    #002bff,
+    #7a00ff,
+    #ff00c8,
+    #ff0000
+  );
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  background-size: 400%;
+  z-index: -1;
+  filter: blur(5px);
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  animation: glowing 20s linear infinite;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  border-radius: 10px;
+}
+
+.createButton:active {
+  color: #000;
+}
+
+.createButton:active:after {
+  background: transparent;
+}
+
+.createButton:hover:before {
+  opacity: 1;
+}
+
+.createButton:after {
+  z-index: -1;
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #111;
+  left: 0;
+  top: 0;
+  border-radius: 10px;
+}
+
+@keyframes glowing {
+  0% {
+    background-position: 0 0;
+  }
+  50% {
+    background-position: 400% 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
 }

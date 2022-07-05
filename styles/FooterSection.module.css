@@ -1,6 +1,6 @@
 .container {
   padding: 3rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
   position: relative;
   width: 100%;
 }
@@ -17,6 +17,20 @@
 
 .subheader {
   color: rgba(255, 255, 255, 0.8);
+  padding-left: 0.3rem;
+  font-size: 1.2rem;
+}
+
+.subheaderLink {
+  color: rgba(255, 255, 255);
+  opacity: 0.7;
+  padding-left: 0.3rem;
+  font-size: 1.2rem;
+  transition: 0.3s;
+}
+
+.subheaderLink:hover {
+  opacity: 1;
 }
 
 .centerEllipse {
@@ -30,10 +44,17 @@
   background-repeat: no-repeat;
   position: absolute;
   pointer-events: none;
-  opacity: 0.7;
+  opacity: 0.3;
 }
 
 .content {
   width: 100%;
   justify-content: space-between;
+}
+
+.footerSubsection {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start !important;
+  padding: 0 1rem;
 }

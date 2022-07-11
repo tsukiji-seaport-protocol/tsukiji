@@ -20,6 +20,7 @@ export const createOfferItem = (
     } as CurrencyItem;
   } else {
     inputItem = {
+      // @ts-ignore
       itemType: type,
       token: contractAddress,
       identifier: tokenId,
@@ -56,6 +57,7 @@ export const createConsiderationItem = (
     } as CurrencyItem;
   } else {
     inputItem = {
+      // @ts-ignore
       itemType: type,
       token: contractAddress,
       identifier: tokenId,

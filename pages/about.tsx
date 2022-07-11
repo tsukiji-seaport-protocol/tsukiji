@@ -15,15 +15,15 @@ const About = () => {
             Why the name <span className={styles.italic}>Tsukiji</span>
           </h1>
           <Text className={styles.subheader}>
-            Inspired by the concept of a "seaport", we asked ourselves what an
-            experience exchanging goods would look like at a real-life seaside
-            port. The vision that excited us most was that of a bustling local
-            fish market, where we imagined locals bartering for goods and
+            Inspired by the concept of a &quot;seaport&quot;, we asked ourselves
+            what an experience exchanging goods would look like at a real-life
+            seaside port. The vision that excited us most was that of a bustling
+            local fish market, where we imagined locals bartering for goods and
             shouting bids on freshly caught fish. We wanted to build a platform
             that reflected the energy of such a place, but with exchanging NFTs.
-            So as an homage to what was once the world's largest fish market -
-            the Tsukiji Fish Market in Tokyo, Japan - we named our project{" "}
-            <span className={styles.italic}>Tsukiji</span>.
+            So as an homage to what was once the world&apos;s largest fish
+            market - the Tsukiji Fish Market in Tokyo, Japan - we named our
+            project <span className={styles.italic}>Tsukiji</span>.
           </Text>
         </VStack>
         <VStack className={styles.contentSection}>

@@ -251,7 +251,7 @@ export const NFTConsiderationViewer = ({
 
   // opensea returns duplicate collections which renders DOM errors
   const uniqueCollections = filteredCollection.reduce((unique, o) => {
-    if (!unique.some((obj) => obj.name === o.name)) {
+    if (!unique.some((obj: any) => obj.name === o.name)) {
       unique.push(o);
     }
     return unique;

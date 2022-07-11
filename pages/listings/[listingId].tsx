@@ -11,17 +11,21 @@ import { useAccount } from "wagmi";
 import { useRouter } from "next/router";
 import { NavBar } from "@components/NavBar";
 import withTransition from "@components/withTransition";
+import { OrderWithCounter } from "@opensea/seaport-js/lib/types";
 
 const Listing = () => {
   const { data: accountData, isError } = useAccount();
 
   const router = useRouter();
   const { listingId } = router.query;
-  const [listing, setListing] = useState<OrderWithMetadata>({});
+  const [listing, setListing] = useState<OrderWithMetadata>();
   const [isLoading, setIsLoading] = useState(false);
   const [fulfillmentLoading, setFulfillmentLoading] = useState(false);
-  const { order, offers, considerations } = listing;
   const [errorMessage, setErrorMessage] = useState<string>("");
+
+  const order = listing?.order;
+  const offers = listing?.offers ?? [];
+  const considerations = listing?.considerations ?? [];
 
   useEffect(() => {
     setIsLoading(true);
@@ -55,6 +59,7 @@ const Listing = () => {
 
   const fulfillSeaportOrder = async () => {
     if (!accountData) throw Error("No address found");
+    if (!order) throw Error("No order found");
     setErrorMessage("");
     setFulfillmentLoading(true);
 
@@ -71,7 +76,8 @@ const Listing = () => {
       transactionHash = transaction.hash;
       return transactionHash;
     } catch (err) {
-      setErrorMessage(err.message);
+      const error = err as Error;
+      setErrorMessage(error.message);
       setFulfillmentLoading(false);
     }
     setFulfillmentLoading(false);

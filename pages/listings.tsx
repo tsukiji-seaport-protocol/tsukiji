@@ -26,8 +26,8 @@ const Listings = ({ address }: ListingsProps) => {
         });
         const data = await response.json();
 
-        const filteredData: OrderWithMetadata[] = data.filter((listing) =>
-          listing.hasOwnProperty("order")
+        const filteredData: OrderWithMetadata[] = data.filter(
+          (listing: OrderWithMetadata) => listing.hasOwnProperty("order")
         );
 
         setListings(filteredData);

@@ -21,10 +21,15 @@ type OfferData = Map<string, ItemData>;
 
 export const ListingCard = ({ listing }: ListingCardProps) => {
   const offersMap = listing.offers.reduce((map: OfferData, item: OfferItem) => {
+    if (!item.address) return map;
     if (!map.has(item.address)) {
       if (item.type !== ItemType.ERC721) {
         return map.set(item.address ?? "ethereum", {
-          count: Number(formatEther(item.inputItem.amount)),
+          count: Number(
+            formatEther(
+              "amount" in item.inputItem ? item.inputItem.amount! : "0"
+            )
+          ),
           tokenIds: [Number(item.token_id)],
           symbol: item.symbol,
         });
@@ -49,10 +54,15 @@ export const ListingCard = ({ listing }: ListingCardProps) => {
 
   const considerationsMap = listing.considerations.reduce(
     (map: OfferData, item: OfferItem) => {
+      if (!item.address) return map;
       if (!map.has(item.address)) {
         if (item.type !== ItemType.ERC721) {
           return map.set(item.address ?? "ethereum", {
-            count: Number(formatEther(item.inputItem.amount)),
+            count: Number(
+              formatEther(
+                "amount" in item.inputItem ? item.inputItem.amount! : "0"
+              )
+            ),
             tokenIds: [Number(item.token_id)],
             symbol: item.symbol,
           });

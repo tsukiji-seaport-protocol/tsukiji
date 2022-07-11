@@ -60,8 +60,6 @@ const TokenSelection = ({
   const [searchText, setSearchText] = useState<string>("");
 
   const [currencyAmount, setCurrencyAmount] = useState<string>("0");
-  // const [ethAmount, setEthAmount] = useState<string>("0");
-  // const [wethAmount, setWethAmount] = useState<string>("0");
   const [errorMessage, setErrorMessage] = useState<string>("");
 
   const handleCurrencyInput = (value: string) => {
@@ -301,7 +299,11 @@ const ListItem = ({ item, isLight, removeItem }: ListItemProps) => {
       </VStack>
 
       <div className={styles.listItemQuantity}>
-        {isNFT ? `1 ${symbol}` : `${formatEther(inputItem.amount)} ${symbol}`}
+        {isNFT
+          ? `1 ${symbol}`
+          : `${formatEther(
+              "amount" in inputItem ? inputItem.amount! : ""
+            )} ${symbol}`}
       </div>
 
       <IconButton
@@ -309,7 +311,7 @@ const ListItem = ({ item, isLight, removeItem }: ListItemProps) => {
         colorScheme=""
         aria-label="Search database"
         icon={<SmallCloseIcon />}
-        onClick={() => removeItem(address, token_id)}
+        onClick={() => removeItem(address ?? "", token_id)}
       />
     </HStack>
   );

@@ -175,7 +175,6 @@ export const NFTViewer = ({
           );
           const { assets } = await response.json();
           setFetchedTokens(assets);
-          console.log("fetched assets: ", assets);
         } catch (err) {
           console.log(`Error fetching assets from Opensea: ${err}`);
           return new Error(`Error fetching assets from Opensea: ${err}`);

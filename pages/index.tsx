@@ -6,6 +6,7 @@ import { TitleSection } from "@components/TitleSection";
 import { SubtitleSection } from "@components/SubtitleSection";
 import { ListingsSection } from "@components/ListingsSection";
 import { FooterSection } from "@components/FooterSection";
+import withTransition from "@components/withTransition";
 
 const Home: NextPage = () => {
   const { data: accountData } = useAccount();
@@ -23,4 +24,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default withTransition(Home);

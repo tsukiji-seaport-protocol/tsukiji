@@ -10,6 +10,7 @@ import { Seaport } from "@opensea/seaport-js";
 import { useAccount } from "wagmi";
 import { useRouter } from "next/router";
 import { NavBar } from "@components/NavBar";
+import withTransition from "@components/withTransition";
 
 const Listing = () => {
   const { data: accountData, isError } = useAccount();
@@ -198,4 +199,4 @@ const Listing = () => {
   );
 };
 
-export default Listing;
+export default withTransition(Listing);

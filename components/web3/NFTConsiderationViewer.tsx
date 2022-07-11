@@ -170,7 +170,6 @@ export const NFTConsiderationViewer = ({
         try {
           let response;
           if (searchText.length > 40) {
-            console.log("here");
             response = await fetch(
               `https://testnets-api.opensea.io/api/v1/assets?asset_contract_address=${searchText}&order_direction=desc&offset=0&limit=50&include_orders=false`,
               requestOptions
@@ -193,7 +192,6 @@ export const NFTConsiderationViewer = ({
             const { collections } = await response.json();
 
             setFetchedCollections(collections);
-            console.log("fetched collections: ", collections);
           }
         } catch (err) {
           console.log(`Error fetching collections from Opensea: ${err}`);

@@ -1,9 +1,36 @@
 .container {
   padding: 3rem;
-  background-color: #060606;
+  background-color: black;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   z-index: 10;
   width: 100%;
+  position: relative;
+}
+
+.leftEllipse {
+  top: -295px;
+  left: -700px;
+  width: 1000px;
+  height: 1000px;
+  background-image: url(/assets/ellipse.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.3;
+}
+
+.rightEllipse {
+  bottom: -400px;
+  right: -650px;
+  width: 1000px;
+  height: 1000px;
+  background-image: url(/assets/ellipse.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.3;
 }
 
 .header {

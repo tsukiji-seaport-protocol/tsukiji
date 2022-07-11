@@ -14,11 +14,11 @@ export const SubtitleSection = () => {
       <div className={styles.centerEllipse} />
       <VStack className={styles.content}>
         <h1 className={styles.header}>
-          Enabling the new primitives of NFT exchange
+          Enabling new primitives for NFT trading
         </h1>
         <Text className={styles.subheader}>
-          Access the Seaport Protocol ‘s dope shit through Tsukiji’s user
-          interface
+          Access features such as bartering or batch exchanging NFTs on the
+          Tsukiji platform.
         </Text>
         <Box padding="1rem">
           <Link href={`/create`}>

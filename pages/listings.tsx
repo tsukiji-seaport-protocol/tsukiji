@@ -2,9 +2,9 @@ import styles from "../styles/Listings.module.css";
 import { useEffect, useState } from "react";
 import { ListingCard } from "../components/ListingCard";
 import { Box, SimpleGrid, Spinner } from "@chakra-ui/react";
-import Link from "next/link";
 import { OrderWithMetadata } from "types/tokenTypes";
 import { NavBar } from "@components/NavBar";
+import withTransition from "@components/withTransition";
 
 type ListingsProps = {
   address?: string;
@@ -30,7 +30,6 @@ const Listings = ({ address }: ListingsProps) => {
           listing.hasOwnProperty("order")
         );
 
-        console.log("data: ", filteredData);
         setListings(filteredData);
         setIsLoading(false);
       } catch (err) {
@@ -46,9 +45,6 @@ const Listings = ({ address }: ListingsProps) => {
       <NavBar />
       <div className={styles.main}>
         <div className={styles.header}>ALL OPEN LISTINGS</div>
-        {/* <Link href="/create">
-        <Button>Create Listing</Button>
-    </Link> */}
         {isLoading ? (
           <Box width="100%" display="flex" justifyContent="center">
             <Spinner color="white" />
@@ -67,4 +63,4 @@ const Listings = ({ address }: ListingsProps) => {
   );
 };
 
-export default Listings;
+export default withTransition(Listings);

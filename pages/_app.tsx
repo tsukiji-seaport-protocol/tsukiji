@@ -2,6 +2,7 @@ import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { useEffect, useState } from "react";
+import { AnimatePresence } from "framer-motion";
 
 // rainbow + wagmi
 import "@rainbow-me/rainbowkit/styles.css";
@@ -49,7 +50,7 @@ const customTheme = merge(darkTheme(), {
 
 const queryClient = new QueryClient();
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps, router }: AppProps) {
   const [mounted, setMounted] = useState(false);
 
   // prevent hydration UI bug: https://blog.saeloun.com/2021/12/16/hydration.html
@@ -61,7 +62,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       <QueryClientProvider client={queryClient}>
         <WagmiConfig client={wagmiClient}>
           <RainbowKitProvider chains={chains} theme={customTheme}>
-            <Component {...pageProps} />
+            <AnimatePresence exitBeforeEnter>
+              <Component {...pageProps} key={router.route} />
+            </AnimatePresence>
           </RainbowKitProvider>
         </WagmiConfig>
       </QueryClientProvider>

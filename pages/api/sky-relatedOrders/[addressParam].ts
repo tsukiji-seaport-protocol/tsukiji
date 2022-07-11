@@ -178,8 +178,6 @@ const getERC20TokenBalance = async (
       symbol = sym;
     });
 
-  console.log(`balance: ${balance}, decimals: ${decimals}, symbol: ${symbol}`);
-
   return {
     type: "ERC20",
     contractAddress,
@@ -217,8 +215,6 @@ const getERC721Tokens = async (
     .then((sym: any) => {
       symbol = sym;
     });
-
-  console.log(`balance: ${balance}, symbol: ${symbol}`);
 
   let tokenIds = [];
 

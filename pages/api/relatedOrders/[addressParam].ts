@@ -238,8 +238,6 @@ const getERC721Tokens = async (
       symbol = sym;
     });
 
-  console.log(`balance: ${balance}, symbol: ${symbol}`);
-
   let tokenIds = [];
 
   for (let i = 0; i < balance; i++) {

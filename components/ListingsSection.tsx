@@ -29,7 +29,6 @@ export const ListingsSection = ({ address }: ListingsSectionProps) => {
           listing.hasOwnProperty("order")
         );
 
-        console.log("data: ", filteredData);
         setListings(filteredData);
         setIsLoading(false);
       } catch (err) {
@@ -42,6 +41,8 @@ export const ListingsSection = ({ address }: ListingsSectionProps) => {
 
   return (
     <VStack className={styles.container}>
+      <div className={styles.leftEllipse} />
+      <div className={styles.rightEllipse} />
       <div className={styles.header}>Recent Listings</div>
       {isLoading ? (
         <Box width="100%" display="flex" justifyContent="center">

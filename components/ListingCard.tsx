@@ -1,11 +1,5 @@
-import {
-  Box,
-  Container,
-  HStack,
-  Link,
-  SimpleGrid,
-  VStack,
-} from "@chakra-ui/react";
+import { Box, HStack, VStack } from "@chakra-ui/react";
+import Link from "next/link";
 import styles from "@styles/ListingCard.module.css";
 import { Image } from "@chakra-ui/react";
 import { abridgeAddress } from "@utils/abridgeAddress";

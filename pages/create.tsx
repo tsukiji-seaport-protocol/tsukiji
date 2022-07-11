@@ -26,9 +26,10 @@ import { NavBar } from "../components/NavBar";
 import { TokenSelection } from "@components/TokenSelection";
 import { Switch } from "@chakra-ui/react";
 import { ItemType } from "@opensea/seaport-js/lib/constants";
+import withTransition from "@components/withTransition";
 import CRC32 from "crc-32";
 
-const Home: NextPage = () => {
+const Create: NextPage = () => {
   const { data: accountData } = useAccount();
 
   const [order, setOrder] = useState<OrderWithCounter>();
@@ -93,7 +94,6 @@ const Home: NextPage = () => {
         },
       });
       const data = await response.json();
-      console.log("data: ", data);
     } catch (err) {
       console.log("Error request: ", err);
     }
@@ -227,4 +227,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default withTransition(Create);

@@ -18,7 +18,6 @@ const OrderExplorer = () => {
         });
         const data = await response.json();
 
-        console.log("data: ", JSON.stringify(data[0]));
         setOrders(data);
       } catch (err) {
         console.log("Error request: ", err);

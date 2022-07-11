@@ -16,7 +16,7 @@ export const TitleSection = () => {
         <VStack>
           <h1 className={styles.header}>Next-Generation NFT Exchange</h1>
           <Text className={styles.subheader}>
-            Built using Opensea's Seaport Protocol
+            Built on top of Opensea's Seaport Protocol
           </Text>
         </VStack>
         <VStack className={styles.animationStack}>

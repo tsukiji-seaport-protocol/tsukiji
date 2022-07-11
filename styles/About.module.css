@@ -1,0 +1,65 @@
+.container {
+  padding: 0 2rem;
+  background-color: #000000;
+}
+
+.content {
+  padding-top: 4rem;
+}
+
+.contentSection {
+  padding-top: 3rem;
+}
+
+.header {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 35px;
+  width: 600px;
+  text-align: center;
+  color: #ffffff;
+}
+
+.header .italic {
+  font-style: italic;
+}
+
+.subheader {
+  font-family: "Inter";
+  color: rgb(255, 255, 255, 0.9);
+  font-size: 18px;
+  max-width: 1000px;
+  padding-top: 1rem;
+}
+
+.subheader .italic {
+  font-style: italic;
+}
+
+.leftEllipse {
+  top: -295px;
+  left: -700px;
+  width: 1000px;
+  height: 1000px;
+  background-image: url(/assets/ellipse.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.3;
+}
+
+.rightEllipse {
+  bottom: -400px;
+  right: -650px;
+  width: 1000px;
+  height: 1000px;
+  background-image: url(/assets/ellipse.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.3;
+}

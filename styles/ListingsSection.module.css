@@ -1,0 +1,219 @@
+.container {
+  padding: 3rem;
+  background-color: black;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 10;
+  width: 100%;
+  position: relative;
+}
+
+.leftEllipse {
+  top: -295px;
+  left: -700px;
+  width: 1000px;
+  height: 1000px;
+  background-image: url(/assets/ellipse.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.3;
+}
+
+.rightEllipse {
+  bottom: -400px;
+  right: -650px;
+  width: 1000px;
+  height: 1000px;
+  background-image: url(/assets/ellipse.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.3;
+}
+
+.header {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 40px;
+  text-align: center;
+
+  color: #ffffff;
+}
+
+.main {
+  min-height: 80vh;
+  padding: 4rem 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer {
+  display: flex;
+  flex: 1;
+  padding: 2rem 0;
+  border-top: 1px solid #eaeaea;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.title a {
+  color: #0070f3;
+  text-decoration: none;
+}
+
+.title a:hover,
+.title a:focus,
+.title a:active {
+  text-decoration: underline;
+}
+
+.title {
+  margin: 0;
+  line-height: 1.15;
+  font-size: 4rem;
+}
+
+.title,
+.description {
+  text-align: center;
+}
+
+.description {
+  margin: 4rem 0;
+  line-height: 1.5;
+  font-size: 1.5rem;
+}
+
+.code {
+  background: #fafafa;
+  border-radius: 5px;
+  padding: 0.75rem;
+  font-size: 1.1rem;
+  font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
+    Bitstream Vera Sans Mono, Courier New, monospace;
+}
+
+.grid {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 800px;
+}
+
+.logo {
+  height: 1em;
+  margin-left: 0.5rem;
+}
+
+.connectButton {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+@media (max-width: 600px) {
+  .grid {
+    width: 100%;
+    flex-direction: column;
+  }
+}
+
+.viewListingButton {
+  padding: 1rem;
+
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 17px;
+
+  width: 220px;
+  height: 50px;
+  border: none;
+  outline: none;
+  color: #fff;
+  background: #111;
+  cursor: pointer;
+  position: relative;
+  z-index: 0;
+  border-radius: 10px;
+}
+
+/* credits to https://codepen.io/kocsten */
+.viewListingButton:before {
+  content: "";
+  background: linear-gradient(
+    45deg,
+    #ff0000,
+    #ff7300,
+    #fffb00,
+    #48ff00,
+    #00ffd5,
+    #002bff,
+    #7a00ff,
+    #ff00c8,
+    #ff0000
+  );
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  background-size: 400%;
+  z-index: -1;
+  filter: blur(5px);
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  animation: glowing 20s linear infinite;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  border-radius: 10px;
+}
+
+.viewListingButton:active {
+  color: #000;
+}
+
+.viewListingButton:active:after {
+  background: transparent;
+}
+
+.viewListingButton:hover:before {
+  opacity: 1;
+}
+
+.viewListingButton:after {
+  z-index: -1;
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #111;
+  left: 0;
+  top: 0;
+  border-radius: 10px;
+}
+
+@keyframes glowing {
+  0% {
+    background-position: 0 0;
+  }
+  50% {
+    background-position: 400% 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}

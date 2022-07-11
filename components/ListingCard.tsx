@@ -1,75 +1,152 @@
-import { Box, HStack, SimpleGrid, VStack } from "@chakra-ui/react";
+import { Box, HStack, VStack } from "@chakra-ui/react";
+import Link from "next/link";
 import styles from "@styles/ListingCard.module.css";
 import { Image } from "@chakra-ui/react";
-import { OrderWithCounter } from "@opensea/seaport-js/lib/types";
 import { abridgeAddress } from "@utils/abridgeAddress";
+import { OfferItem, OrderWithMetadata } from "types/tokenTypes";
+import { ItemType } from "@opensea/seaport-js/lib/constants";
+import { formatEther } from "ethers/lib/utils";
 
 type ListingCardProps = {
-  listing?: OrderWithCounter;
+  listing: OrderWithMetadata;
 };
 
+type ItemData = {
+  count: number;
+  tokenIds: number[];
+  symbol: string;
+};
+
+type OfferData = Map<string, ItemData>;
+
 export const ListingCard = ({ listing }: ListingCardProps) => {
-  console.log("listing: ", listing);
+  const offersMap = listing.offers.reduce((map: OfferData, item: OfferItem) => {
+    if (!item.address) return map;
+    if (!map.has(item.address)) {
+      if (item.type !== ItemType.ERC721) {
+        return map.set(item.address ?? "ethereum", {
+          count: Number(
+            formatEther(
+              "amount" in item.inputItem ? item.inputItem.amount! : "0"
+            )
+          ),
+          tokenIds: [Number(item.token_id)],
+          symbol: item.symbol,
+        });
+      } else {
+        return map.set(item.address, {
+          count: 1,
+          tokenIds: [Number(item.token_id)],
+          symbol: item.symbol,
+        });
+      }
+    }
+
+    const data = map.get(item.address);
+    const { count, tokenIds, symbol } = data!;
+
+    return map.set(item.address, {
+      count: count + 1,
+      tokenIds: [...tokenIds, Number(item.token_id)],
+      symbol,
+    });
+  }, new Map<string, ItemData>());
+
+  const considerationsMap = listing.considerations.reduce(
+    (map: OfferData, item: OfferItem) => {
+      if (!item.address) return map;
+      if (!map.has(item.address)) {
+        if (item.type !== ItemType.ERC721) {
+          return map.set(item.address ?? "ethereum", {
+            count: Number(
+              formatEther(
+                "amount" in item.inputItem ? item.inputItem.amount! : "0"
+              )
+            ),
+            tokenIds: [Number(item.token_id)],
+            symbol: item.symbol,
+          });
+        } else {
+          return map.set(item.address, {
+            count: 1,
+            tokenIds: [Number(item.token_id)],
+            symbol: item.symbol,
+          });
+        }
+      }
+
+      const data = map.get(item.address);
+      const { count, tokenIds, symbol } = data!;
+
+      return map.set(item.address, {
+        count: count + 1,
+        tokenIds: [...tokenIds, Number(item.token_id)],
+        symbol,
+      });
+    },
+    new Map<string, ItemData>()
+  );
+
   return (
     <>
       <VStack className={styles.container}>
         <HStack className={styles.offerHeader}>
-          <div>{`OFFER BY ${
-            listing
-              ? abridgeAddress(listing.parameters.offerer)
-              : abridgeAddress("0x301479333CE9CA3e642443E14CC986ABcC548e2e")
-          }:`}</div>
-          <button className={styles.offerHeaderButton}>VIEW LISTING</button>
+          <div>
+            Offer By{" "}
+            <a
+              href={`https://rinkeby.etherscan.io/address/${listing.order.parameters.offerer}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {abridgeAddress(listing.order.parameters.offerer)}
+            </a>
+          </div>
+          <Link href={`/listings/${listing.id}`}>
+            <button className={styles.offerHeaderButton}>VIEW LISTING</button>
+          </Link>
         </HStack>
         <HStack className={styles.offerContainer}>
-          <SimpleGrid columns={[1, 2, 3]} gap={2} className={styles.offerImageContainer}>
-            <Image
-              alt="shaddap"
-              className={styles.offerImageCard}
-              src={"/assets/bobu1.png"}
-            />
-            <Image
-              alt="shaddap"
-              className={styles.offerImageCard}
-              src={"/assets/bobu2.jpg"}
-            />
-            <Image
-              alt="shaddap"
-              className={styles.offerImageCard}
-              src={"/assets/bobu3.jpg"}
-            />
-          </SimpleGrid>
-          <VStack className={styles.offerTextContainer}>
-            <HStack className={styles.offerCollectionLabel}>
+          <HStack gap={2} className={styles.offerImageContainer}>
+            {listing.offers.map(({ name, image_url, address, token_id }) => (
               <Image
-                alt="shaddap"
-                className={styles.offerCollectionLabelImg}
-                src={"/assets/azuki.png"}
+                key={`${address}-${token_id}`}
+                alt={`Image for ${name}`}
+                className={styles.offerImageCard}
+                src={image_url}
               />
-              <div className={styles.offerCollectionLabelText}>3 AZUKI</div>
-            </HStack>
+            ))}
+          </HStack>
+          <VStack className={styles.offerTextContainer}>
+            {Array.from(offersMap.entries()).map(
+              ([address, data]: [string, ItemData]) => (
+                <HStack
+                  className={styles.offerCollectionLabel}
+                  key={address ?? "ethereum"}
+                >
+                  <div
+                    className={styles.offerCollectionLabelText}
+                  >{`${data.count} ${data.symbol}`}</div>
+                </HStack>
+              )
+            )}
           </VStack>
         </HStack>
         <Box className={styles.considerationHeader}>
-          <div>IN EXCHANGE FOR</div>
+          <div>In Exchange For</div>
         </Box>
         <HStack className={styles.considerationContainer}>
-          <div className={styles.considerationItem}>
-            <Image
-              alt="shaddap"
-              className={styles.considerationItemImg}
-              src={"/assets/ethereum-eth.svg"}
-            />
-            <div className={styles.considerationItemText}>20 ETH</div>
-          </div>
-          <div className={styles.considerationItem}>
-            <Image
-              alt="shaddap"
-              className={styles.considerationItemImg}
-              src={"/assets/ethereum-eth.svg"}
-            />
-            <div className={styles.considerationItemText}>1 BAYC</div>
-          </div>
+          {Array.from(considerationsMap.entries()).map(
+            ([address, data]: [string, ItemData]) => (
+              <div
+                className={styles.considerationItem}
+                key={address ?? "ethereum"}
+              >
+                <div
+                  className={styles.considerationItemText}
+                >{`${data.count} ${data.symbol}`}</div>
+              </div>
+            )
+          )}
         </HStack>
       </VStack>
     </>

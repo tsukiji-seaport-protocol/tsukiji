@@ -21,16 +21,6 @@
   padding-bottom: 3rem;
 }
 
-.durationContainer {
-  width: 365px;
-  height: 82px;
-  left: 78px;
-  top: 863px;
-
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  border-radius: 10px;
-}
-
 .tipContainer {
   width: 365px;
   height: 82px;
@@ -147,11 +137,16 @@
 
 .selector select {
   color: rgba(255, 255, 255, 0.7); /*hide original SELECT element: */
-  width: 365px;
-  height: 65px;
+  width: 200px;
+  height: 35px;
 
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 10px;
+}
+
+.currencySwitch {
+  padding-top: 2px;
+  height: 35px;
 }
 
 .input {

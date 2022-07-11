@@ -2,6 +2,7 @@ import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { useEffect, useState } from "react";
+import { AnimatePresence } from "framer-motion";
 
 // rainbow + wagmi
 import "@rainbow-me/rainbowkit/styles.css";
@@ -15,7 +16,7 @@ import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
 import merge from "lodash.merge";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 import { ChakraProvider } from "@chakra-ui/react";
-import Footer from "@components/Footer";
+import { NavBar } from "@components/NavBar";
 
 const { chains, provider } = configureChains(
   [chain.rinkeby, chain.mainnet, chain.polygon],
@@ -43,13 +44,13 @@ const wagmiClient = createClient({
 // rainbow theme
 const customTheme = merge(darkTheme(), {
   colors: {
-    accentColor: "#267c8e",
+    accentColor: "#000000",
   },
 } as Theme);
 
 const queryClient = new QueryClient();
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps, router }: AppProps) {
   const [mounted, setMounted] = useState(false);
 
   // prevent hydration UI bug: https://blog.saeloun.com/2021/12/16/hydration.html
@@ -61,8 +62,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       <QueryClientProvider client={queryClient}>
         <WagmiConfig client={wagmiClient}>
           <RainbowKitProvider chains={chains} theme={customTheme}>
-            <Component {...pageProps} />
-            <Footer />
+            <AnimatePresence exitBeforeEnter>
+              <Component {...pageProps} key={router.route} />
+            </AnimatePresence>
           </RainbowKitProvider>
         </WagmiConfig>
       </QueryClientProvider>

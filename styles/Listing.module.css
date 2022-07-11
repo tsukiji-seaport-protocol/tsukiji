@@ -1,0 +1,128 @@
+.container {
+  padding: 0 2rem;
+  background-color: #000000;
+}
+
+.addAssetButton {
+  width: 200px;
+
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+
+  color: white;
+}
+
+.title {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+  padding-top: 1rem;
+
+  color: #ffffff;
+}
+
+.subtitle {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 24px;
+  padding-top: 1rem;
+
+  color: #ffffff;
+}
+
+.itemBundleContainer {
+  align-items: flex-start !important;
+}
+
+.itemListContainer {
+  width: 800px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  justify-content: flex-start;
+  overflow-y: hidden;
+  overflow-x: scroll;
+  padding: 1rem;
+}
+
+.itemContainer {
+  overflow: hidden;
+}
+
+.itemImageCard {
+  width: 130px;
+  height: 130px;
+  object-fit: cover;
+}
+
+.itemTextCard {
+  display: flex;
+  width: 130px;
+  height: 30px;
+  justify-content: center;
+  color: white;
+  padding: 0.5rem;
+  font-size: small;
+  overflow: hidden;
+}
+
+.listItemQuantity {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+
+  color: #ffffff;
+}
+
+.listItemRemoveIcon {
+  opacity: 0.5;
+}
+
+.light {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.listingContent {
+  padding-top: 10rem;
+}
+
+.listingContainer {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  width: 1000px;
+  padding-top: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  align-items: center;
+}
+
+.modalContent {
+  width: 1097px;
+  height: 690px;
+
+  background: #000000 !important;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 20px;
+}
+
+.modalOverlay {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  /* Note: backdrop-filter has minimal browser support */
+}
+
+.tab[aria-selected="true"] {
+  color: white !important;
+}
+
+.tab[aria-selected="false"] {
+  border-color: grey !important;
+  color: grey;
+}

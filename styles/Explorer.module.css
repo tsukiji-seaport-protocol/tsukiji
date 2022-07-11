@@ -9,6 +9,17 @@
   color: white;
 }
 
+.itemListHeader {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  padding: 0 3rem;
+}
+
+.listItemOfferer {
+  width: 100px;
+}
+
 .title {
   font-family: "Inter";
   font-style: normal;
@@ -21,12 +32,15 @@
 }
 
 .itemListContainer {
-  width: 621px;
-  height: 351px;
+  width: 1200px;
+  height: 1000px;
   left: 137px;
   top: 328px;
 
   margin: 1rem;
+
+  display: flex;
+  flex-direction: column;
 
   border: 1px solid rgba(255, 255, 255, 0.2);
   overflow: scroll;
@@ -91,9 +105,11 @@
 
 .tokenSelectionContainer {
   display: flex;
+  margin: auto;
+  margin-top: 2rem;
   flex-direction: column;
-  width: 733px;
-  height: 513px;
+  width: 1500px;
+  height: 800px;
   left: 78px;
   top: 255px;
 
@@ -121,50 +137,11 @@
   /* Note: backdrop-filter has minimal browser support */
 }
 
-.modalBody {
-  overflow: hidden;
-}
-
 .tab[aria-selected="true"] {
   color: white !important;
-  transition: .3s;
 }
 
 .tab[aria-selected="false"] {
   border-color: grey !important;
   color: grey;
-  transition: .3s;
-}
-
-.tab:active {
-  background-color: black !important;
-}
-
-.grid {
-  height: 540px;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  -ms-overflow-style: none;  /* Internet Explorer 10+ */
-  scrollbar-width: none;  /* Firefox */
-}
-
-.grid::-webkit-scrollbar {
-  width: 0;  /* Remove scrollbar space */
-  background: transparent;  /* Optional: just make scrollbar invisible */
-}
-
-.tabPanel {
-  overflow: hidden;
-}
-
-.noTokenMessage {
-  width: 100%;
-  text-align: center;
-  color: white;
-}
-
-.noResultMessage {
-  width: 100%;
-  text-align: center;
-  color: white;
 }
